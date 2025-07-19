@@ -1,0 +1,52 @@
+\documentclass[12pt,a4paper,openany]{book}
+\usepackage{import}
+\import{Files/-Preamble/}{-Preamble}
+\graphicspath{{./Image/}}
+\includeonly{Files/-Preface
+            % ,Files/-Thanks
+            ,Files/02BasicSkills/BasicSkills
+            ,Files/03Techniques/Techniques
+            ,Files/07Mathematic/Mathematic
+            ,Files/09DynamicPrograming/DynamicPrograming
+            ,Files/10Geometry/Geometry
+            ,Files/11AdvancedTechniques/AdvancedTechniques
+            ,Files/12MoreProblems/MoreProblems
+            ,Files/Reference
+            }
+\begin{document}
+% \lhead{\leftmark}
+%\chead{}
+\rhead{APCS與競賽入門}
+%\cfoot{}
+%\rfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\title{APCS與競賽入門}
+\author{ShangJhe Li} %作者
+% \date{15th, January 2023}
+\lfoot{Author:~\theauthor}
+
+\maketitle
+
+\setcounter{page}{1}
+\pagenumbering{roman}
+\renewcommand{\contentsname}{目錄}
+\tableofcontents
+\lstlistoflistings
+
+\subincludefrom{Files/}{-Preface}
+
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+\subincludefrom{Files/02BasicSkills/}{BasicSkills}
+\subincludefrom{Files/03Techniques/}{Techniques}
+\subincludefrom{Files/07Mathematic}{Mathematic}
+\subincludefrom{Files/09DynamicPrograming}{DynamicPrograming}
+\subincludefrom{Files/10Geometry}{Geometry}
+\subincludefrom{Files/11AdvancedTechniques}{AdvancedTechniques}
+\subincludefrom{Files/12MoreProblems}{MoreProblems}
+\subincludefrom{Files/}{Reference}
+
+\end{document}
