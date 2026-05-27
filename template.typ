@@ -10,7 +10,7 @@
 #import "@preview/fontawesome:0.6.0": *
 
 #let author = "ShangJhe Li"
-#let doc-name = "APCS and Competitive Programming Fundamentals"
+#let doc-name = "APCS 與競賽入門"
 #let subtitle = "An Introduction to Algorithms and Data Structures"
 
 #let latin-font = "Libertinus Serif"
