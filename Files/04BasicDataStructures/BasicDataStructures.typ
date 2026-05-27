@@ -1,10 +1,10 @@
 #import "../../template.typ": *
 
 
-= Basic Data Structures
+= 基礎資料結構
 
 #include "BD-STL.typ"
-#align(right)[_Author: ShangJhe Li_]
+#align(right)[_作者：ShangJhe Li_]
 
 #include "BD-ImplementSTL.typ"
 #include "BD-DSU.typ"

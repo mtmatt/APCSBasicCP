@@ -1,6 +1,6 @@
 #import "../../template.typ": *
 
-= Tree Theory <chapter:Tree>
+= 樹論 <chapter:Tree>
 
 #include "T-Basic.typ"
 #include "T-Diameter.typ"

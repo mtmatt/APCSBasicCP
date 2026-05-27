@@ -1,24 +1,24 @@
 #import "../../template.typ": *
 
-== Sliding Window
-=== Concept
-Sometimes we encounter problems asking us to find the maximum or minimum value of every contiguous subarray of length $k$.
-In such cases, we can use the sliding window technique.
+== 滑動窗口
+=== 概念
+有時候我們會遇到這樣的問題，問題希望你找出所有長度為$k$的連續區間的最大最小值。
+這時候，我們可以使用滑動窗口的技巧完成這樣的問題。
 
-The sliding window technique focuses on elements entering and leaving the window. For the maximum value, we can maintain a double-ended queue (deque).
-This deque stores element indices in decreasing order of their values.
+滑動窗口主要關注元素的進出，以最大值為例，我們可以維護一個雙向佇列(deque)。
+這個deque裡面存放由大到小的元素位址。
 
-Using the table below as an example, assume $k=4$.
+以下表為例，假設$k=4$。
 
 #table(columns: 7, stroke: .5pt, inset: 5pt,
-  [Array Index],
+  [陣列位址],
   [1],
   [2],
   [3],
   [4],
   [5],
   [6],
-  [Array Element],
+  [陣列元素],
   [5],
   [2],
   [4],
@@ -27,12 +27,12 @@ Using the table below as an example, assume $k=4$.
   [9],
 )
 
-The maximum of the interval $1$-$4$ is $5$.
-The maximum of interval $2$-$5$ is $4$, and so on.
+則區間$1-4$的最大值為$5$。
+區間$2-5$則為$4$，依此類推。
 
-We can handle the maximum of each interval by operating on the deque.
+我們可以藉由對deque的操作，處理每一個區間的最大值。
 
-#code(title: [Maintaining a Maximum-Value Deque])[
+#code(title: [維護最大值deque])[
 ```cpp
 const int N=100010;
 int a[N];
@@ -52,73 +52,74 @@ void op(int n,int k){
 ```
 ]
 
-The front of the deque stores the index of the maximum value. By repeating these steps we can answer maximum queries for all intervals. I will omit the full algorithm listing here.
+front會存最大值的位址。只要重複這樣的步驟就可以完成對所有區間的
+最大值查詢。我就不列出完整的演算法了。
 
-=== Complexity
-Looking at the nested loops in the complete algorithm, one might assume the complexity is $O(n^2)$,
-but that is not the case, because each element enters and leaves the deque at most once.
-So the amortized time complexity is $O(n)$.
+=== 複雜度
+看到完整演算法的雙層迴圈我們可能會以為他的複雜度是$O(n^2)$，
+但是其實不然，因為我們的元素最多就是進去還有出來deque一次。
+所以平均的時間複雜度是$O(n)$。
 
-The sliding window technique typically reduces the complexity because we focus only on element entry and exit. This same idea will appear again in the advanced topic of Mo's algorithm.
-This problem can also be solved with a `priority_queue`, but the time complexity would increase to $O(n log(n))$.
+通常滑動窗口的技術都可以將複雜度下降，因為我們關注進出，這樣的想法在進階技術會再出現一次，也就是莫隊算法。
+這一題我們也可以使用priority_queue，不過時間複雜度會變為$O(n log((n)))$。
 
-=== Examples and Practice
+=== 範例與練習
 
-==== Problem: Longest Non-Repeating Subarray
+==== Problem: 最長不重複區間
 
-*Problem Statement*
+*題目敘述*
 
-Given an array of length $n$, find the longest contiguous subarray
-such that no two elements within the subarray are the same.
+給你一個長度為$n$的陣列，請求出最長的連續區間，
+使區間內任兩個數字都不相同。
 
-*Input Format*
+*輸入說明*
 
-The first line contains a number $n$.
+第一行輸入一個數字$n$。
 
-The second line contains $n$ numbers representing the array.
+第二行輸入$n$個數字，表示陣列本身。
 
-*Output Format*
+*輸出說明*
 
-Output a single number representing the length of the subarray satisfying the condition.
+輸出一個數字，表示滿足這樣的條件的區間長度。
 
-*Sample Tests*
+*範例測試*
 
-*Output Format*
+*輸出說明*
 
-Output $t$ numbers $S_n$ (remember to take the remainder modulo $M$), one per line.
+輸出 $t$ 個數字 $S_n$ (記得對 $M$ 取餘)，數字間要換行。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5`#linebreak()`1 2 3 2 1`], [`3`],
-  [Sample Input 2], [Sample Output 2],
+  [範例輸入 2], [範例輸出 2],
   [`7`#linebreak()`1 5 3 4 2 5 2 1`], [`5`],
 )
 
-==== Problem: Minimum Window Substring
+==== Problem: 最小覆蓋子字串
 
-*Problem Statement*
+*題目敘述*
 
-Given a string $S$ and a string $T$, find the minimum substring of $S$ that contains all the characters of $T$.
+给定一个字串$S$和一个字符串$T$，請在$S$中找出包含$T$所有字母的最小子字串。
 
-*Input Format*
+*輸入說明*
 
-The first line contains a string $S$.
+第一行輸入一個字串$S$。
 
-The second line contains a string $T$.
+第二行輸入一個字串$T$。
 
-*Output Format*
+*輸出說明*
 
-Output the minimum required length.
+請輸出最小所需長度。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`ADOBECODEBANC`#linebreak()`ABC`], [`4`],
 )
 
 #tip[
-It is recommended that students revisit this section after studying data structures — you may gain new insights.
+建議同學看完資料結構後可以再回來翻這個單元，或許會有所收穫。
 ]

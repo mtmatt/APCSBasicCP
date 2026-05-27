@@ -1,16 +1,16 @@
 #import "../../template.typ": *
 
-== Complexity
-There are three notations for complexity, one of which is called O-notation. In most cases, Big-O notation is used as the standard for analysis. Big-O notation focuses on how a function grows as $n$ approaches infinity. For the sake of simplicity, algorithm analysis typically omits three things:
+== 複雜度
+複雜度的記法有三種，其中一種稱為O-notation，大多數情況都用大O表示法作為分析標準即可。大O表示法會著重於 $n$ 趨近時無窮大時函數的增長狀況。一般演算法分析為使其簡單易懂，有三個步驟省略紀錄，分別為：
 
-+ Use a tight bound — in simple terms, use the smallest possible complexity (the most efficient representation)
-+ Ignore constants
-+ Ignore lower-order terms
++ 用緊實的上限(tight bound)，簡單來說就是用盡可能小的複雜度(最有效率的方式)
++ 忽略常數
++ 忽略成長較慢的項
 
 
-Taking $f(n)=4n^3+n^2+3$ as an example, it can be expressed as $O(n^3)$.
+以$f(n)=4n^3+n^2+3$為例，可將其表示為$O(n^3)$。
 
-Complexity is divided into time and space. Generally speaking, space is more lenient, while time is more constrained. In most cases the time limit is 1 second. The table below shows reference data sizes that can be handled within such a time limit. Entries further to the right are less commonly encountered.
+複雜度分為時間與空間，一般來說空間是較為寬裕的，而時間限制較為緊湊。一般在多數狀況下時間限制多為1秒，以下是在這樣的時間限制下可以完成的資料規模參考。越後面是越不常見的。
 
 #table(columns: 8, stroke: .5pt, inset: 5pt,
   [$O(1)$],
@@ -30,7 +30,7 @@ Complexity is divided into time and space. Generally speaking, space is more len
   [$20$],
   [$10$],
 )
-#align(center)[_Complexity vs. Data Size Reference_]
+#align(center)[_複雜度與處理資料範圍對照_]
 
 
-For a more detailed introduction to complexity, refer to AP325.
+關於複雜度，較為詳細的介紹在AP325有，大家可以參考。

@@ -1,23 +1,23 @@
 #import "../../template.typ": *
 
-== 2D Segment Tree
-=== Introduction
-Also known as a segment tree of segment trees (tree-within-tree). It is somewhat similar to a 2D prefix sum or BIT, but since it is considerably more difficult, it is placed in the advanced data structures chapter.
+== 2D線段樹
+=== 前言
+又稱為樹套樹，有點像是二維前綴和，或是BIT。不過因為難很多 所以放在進階資料結構篇。
 
-=== Concept
-We embed $n$ segment trees inside another segment tree. When updating, we first locate the outer tree node we want to modify, then update the inner node we need. For queries, we apply the same concept as in 1D: query $O \( log n \)$ outer nodes, each requiring $O \( log m \)$ inner node accesses.
+=== 概念
+我們將$n$個線段樹，放進線段樹裡面。修改的時候先找到那一棵你要改的樹 ，再修改裡面你要的節點。至於查詢，我們可以使用與1D相同的概念，查詢$O(log n)$ 棵樹裡面的$O(log m)$個節點。
 
-Therefore, both operations have time complexity $O \( log n times log m \)$. Since $n ≐ m$ in most cases, this can also be written as $O \( log^2 \( n \) \)$.
+因此，兩種操作的時間複雜度都是$O(log n times log m)$，通常來說$n approx m$， 所以也可以記為$O(log^{2}{(n)})$。
 
 #figure(image("../Images/2DSeg1.png"),
   caption: [
   ]
 )
 
-=== Implementation
-We first implement seg1D, then embed it inside seg2D.
+=== 實作
+我們會先實作seg1D，再用seg2D存放。
 
-#code(title: [2D Segment Tree])[
+#code(title: [2D線段樹])[
   ```cpp
 int N,M;
 void amax(int &a,int b){
@@ -99,45 +99,45 @@ struct seg2D{
   ```
 ]
 
-=== It Doesn't Have to Be a Segment Tree Inside
-In fact, you can replace the inner 1D segment tree with something else, such as a BIT or a Treap (can't wait!).
+=== 誰說只能放線段樹
+其實，你要把1D線段樹換成其他東西也可以，例如BIT，或是Treap(好期待)。
 
-=== Examples and Exercises
-==== Problem: ZJ c571 3D Partial Order
-Given $n$ objects, each with three parameters $x_i \, y_i \, z_i$,
-find the maximum number of objects you can select such that, after some ordering, all three parameters are strictly increasing.
+=== 範例與練習
+==== Problem: ZJ c571 三維偏序
+給定 $n$ 個物件，每個物件有三個參數 $x_i, y_i, z_i$，
+請問最多可以選幾個物件，使得任意排序後，三個參數皆嚴格遞增。
 ==== Problem: CF19D Points
-*Problem Statement*
+*題目敘述*
 
-Pete and Bob invented a new game. Bob took a piece of paper and drew a Cartesian coordinate system on it: the point
-$\( 0 \, 0 \)$ is at the bottom-left corner, the $x$-axis extends to the right, and the $y$-axis extends upward. Pete gives Bob three types of requests:
+皮特和鮑勃發明了一個新奇的遊戲。鮑勃拿了一張紙，並在上面繪製了一個笛卡爾坐標系：點
+$\( 0 \, 0 \)$ 位於左下角，$x$ 軸向右延伸，$y$ 軸向上延伸。皮特給鮑勃提供了三種類型的請求：
 
-- add x y: Mark a point at coordinates $\( x \, y \)$ on the paper. For each such request, it is guaranteed that point $\( x \, y \)$ is not already marked.
+- add x y：在紙上標記一個坐標為 $(x,y)$ 的點。對於每個此類型的請求，保證在請求時點 $(x,y)$ 尚未在紙上標記。
 
-- remove x y: Erase the previously marked point at coordinates $\( x \, y \)$ from the paper. For each such request, it is guaranteed that point $\( x \, y \)$ is currently marked.
+- remove x y：在紙上擦除先前標記的坐標為 $(x,y)$ 的點。對於每個此類型的請求，保證在請求時點 $(x,y)$ 已經在紙上標記。
 
-- find x y: Among all marked points that are strictly to the upper-right of $\( x \, y \)$, Bob selects the leftmost one, and among ties, the lowest one, then returns its coordinates to Pete.
+- find x y：在紙上找到所有標記的點，這些點位於點 $(x,y)$ 的右上方。在這些點中，鮑勃選擇最左邊的點，如果不止一個，選擇最下面的點，並將其坐標返回給皮特。
 
-Bob can handle 10, 100, or 1000 requests, but when the number of requests grows to $2 times 10^5$, Bob cannot keep up. He now needs a program that can answer all of Pete's requests. Please help Bob!
+鮑勃能夠回答10、100或1000個請求，但當請求的數量增加到 $2 times 10^5$ 時，鮑勃無法處理。現在他需要一個能夠回答所有皮特請求的程式。請幫助鮑勃！
 
-*Input*
+*輸入說明*
 
-The first line contains a number $n$ ($1 lt.eq n lt.eq 2 times 10^5$),
-the number of requests. The next $n$ lines describe each request. `add x y` marks a point,
-`remove x y` erases a point, `find x y` finds the bottom-leftmost marked point strictly to the upper-right.
-All coordinates in the input are non-negative and do not exceed $10^9$.
+第一行輸入一個數字 $n$ ($1 <= n <= 2 times 10^5$) ，表示請求的數量。接下來 $n$ 行描述了每個請求。`add x y` 表示標記一個點，
+`remove x y` 表示擦除一個點，`find x y` 表示查找底部最左邊的標記點。
+輸入中所有座標均為非負數且不超過 $10^9$。
 
-*Output*
+*輸出說明*
 
-For each `find x y` request, output one line with the coordinates of the bottom-leftmost marked point strictly to the upper-right of $\( x \, y \)$.
-If no such marked point exists, output -1.
+對於每個 `find x y` 的請求，輸出一行結果，表示底部最左邊的標記點的座標。
+如果點 $(x,y)$ 的右上方沒有任何標記點，輸出 -1。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`7`#linebreak()`add 1 1`#linebreak()`add 3 4`#linebreak()`find 0 0`#linebreak()`remove 1 1`#linebreak()`find 0 0`#linebreak()`add 1 1`#linebreak()`find 0 0`], [`1 1`#linebreak()`3 4`#linebreak()`1 1`],
 )
 
-=== Other Notes
-2D segment trees almost never support lazy tags. If you need that functionality, consider a KD-tree or a quadtree instead. (I will look into it when I have time.)
+=== 其他
+二維線段樹幾乎不支援懶人標記，如果需要的話可以考如果需要的話可以考慮看看
+KD樹，或是四分樹。(有空我再研究看看)

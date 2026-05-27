@@ -1,13 +1,19 @@
 #import "../../template.typ": *
 
-== Dynamic Node Allocation
-=== Introduction
-The pointer-based segment tree we introduced earlier is actually already an example of this, but let me walk you through the underlying concept anyway.
+== 動態開點
+=== 前言
+其實前面的指標型線段樹就是了，不過還是讓我來帶你們了解一下原理。
 
-=== Concept
-Why use dynamic node allocation? Of course, to save memory. The more nodes you have, the more memory you consume. Sometimes the value range is too large, and that is when we can apply dynamic node allocation. In general, what counts as too large? Any range exceeding $10^6$ can be considered too large.
+=== 概念
+首先是為什麼要動態開點？當然是為了省記憶體。如果你有越多節點，
+你消耗的記憶體就越多。有時候會遇到數值範圍過大的情形，我們就可以做
+動態開點。那一般而言什麼是過大的範圍呢？只要超過$10^6$的級距就可以
+算是過大的範圍。
 
-A common question is: why not use discretization (I only realized while writing this section that I may have forgotten to include it in Chapter 3, so I am rushing to add it now)? The answer is that sometimes we need the exact values. For example, in the rectangle area coverage problem from the previous unit, if you use discretization, the values get distorted and you will compute the wrong answer.
+有一個常見的問題是，為什麼不使用離散化(編到這邊我才發現我好像沒有編進第三章
+，於是繼續趕工)。答案是因為，有時候我們需要確切的值，例如上一個單元的矩形覆蓋
+面積問題，如果你用離散化，那你的值就跑掉了，這樣就會算出錯誤的答案。
 
-=== Implementation
-The implementation was already shown earlier, so I will not paste it again. One thing to be careful about is not to dereference nullptr nodes, as that will cause a runtime error (RE) or segmentation fault (SEG). Also be careful with empty nodes during computation — some segment trees assign non-zero values to empty nodes.
+=== 實作
+其實之前那個就是了，所以我不重複貼上。需要注意的是，小心不要存到nullptr的節點
+，因為會吃到RE，或SEG。還有空節點在計算的時候要小心，有些線段樹的空節點是有值的。

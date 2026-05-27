@@ -1,23 +1,23 @@
 #import "../../template.typ": *
 
 == STL
-Although up to this point we have been assuming you already know how to use the STL, some students may still not know what we are talking about. So I decided to add this section to explain what the STL is.
+雖然至今為止我們都當作你們已經會使用STL了。不過可能有一些同學甚至還不知道我在講什麼。所以我決定加上這個小節，告訴大家什麼是STL。
 
-*Actually, the author of this section is Wei-Xuan Dai*
+*不過其實這個章節的作者是戴偉璿*
 
-#align(right)[_Author: Wei-Xuan Dai_]
+#align(right)[_作者: 戴偉璿_]
 
-=== What is the STL
+=== 什麼是STL
 
-Also known as the Standard Template Library.
+又稱為Standard Template Liberty。
 
-- Containers that can hold data
-- Pre-built templates that make our lives easier
+- 可以裝資料的容器
+- 刻好的模板，方便我們使用
 
 
 === string
 
-#code(title: [string usage])[
+#code(title: [string 用法])[
 ```cpp
 // declare
 string s;
@@ -42,7 +42,7 @@ s.clear();
 
 === vector
 
-#code(title: [vector usage])[
+#code(title: [vector 用法])[
 ```cpp
 // declare
 vector<int> v;
@@ -76,7 +76,7 @@ v.clear();
 
 === stack
 
-#code(title: [stack usage])[
+#code(title: [stack 用法])[
 ```cpp
 // declare
 stack<int> st;
@@ -104,7 +104,7 @@ st.size()
 
 === queue
 
-#code(title: [queue usage])[
+#code(title: [queue 用法])[
 ```cpp
 // declare
 queue<int> qu;
@@ -128,9 +128,9 @@ qu.size()
 
 === deque
 
-Double-ended queue, used in the previous chapter.
+雙端佇列 (Deque)，上一章有用到。
 
-#code(title: [deque usage])[
+#code(title: [deque 用法])[
 ```cpp
 // declare
 deque<int> dq;
@@ -160,9 +160,9 @@ dq.size()
 
 === priority queue
 
-Essentially a heap data structure maintained using a vector.
+本質上是一個使用Vector維護的堆疊 (Heap) 資料結構。
 
-#code(title: [priority queue usage])[
+#code(title: [priority queue 用法])[
 ```cpp
 // declare (max heap)
 priority_queue<int> pq;
@@ -188,9 +188,9 @@ pq.size()
 ]
 
 === map
-Both map and set are data structures implemented using a red-black tree, a type of balanced binary search tree. In the advanced data structures section, we will introduce a type of balanced tree called a Treap.
+Map與Set都是使用紅黑樹實作的資料結構，那是一種稱為平衡樹的資料結構。未來在進階資料結構時會提到一種稱為Treap的平衡樹。
 
-#code(title: [map usage])[
+#code(title: [map 用法])[
 ```cpp
 // declare
 map<int,int> mp;
@@ -228,7 +228,7 @@ mp.size()
 
 === set
 
-#code(title: [set usage])[
+#code(title: [set 用法])[
 ```cpp
 // declare
 set<int> S;
@@ -264,9 +264,9 @@ S.size()
 ]
 
 === bitset
-Bitset is much faster than a bool array for bitwise operations. It can be useful sometimes, but you will rarely need it.
+Bitset在做位元運算時會比bool陣列快上許多。所以有時候會用到，但真的很少需要它。
 
-#code(title: [bitset usage])[
+#code(title: [bitset 用法])[
 ```cpp
 // declare
 bitset<100010> bt;
@@ -296,37 +296,37 @@ cout<<a^b<<"\n";
 ```
 ]
 
-=== Summary
-The content of this section is mostly memorization, but it is extremely practical. Students are encouraged to become familiar with the STL by using these structures as much as possible in practice.
+=== 小節
+這個章節基本上都是背誦的內容，但是其實用性非常高，建議同學藉由實作上多多使用這些東西來熟悉STL們。
 
 #tip[
-Do not try to memorize by rote — instead, let your brain naturally remember them through repeated use.
+不要用背的，而是藉由不斷的使用讓大腦自然地記起來。
 ]
 
-=== Examples and Practice
+=== 範例與練習
 
-==== Problem: LeetCode 3. Longest Substring Without Repeating Characters
+==== 範例與練習：LeetCode 3. Longest Substring Without Repeating Characters
 
-*Problem Statement*
+*題目敘述*
 
-Given a string s, find the longest substring that contains no repeated characters.
+給你一個字串 s，找出最長的子字串滿足裡面沒有相同的字母。
 
-*Input Description*
+*輸入說明*
 
 `0 <= s.length <= 5 * 10^4`
-s may contain spaces.
+s裡面可能有空格。
 
-*Output Description*
+*輸出說明*
 
-Output the length.
+輸出長度。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`abcabcbb`], [`3`],
-  [Sample Input 2], [Sample Output 2],
+  [範例輸入 2], [範例輸出 2],
   [`bbbbb`], [`1`],
-  [Sample Input 3], [Sample Output 3],
+  [範例輸入 3], [範例輸出 3],
   [`pwwkew`], [`3`],
 )

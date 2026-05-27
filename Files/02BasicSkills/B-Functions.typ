@@ -1,9 +1,9 @@
 #import "../../template.typ": *
 
-== Pre-built Functions
-*Common* functions (utilities) that occasionally come in handy.
+== 預建構函數
+有時候會出現的*常用*函數(式)。
 
-#code(title: [Potentially Useful Functions])[
+#code(title: [可能會用的函數])[
 ```cpp
 void amax(ll &a,ll b){ if(a<b) a=b; }
 void amin(ll &a,ll b){ if(a>b) a=b; }
@@ -28,9 +28,9 @@ void dmod(ll &a,ll b){
 ```
 ]
 
-=== Operator Overloading
-Typically used with `set/map/priority_queue`.
-#code(title: [Operator Overloading])[
+=== 重載運算子
+通常用在`set/map/priority_queue`。
+#code(title: [運算子重載])[
 ```cpp
 struct info{
     int a,b;

@@ -1,7 +1,7 @@
 #import "../../template.typ": *
 
 
-= Basic Techniques
+= 基本技術
 
 #include "T-Recursive.typ"
 #include "T-SortAndSearch.typ"

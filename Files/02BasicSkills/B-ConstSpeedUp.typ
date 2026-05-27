@@ -1,20 +1,20 @@
 #import "../../template.typ": *
 
-== Constant-Factor Optimization
-=== Compiler Optimization
-Can sometimes break through complexity limits, but is not a silver bullet.
+== 常數優化
+=== 編譯器優化
+有時候可以突破複雜度限制，但不是萬能的。
 
-==== Example: Standard Version
+==== 範例：一般版
 
-#code(title: [Standard Constant-Factor Optimization])[
+#code(title: [一般版常數優化])[
 ```cpp
 #pragma GCC optimize ("O3,unroll-loops")
 ```
 ]
 
-==== Example: Reinforced Version
+==== 範例：強化版
 
-#code(title: [Reinforced Constant-Factor Optimization])[
+#code(title: [強化版常數優化])[
 ```cpp
 #pragma GCC optimize(3)
 #pragma GCC optimize("Ofast")
@@ -66,13 +66,13 @@ Can sometimes break through complexity limits, but is not a silver bullet.
 ]
 
 #tip[
-Usually, instead of spending time copying optimization pragmas, it is better to think of a good algorithm.
+但通常與其花時間抄優化指令，不如想一個好的演算法。
 ]
 
-=== Fast Read/Write
-Can improve input/output speed. For data on the order of $10^6$ numbers, this method can save approximately $0.2$ seconds.
+=== 快讀快寫
+可以改進輸入輸出的速度。對於數字規模約為 $10^6$ 的情況下，這個方法可以節省大約 $0.2$ 秒。
 
-#code(title: [Fast Read/Write])[
+#code(title: [快速讀寫])[
 ```cpp
 int in(){
     int rt=0,f=1;

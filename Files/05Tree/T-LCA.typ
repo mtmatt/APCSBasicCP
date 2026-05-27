@@ -1,20 +1,20 @@
 #import "../../template.typ": *
 
-== Lowest Common Ancestor
-=== Concept
-Consider a rooted tree. We want to find the Lowest Common Ancestor (LCA) of
-any two nodes. Using the tree diagram as an example, with node 2 as the root,
-we want to find the LCA of nodes 5 and 8. The answer is node 1.
+== 最近共同祖先
+=== 概念
+考慮一顆有根樹，我們希望找到任何兩個節點的最近同祖先(又稱為LCA)。
+我們以樹示意圖為例，將節點2定為根，我們希望找到節點5和8的最近共同祖先。
+那麼最近共同祖先便是1。
 
-We can quickly think of an $O \( n \)$ method to find the LCA of any two nodes.
-First, run a DFS to precompute the distance from each node to the root. Then,
-to query the LCA of u and v, follow these steps:
+我們可以很快的想到一個$O(n)$的方法找出任兩節點的最近共同祖先。
+首先，我們先跑過一次DFS預處理每個節點到根的距離，接著，
+如果需要查詢u和v的LCA，我們遵循幾個條件。
 
-- If u is closer to the root, repeatedly move v closer to the root; otherwise move u closer.
+- 如果u離根的距離短，重複讓v與根的距離縮短，反之就讓u與根的距離縮短。
 
-- Keep u and v at the same depth and move them upward together.
+- 讓u,v與根的距離保持相等向上尋找。
 
-- When they meet at the same node, that is the LCA.
+- 如果找到同一個點就是正確的。
 
 #code(title: [O(n) LCA Algorithm])[
   ```cpp
@@ -45,20 +45,18 @@ int query(int u,int v){
   ```
 ]
 
-However, this speed is not very satisfying. Is there a way to speed up the
-query? Yes — at the cost of a little extra preprocessing time.
+不過這樣的速度並不是很讓人滿意，有沒有辦法讓搜尋的速度提升呢，
+答案是可以的，只需要犧牲一點點預處理的時間就可以了。
 
-=== Binary Lifting
-When finding the LCA above, we moved up one step at a time. If we could jump
-many steps at once, would it be much faster? Indeed, we could precompute
-which node is $1 tilde.op n$ steps above node u and then do a binary search,
-but that preprocessing would take $O \( n^2 \)$ time, which is too slow.
-Instead, we settle for precomputing the ancestors at distances
-$1 \, 2 \, 4 \, dots.h.c \, 2^k \, dots.h.c \, 2^(log_2 \( n \))$ steps up.
-This takes $O \( n log \( n \) \)$ preprocessing time and allows each query
-to be answered in $O \( log \( n \) \)$ time.
+=== 倍增法
+剛剛我們在找LCA的時候我們都是一個一個向上的，如果我們可以一次
+跳很多步，是否就會快上許多呢？沒有錯，我們可以要建構從節點u向上
+$1  ~  n$個節點是誰，在做二分搜，可是這樣預處理的時間將會是$O(n^2)$。
+太慢了。所以我們退而求其次，建構u向上$1, 2, 4, dots, 2^k, dots, 2^{log_2(n)}$
+步的節點。這樣會花費$O(n log(n))$的時間做預處理，也可以在$O(log(n))$的時間內
+完成查詢的工作。
 
-=== Implementation
+=== 實作
 #code(title: [O(log(n)) LCA Query Algorithm])[
   ```cpp
 vector<int> g[100010];
@@ -96,82 +94,68 @@ int query(int a,int b){
   ```
 ]
 
-=== Examples and Exercises
-==== Problem: Luogu P3379 [Template] Lowest Common Ancestor (LCA)
-*Problem Statement*
+=== 範例與練習
+==== Problem: 洛谷P3379 【模板】最近公共祖先(LCA)
+*題目敘述*
 
-Given a rooted multi-way tree, find the lowest common ancestor of two
-specified nodes.
+給定一棵有根多叉樹，求指定兩個節點的最近公共祖先。
 
-*Input Format*
+*輸入說明*
 
-The first line contains three positive integers
-$N \, M \, S$, representing the number of tree nodes, the number of queries,
-and the root node number respectively.
+第一行包含三個正整數
+$N, M, S$，分別表示樹的節點個數、詢問的個數和樹的根節點序號。
 
-The next $N - 1$ lines each contain two positive integers $x \, y$ indicating
-there is a direct edge between nodes $x$ and $y$ (guaranteed to form a tree).
+接下來 $N - 1$ 行，每行包含兩個正整數 $x, y$，表示節點 $x$ 和節點 $y$ 之間有一條直接連接的邊（保證可以構成樹）。
 
-The next $M$ lines each contain two positive integers $a \, b$ representing a
-query for the LCA of nodes $a$ and $b$.
+接下來 $M$ 行，每行包含兩個正整數 $a, b$，表示詢問節點 $a$ 和節點 $b$ 的最近公共祖先。
 
-$100 %$ of the data satisfies $1 lt.eq N \, M lt.eq 500000$, $1 lt.eq x \, y \, a \, b lt.eq N$, $a eq.not b$ not guaranteed.
+$100\%$ 的數據，$1 <= N, M <= 500000$，$1 <= x, y, a, b <= N$，不保證 $a \ne b$
 
-*Output Format*
+*輸出說明*
 
-Output $M$ lines, each containing one positive integer, which is the result of
-the corresponding query, in the order they appear in the input.
+輸出包含 $M$ 行，每行包含一個正整數，依次為每一個詢問的結果。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5 5 4`#linebreak()`3 1`#linebreak()`2 4`#linebreak()`5 1`#linebreak()`1 4`#linebreak()`2 4`#linebreak()`3 2`#linebreak()`3 5`#linebreak()`1 2`#linebreak()`4 5`], [`4`#linebreak()`4`#linebreak()`1`#linebreak()`4`#linebreak()`4`],
 )
 ==== Problem: CF 191 C Fools and Roads
-*Problem Statement*
+*題目敘述*
 
-They say Berland has two problems: fools and roads. Moreover, Berland has n
-cities inhabited by fools and connected by roads. All roads in Berland are
-bidirectional. Because there are so many fools in Berland, there is exactly
-one path between every pair of cities (otherwise fools would get angry). Also,
-there is at most one simple path between every pair of cities (otherwise fools
-would get lost).
+他們說伯蘭德有兩個問題，愚蠢的人和道路。此外，伯蘭德有n個城市，由愚蠢的人居住，並由道路連接。伯蘭德的所有道路都是雙向的。
+由於伯蘭德有很多愚蠢的人，所以每對城市之間都有一條路徑(否則愚蠢的人會生氣)。此外，每對城市之間最多只有一條簡單路徑(否則愚蠢的人會迷路)。
 
-But that is not all that is special about Berland. In this country, fools
-sometimes visit each other, destroying roads in the process. Fools are not
-smart, so they only use simple paths.
+但這還不是伯蘭德的特點結束。在這個國家，愚蠢的人有時互相訪問，從而破壞了道路。愚蠢的人並不聰明，所以他們只使用簡單的路徑。
 
-A simple path is a path that visits each city in Berland at most once.
+簡單路徑是通過每個伯蘭德城市不超過一次的路徑。
 
-The Berland government knows the paths used by the fools. Help the government
-count how many different fools travel along each road.
+伯蘭德政府知道愚蠢的人使用的路徑。幫助政府計算每條道路上可以走的不同愚蠢的人數量。
 
-The fools' paths are given in the input.
+愚蠢的人的路徑將在在輸入中給出說明。
 
-*Input Format*
+*輸入說明*
 
-The first line contains an integer $n \( 2 lt.eq n lt.eq 10^5 \)$ --- the number of cities.
+第一行包含一個整數$n (2 <= n <= 10^5)$——城市的數量。
 
-The next $n - 1$ lines each contain two space-separated integers $u_i$, $v_i$
-$\( 1 lt.eq u_i \, v_i lt.eq n \, u i eq.not v i \)$, indicating a road between cities $u_i$ and $v_i$.
+接下來的$n - 1$行，每行包含兩個以空格分隔的整數$u_i$, $v_i$
+$(1 <= u_i, v_i <= n, u_i \ne v_i)$，表示城市$u_i$和$v_i$之間有一條連接的道路。
 
-The next line contains integer $k \( 0 lt.eq k lt.eq 10^5 \)$ --- the number of pairs of fools visiting each other.
+下一行包含整數$k (0 <= k <= 10^5)$——互相訪問的愚蠢人對數。
 
-The next $k$ lines each contain two space-separated numbers. Line $i \( i > 0 \)$ contains numbers $a_i \, b_i \( 1 lt.eq a_i \, b_i lt.eq n \)$.
-This means the $(2i-1)$-th fool lives in city $a_i$ and visits the $2_i$-th
-fool living in city $b_i$. The given pairs describe simple paths, since there
-is only one simple path between each pair of cities.
+接下來的$k$行包含兩個以空格分隔的數字。第$i$行$(i > 0)$包含數字$a_i, b_i (1 <= a_i, b_i <= n)$。
+這意味著第$(2i-1)$個愚蠢的人住在城市$a_i$，並訪問住在城市$b_i$的第$2_i$個愚蠢的人。
+給定的數對描述了簡單的路徑，因為在每對城市之間只有一條簡單的路徑。
 
-*Output Format*
+*輸出說明*
 
-Output $n - 1$ integers separated by spaces. The $i$-th integer equals the
-number of fools that travel along the $i$-th road. Roads are numbered
-starting from 1 in the order they appear in the input.
+輸出$n - 1$個整數，數字應以空格分隔。第$i$個數字應該等於第$i$條道路上可以走的愚蠢的人數量。
+道路從輸入中出現的順序開始編號，從1開始。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5`#linebreak()`1 2`#linebreak()`1 3`#linebreak()`2 4`#linebreak()`2 5`#linebreak()`2`#linebreak()`1 4`#linebreak()`3 5`], [`2 1 1 1`],
 )

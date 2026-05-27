@@ -1,16 +1,16 @@
 #import "../../template.typ": *
 
-== Recursion
-=== Definition First
-Recursion is when a function calls itself, either directly or indirectly. That explanation isn't very clear, so here is a quote from *Wikipedia* as an illustration.
+== 遞迴
+=== 先說說定義
+所謂的遞迴就是函數直接或間接的使用自己本身。這樣說不是很清楚，以下引用*維基百科*作為示例。
 
 #quote(block: true)[
-Once upon a time there was a mountain. In the mountain there was a temple. In the temple there was an old monk telling a story to a young monk. What was the story? "Once upon a time there was a mountain. In the mountain there was a temple. In the temple there was an old monk telling a story to a young monk. What was the story? 'Once upon a time there was a mountain. In the mountain there was a temple...'"
+從前有座山，山裡有座廟，廟裡有個老和尚，正在給小和尚講故事呢！故事是什麼呢？「從前有座山，山裡有座廟，廟裡有個老和尚，正在給小和尚講故事呢！故事是什麼呢？『從前有座山，山裡有座廟，廟裡有個老和尚，正在給小和尚講故事呢！故事是什麼呢？……』」
 ]
 
-In practice, the recursive code is usually written inside another function. The following uses the most common second-order linear recurrence—the Fibonacci sequence—as an example.
+實際上，通常遞迴的程式碼都會寫在另一個函式(Function)裡面。以下用最常見的二階線性遞迴—費氏數列做為一個範例。
 
-#code(title: [Fibonacci Sequence Example])[
+#code(title: [費氏數列的範例])[
 ```cpp
 int f(int n){
     if(n==1 || n==2){
@@ -21,57 +21,56 @@ int f(int n){
 ```
 ]
 
-If you trace through this code with pencil and paper, you will see that $f(n)$ keeps calling $f(n-1)$ and $f(n-2)$. For example, $f(5)$ calls $f(4)$ and $f(3)$; $f(4)$ calls $f(3)$ and $f(2)$; $f(3)$ calls $f(2)$ and $f(1)$; $f(3)$ calls $f(2)$ and $f(1)$.
+如果你用紙筆執行這段程式碼，你會看到你的$f(n)$不斷的呼叫$f(n-1)$以及$f(n-2)$。例如$f(5)$呼叫$f(4)$與$f(3)$，$f(4)$呼叫$f(3)$與$f(2)$，$f(3)$呼叫$f(2)$與$f(1)$，$f(3)$呼叫$f(2)$與$f(1)$。
 
-Note that "$f(3)$ calls $f(2)$ and $f(1)$" is intentionally repeated twice, because they are called by different instances of $f$.
+注意這裡的"$f(3)$呼叫$f(2)$與$f(1)$"是刻意重複兩次的，因為他們被不同的$f$呼叫。
 
-You will likely notice that as $n$ grows larger, your program runs longer and longer. Around $n = 50$ or $60$, it becomes very slow. If you are sharp, you will also notice that your program seems to be repeating the same computations over and over. If you spot this, congratulations—you have just stepped into the deep pit of `DP`.
+你應該會發現，隨著$n$越來越大，你的程式也會越跑越久。大概到$5,6$十就有點跑不動。然後如果你更聰明，你就會發現你的程式好像不斷在重複做某些事情。如果你發現的話那恭喜你，你已經一腳踏進`DP`的深坑了。
 
-What?! You already know `DP`? Don't worry, there will be a dedicated chapter on `DP` later.
+什麼？！你說你已經會 `DP` 了，別急後面會有額外的章節討論 `DP`。
 
-=== Practical Uses
-In competitive programming, recursion is mainly used to grab partial scores. But do not underestimate it; it may turn out to be the key to your success.
+=== 實際上用在哪裡
+在程式競賽上，遞迴主要都用在偷小分數上。但不要小看他，也許會成為你獲勝的關鍵。
 
-In addition, many graph algorithms use recursion, especially `DFS`.
+此外，許多圖論演算法會用到，特別是`DFS`。
 
-=== Brute-Force Recursion for Partial Scores
+=== 偷分的暴力遞迴術
 
-==== Example: Tic-Tac-Toe (2021 Eastern Region Simulation Contest)
+==== 井字遊戲(110東區模擬賽)
 
-*Problem Statement*
+*題目敘述*
 
-Doctor Strange wants to predict the future in order to change it. Although he knows the current state of many elements in the world, his magic is not yet powerful enough to compute all possibilities, so he decides to start training with the basic game of tic-tac-toe. Doctor Strange believes that if he can predict every possible outcome of tic-tac-toe, predicting the future won't be far off. Tic-tac-toe is a well-known two-player game with the following rules:
+熟悉博士為了改變未來所以想要預測未來，雖然他知道世界上許多元素現在的狀態，但是他的魔法還不足以運算出所有的可能性，於是他決定從基礎的井字遊戲開始訓練。熟悉博士認為如果能夠預測出井字遊戲的每一種結果，距離預測未來也不遠了吧！井字遊戲作為一個國際雙人競技項目而家喻戶曉，其規則如下：
 
-+ Given a 3 × 3 board, each cell is initially empty and can only be filled with one symbol.
-+ Two players take turns placing their symbols ('o' and 'x') on the board.
-+ When any player's three symbols form a horizontal, vertical, or diagonal line on the board, that player wins and the game ends.
-+ If every cell has been filled, the game ends in a draw.
++ 給予一個大小為 3 × 3 的棋盤，棋盤每格的初始狀態皆為空，且只能夠被填入一個符號。
++ 兩位玩家分別使用 'o'、'x'，輪流把自己所屬的符號填入棋盤中。
++ 當任一玩家的三個符號在棋盤上連成一條橫、直、或是斜線，該玩家獲勝並遊戲結束。
++ 如果棋盤每一格都已被填入符號，遊戲結束且兩玩家平手。
 
+你身為熟悉博士的頂級隨從 Maowu，不只上知天文下知地理還是個頂尖的 Coder，而熟悉博士有時對自己的預測結果感到不安，於是他請你幫助他驗證答案。
 
-You are Maowu, Doctor Strange's top assistant—knowledgeable in all things and a top-notch Coder. Sometimes Doctor Strange feels uneasy about his predictions, so he asks you to help verify the answers.
+熟悉博士會給你井字遊戲目前的狀態，假設雙方輪流隨機把符號填入，請你告訴熟悉博士所有可能的結果中，使用 'o' 一方贏的次數、使用 'x' 一方贏的次數、以及雙方平手的次數。
 
-Doctor Strange will give you the current state of a tic-tac-toe board. Assuming both players randomly and alternately fill in symbols, tell Doctor Strange: among all possible outcomes, how many times does 'o' win, how many times does 'x' win, and how many times does the game end in a draw?
+*輸入說明*
 
-*Input Format*
+輸入總共 3 行，每行有 3 個以空白隔開的字元表示給定棋盤的狀態，'-' 表示該格尚未被填入，'o'、'x' 則表示該格已被該方填入。保證輸入棋盤為 'o' 先手且盤面合法。
 
-Input consists of 3 lines, each with 3 space-separated characters representing the current board state. '-' means the cell is empty; 'o' or 'x' means that player has already placed there. The input is guaranteed to have 'o' going first and the board state is valid.
+*輸出說明*
 
-*Output Format*
+輸出共 1 行，包含 3 個整數，分別代表 'o' 一方贏的次數、'x' 一方贏的次數、以及雙方平手的次數，數字之間以空格隔開。
 
-Output 1 line containing 3 integers: the number of times 'o' wins, the number of times 'x' wins, and the number of draws, separated by spaces.
-
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
-  [`o - x`#linebreak()`x o o`#linebreak()`- o x`], [`1 0 1`],
-  [Sample Input 2], [Sample Output 2],
-  [`x o o`#linebreak()`- - -`#linebreak()`x x o`], [`2 1 2`],
+  [範例輸入 1], [範例輸出 1],
+  [\`o - x\`#linebreak()\``x o o\`#linebreak()\``- o x\`], [\`1 0 1\`],
+  [範例輸入 2], [範例輸出 2],
+  [\`x o o\`#linebreak()\``- - -\`#linebreak()\``x x o\`], [\`2 1 2\`],
 )
 
-The full-score solution to this problem is recursion—the idea is to search through all possible states. This explanation is not very clear, so let's elaborate. First, we fill in the empty cells one by one. We also know the game may end early. So we should check whether anyone has won before filling in each cell, then for each possible empty cell, recursively choose the next move, until the board is full.
+這一題的滿分解就是遞迴，概念是搜尋完所有可能的狀態。這樣解釋不算是非常清楚，我們多額外解釋。首先，我們要一一填滿空的格子，同時，我們知道這個遊戲有可能提早結束。所以應該要在填空之前確認有沒有人贏，接著在所有可能的空格依序選擇要填的下一個，直到填滿為止。
 
-#code(title: [Tic-Tac-Toe Solution])[
+#code(title: [井字遊戲解答])[
 ```cpp
 // In the code below, check() determines who has won before each move.
 // -1 means the game has not ended; 0 means 'o' wins; 1 means 'x' wins; 2 means draw.
@@ -193,35 +192,33 @@ int main(){
 ```
 ]
 
-=== Examples and Practice
+=== 範例與練習
 
-==== Problem: Matchstick Equation
+==== 火柴棒等式
 
-*Problem Statement*
+*題目敘述*
 
-Given $n$ matchsticks, how many equations of the form $A+B=C$ can you form? $A$, $B$, $C$ are integers formed by matchsticks (if the number is non-zero, the leading digit cannot be $0$). The matchstick representations of digits $0 tilde.op 9$ are shown in the figure:
-
+給你 $n$ 根火柴棍，你可以拼出多少個形如 $A+B=C$ 的等式？等式中的 $A$、$B$、$C$ 是用火柴棍拼出的整數（若該數非零，則最高位不能是 $0$）。用火柴棍拼數字 0~9 的拼法如圖所示：
 
 #align(center)[#image("../Images/Recursive_Torch.png", width: 100%)]
 
-+ The plus sign and equals sign each use $2$ matchsticks.
-+ If $A != B$, then $A+B=C$ and $B+A=C$ are considered different equations. $A,B,C >= 0$
-+ All matchsticks must be used.
++ 加號和等號個用掉$2$根火柴。
++ 如果 $A \ne B$ ，則 $A+B=C$ 與 $B+A=C$ 視為不同的等式。$A,B,C >= 0$
++ 火柴要用完。
 
+*輸入說明*
 
-*Input Format*
+一個整數 $n, 1 <= n <= 24$。
 
-A single integer $n, 1 <= n <= 24$.
+*輸出說明*
 
-*Output Format*
+一個整數，表示可以拼的等式數目。
 
-A single integer representing the number of valid equations.
-
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
-  [`14`], [`2`],
-  [Sample Input 2], [Sample Output 2],
-  [`18`], [`9`],
+  [範例輸入 1], [範例輸出 1],
+  [\`14\`], [\`2\`],
+  [範例輸入 2], [範例輸出 2],
+  [\`18\`], [\`9\`],
 )

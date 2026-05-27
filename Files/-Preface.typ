@@ -1,23 +1,23 @@
-#heading(level: 1, numbering: none)[Preface]
-Algorithms and data structures have always been the most important part of computer programming.
-However, many textbooks, constrained by length, present material too concisely, making it difficult to understand.
-This book aims to provide detailed explanations of algorithms and data structures,
-so that beginners do not face the same struggles I once did and waste a great deal of time
-(if something is unclear, please raise a question and we will work to improve it).
-Although this is billed as a competitive programming introduction, I still plan to include some (slightly) advanced data structures and algorithms.
+#heading(level: 1, numbering: none)[前言]
+演算法與資料結構一直以來都是程式設計中最重要的部分。
+然而許多的書籍在介紹時，出於篇幅考量，字句精簡，以致晦澀難懂。
+本書旨在對於演算法及資料結構進行詳細的介紹，
+避免初學者遇到與我相同的困境，因而花費許多時間(如果看不懂，請提出問題，我們會再改進)。
+雖說是競賽入門，然我仍有計畫放一些進階(稍微)的資料結構與演算法。
 
-Later, because this handbook was used for the Lanteng Star APCS competitive class at the Lin Deng Foundation, a significant amount of new content was added (approximately 80% of the material).
-I am very glad to have been able to write a handbook like this. Much of the content is still not fully polished, and I welcome your help in improving it together.
+爾後，因為此講義用於林燈基金會的蘭燈之星APCS選手班，所以有編修許多新的內容(大約占80\%)。
+我很高興可以寫出這樣的講義，許多內容還不盡完善，還請你們一同協助。
 
-This book serves as one of the milestones in my journey of learning programming. I hope it can help those who are unsure how to move forward in learning and applying data structures and algorithms.
+這本書作為我程式設計學習的其中一個指標。希望能幫助到一些在資料結構與演算法的學習與運用上不知如何進展的人。
 
-This material is freely available for sharing, provided that the source is credited. It may not be used for commercial purposes.
+本教材歡迎分享使用，僅須註明出處，惟不得作營利用途。
 
-Editors: ShangJhe Li (mtmatt), ZhuoYue Li (excellent), GuangLei Yu (not included here), WeiXuan Dai
+編者：
+李尚哲(mtmatt)、李卓岳(excellent)、余光磊(未收錄於此處)、戴偉璿
 
-(Sorted by stroke count of last name)
+(依照姓名筆畫順序排序)
 
-This handbook was edited using Overleaf and HackMD, compiled with TeX Live 2022.
+這篇講義使用Overleaf與HackMD編輯，採用\TeX Live 2022。
 
-Building competitive programming skills is a long process. We hope that you can persevere,
-use the right methods, carve out your own path, and charge forward on the battlefield of the national olympiad.
+演算法競賽的實力養成是一個漫長的過程，還望同學們可以持之以恆，
+用對方法，開創出屬於你們的一片天地，在全國賽的戰場上向前衝。

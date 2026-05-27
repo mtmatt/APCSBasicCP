@@ -1,21 +1,22 @@
 #import "../../template.typ": *
 
-== Bipartite Graph Detection
-=== Concept
-Is there a way to partition the vertices of a graph into two groups such that no two vertices within the same group share an edge? See the figure below.
+== 二分圖判定
+=== 概念
+有沒有一種方式可以將圖中的點分成兩組，使組內沒有成員之間的邊。如下圖。
 
 #figure(image("../Images/Graph3.jpg", width: 50.0%),
   caption: [
-    Bipartite Graph
+    二分圖
   ]
 )
 
-==== Detection Method
+==== 判別方法
 
-Imagine coloring the graph with colors 1 and 2 so that adjacent vertices always have different colors. If this is impossible, the graph is not bipartite. In practice, if a neighbor already has the same color as you, it cannot be done.
+想像將圖上色，用 12 表示，相鄰的點都用不同色，如果沒有辦法使用就代表這
+張圖不是二分圖。實作上，如果對方已經跟你有相同顏色表示沒有辦法。
 
-=== Implementation
-#code(title: [Bipartite Graph Detection])[
+=== 實作
+#code(title: [二分圖判定])[
   ```cpp
 int color[N];
 bool isBipartiteGraph(int n){
@@ -35,84 +36,93 @@ bool isBipartiteGraph(int n){
   ```
 ]
 
-=== Examples and Practice
-==== Problem: TIOJ 1209 Graph Theory — Bipartite Graph Test
-*Problem Statement*
+=== 範例與練習
+==== Problem: TIOJ 1209 圖論之二分圖測試
+*題目敘述*
 
-Given a graph, determine whether it is a bipartite graph.
+給你一個圖 (Graph)，請問這個圖是否為一個二分圖 (bipartite graph)？
 
-A bipartite graph is one where there exists a way to partition all vertices into two sets X and Y such that no two vertices within X or within Y are adjacent to each other.
+所謂的二分圖，就是存在一種分法，把所有頂點分成兩個點集X和Y，其中X以及Y內部的頂點互不相鄰。
 
-*Input Format*
+*輸入說明*
 
-The input may contain multiple test cases.
+輸入可能包含多筆測試資料。
 
-The first line of each test case contains two integers $n \, m \( 1 lt.eq n lt.eq 40 \, 000 ， 0 lt.eq m lt.eq 500 \, 000 \)$,
-representing the number of vertices and edges. Vertices are numbered 1 to n.
+每筆測試資料的第一列有兩個整數$n \, m \( 1 lt.eq n lt.eq 40 \, 000 ， 0 lt.eq m lt.eq 500 \, 000 \)$，
+分別代表一個圖的點數和邊數。點的編號是從1到n。
 
-The following m lines each contain two space-separated positive integers representing the two endpoints of an edge.
-When $n = m = 0$, the input ends.
+接下來有m列，每列有兩個以空白隔開的正整數，代表一條邊所連的兩個端點編號。
+當$n = m = 0$時代表輸入結束。
 
-*Output Format*
+*輸出說明*
 
-For each test case, output Yes if the graph is bipartite, otherwise output No.
+對於每筆測試資料，若該圖是二分圖，請輸出Yes，否則輸出No。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3 2`#linebreak()`2 3`#linebreak()`1 2`#linebreak()`3 3`#linebreak()`1 2`#linebreak()`2 3`#linebreak()`3 1`#linebreak()`0 0`], [`Yes`#linebreak()`No`],
 )
-==== Problem: ZJ g598 True or False Subgraph
-*Problem Statement*
+==== Problem: ZJ g598 真假子圖
+*題目敘述*
 
-An intelligence agency has n employees. The director secretly divides them into two groups A and B
-without telling anyone else, and distributes a cooperation list to the group leaders. The cooperation list consists of many pairs;
-each pair $x \, y$ means x and y need to cooperate on a task, and it is guaranteed that x and y
-are never in the same group (A or B).
+情報調查局內有 
+n 個工作人員，調查局負責人將這些人秘密分成兩組 
+A 和 B 並不讓其他人知道，並將合作名單分配給組長，合作名單是由很多個 pair 組成，每個 pair 
+$x,y$ 代表 x 和 y 需要合作完成任務，
+並且保證 x 和 y 不會同時在 A 組或是同時在 B 組。
 
-The group leader accidentally lost the cooperation list, with only m pairs
-remaining. To recover the lost data, the group leader sends out p investigators numbered 1 to
-p to look into the cooperation relationships. Each investigator returns exactly k pairs of data.
+組長不小心將這個合作名單分配遺失，僅剩下其中 
+m 個 pair，為了要復原這些失去的資料，組長派出了另外 
+p 個調查員編號1到 
+p 去調查這個合作關係，每一個調查員都會回傳恰好k個 pair 的資料回來
 
-Some investigators return data that contradicts the group leader's remaining records (meaning adding their k pairs
-together with the remaining m pairs would create a contradiction with the fact that everyone is split into
-groups A and B). Output the numbers of investigators who returned incorrect results in ascending order.
-It is guaranteed that at least one and at most three investigators are wrong.
+有些調查員回傳的資料和組長手上的資料會產生矛盾
+(意即加上這 k 個 pair 和組長手上存留的m個 pair 會使得這些人是被分成 
+A，B兩組這件事產生矛盾)，請將回傳錯誤結果的調查員編號由小到大輸出出來，
+保證至少一個且最多三個。
 
-Additionally, it is guaranteed that if an investigator's k pairs do not contradict the group leader's remaining m pairs,
-then the investigator's data is consistent with the original A, B grouping.
+另外保證若調查員的 k 個 pair 的結果和組長存留的 m 個 pair 不會產生矛盾，則保證調查員的資料一定和原本 
+A，B分組吻合。
 
-*Input Format*
+*輸入說明*
 
-The first line contains two positive integers n and m.
+第一行先輸出兩個正整數 
+n和m 
 
-The second line contains 2m non-negative integers forming m pairs, representing the m remaining pairs.
+第二行來有 
+2m個非負整數兩兩形成一個數對，表示目前還留存的 
+m個 pair
 
-The third line contains two positive integers p and k.
+第三行有兩個正整數 
+p和k 
 
-The following p lines each contain 2k non-negative integers forming k pairs, representing one investigator's findings.
+並且接下來的 
+p行每行有 
+2k個非負整數, 兩兩形成一對代表某個調查員找到的 
+k個 pair
 
-*Output Format*
+*輸出說明*
 
-Output the numbers of contradicting investigators in ascending order, one per line.
+由小到大輸出會形成矛盾的調查員編號，每個編號各自獨立一行。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`7 5`#linebreak()`0 1 0 2 1 3 2 3 4 5`#linebreak()`2 3`#linebreak()`0 6 2 4 3 6`#linebreak()`0 6 0 3 3 5`], [`2`],
 )
 ==== Problem: AtCoder ABC 282D Make Bipartite 2
-*Problem Statement*
+*題目敘述*
 
-Given a simple undirected graph $G$ with $N$ vertices and $M$ edges (no self-loops or multi-edges). For $i = 1 \, 2 \, dots.h \, M$, the $i$-th edge connects vertices $u_i$ and $v_i$.
+給定一個包含$N$個頂點和$M$條邊（一個簡單圖不包含自環或多邊）的簡單無向圖$G$。對於$i = 1 \, 2 \, dots.h \, M$，第$i$條邊連接頂點$u_i$和頂點$v_i$。
 
-Count the number of integer pairs $\( u \, v \)$ with $1 lt.eq u < v lt.eq N$ satisfying the following two conditions:
+請打印滿足以下兩個條件的整數對$\( u \, v \)$的數量，其中$1 lt.eq u < v lt.eq N$。
 
-There is no edge in $G$ connecting vertices $u$ and $v$.
+圖$G$沒有連接頂點$u$和頂點$v$的邊。
 
-Adding an edge connecting vertices $u$ and $v$ to $G$ results in a bipartite graph.
+在圖$G$中添加一條連接頂點$u$和頂點$v$的邊會得到一個二部圖。
 
 $2 lt.eq N lt.eq 2 times 10^5$
 
@@ -120,9 +130,9 @@ $0 lt.eq M lt.eq min 2 times 10^5 \, N \( N - 1 \) \/ 2$
 
 $1 lt.eq u_i \, v_i lt.eq N$
 
-*Input Format*
+*輸入說明*
 
-Input is given from standard input in the following format.
+輸入以以下格式從標準輸入中給出。
 
 $N$ $M$
 
@@ -134,13 +144,13 @@ $dots.v$
 
 $u_M$ $v_M$
 
-*Output Format*
+*輸出說明*
 
-Print the answer.
+輸出答案。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5 4`#linebreak()`4 2`#linebreak()`3 1`#linebreak()`5 2`#linebreak()`3 2`], [`2`],
 )

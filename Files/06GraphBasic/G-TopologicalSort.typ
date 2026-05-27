@@ -1,29 +1,28 @@
 #import "../../template.typ": *
 
-== Topological Sort
-=== Concept
-Before discussing topological sort, we need to introduce the DAG (Directed Acyclic
-Graph).
+== 拓鋪排序
+=== 概念
+在講拓鋪排序前，我們要先講DAG(Directed Acyclic Graph)，也就是有向無環圖。
 
-A DAG is, as the name implies, a directed graph with no cycles. This means that
-even without an isv visited check, you will never encounter an infinite loop.
+有向無環圖，顧名思義就是邊有方向，然後不存在任何的環，也就是說，
+就算你沒有加上isv判定，也不會有TLE的問題。
 
-Figure 6.1 shows an example of a DAG.
+Figure 6.1 就是一個DAG的範例。
 
-As for what topological sort actually is — I honestly forgot, so I looked it up (I don't use it that often).
-Here it is: if there is an edge $\( a \, b \)$, then a must be visited before b.
+至於什麼是拓鋪排序，其實我也忘了，所以我去查資料(太少用)，
+是這樣的，如果有一條邊$(a,b)$，則我們說a一定要在b之前被走訪過，
 
-We can handle this by computing the in-degree of each vertex. If the in-degree is 0, push the vertex into the queue.
+我們可以藉由計算入度(in degree)來處理，如果入度為0就將他push進到queue裡面。
 
 #block[
-The in-degree ind\[x\] is the number of edges pointing into x.
+入度ind\[x\]就是有幾條邊指向x。
 
 ]
-=== Implementation
-#code(title: [Topological Sort])[
+=== 實作
+#code(title: [拓鋪排序])[
   ```cpp
 vector<int> ans;
-void topological_sort(){
+void topo logical_sort(){
     queue<int> topo;
     int f=0,b=0;
     for(int i=0;i<n;i++){
@@ -48,81 +47,78 @@ void topological_sort(){
   ```
 ]
 
-=== Examples and Practice
-==== Problem: TIOJ 1092 A. Hop-Scotch Game
-*Problem Statement*
+=== 範例與練習
+==== Problem: TIOJ 1092 A.跳格子遊戲
+*題目敘述*
 
-Mimi and Moumou are childhood friends who have played together since they were young (even though they are only in third grade now). The two love inventing new games whenever their old ones get boring.
+Mimi, Moumou兩人是青梅竹馬，從小就玩在一起（雖然他們現在也才小學三年級而已）。愛玩的兩人，平常的遊戲玩久了之後就覺得無聊沒勁，常常湊在一起發明新的遊戲。
 
-Today they are designing a new game with the following rules:
+這天他們又開始在設計新遊戲了，遊戲的規則如下：
 
-Draw N circles on the ground, numbered 1 to N, with circle 1 as the start and circle N as the finish.
+先在地上畫N個圓圈，編號1到N，並規定1號圓圈是起點、N號是終點
 
-Draw one-way arrows between the N circles in any configuration. Each arrow connects two distinct circles; if an arrow goes from circle a to circle b, you can jump from a to b during the game.
+在這N個圓圈之間任意互相畫”單向”箭頭，箭頭起點和終點各有一圓圈且兩圓圈不為同一圓，假設有一箭頭從圓a連到圓b，則遊戲中可以從a跳到b。
 
-Check the diagram from steps 1 and 2: make sure every circle numbered 1 through
-N-1 has a path to the finish, and there are no loops (no circle can reach itself). There is at most one arrow from any circle a to any circle b.
+檢查1, 2步驟所畫出的圖，確保任何編號1 ~ N-1的圓都有路徑可以走到終點，同時圖中也不可以有迴圈產生（也就是對於任何一個圓，絕對不會有路徑可以從自己走到自己），對任兩圓a, b最多只有一個箭頭從a指向b。
 
-Two players start the game: one stands on the start (circle 1), the other stands outside the diagram.
+兩個人進行遊戲，開始時先由一人站在起點（1號圓），另一個人站在圖外。
 
-During the game, if player A is on circle C and player B is outside, player B chooses one of the outgoing arrows from C and moves to the circle it points to, while player A steps outside.
+遊戲中假設甲站在一個圓 C 中而乙在圖外，則乙要從 C 所指出去的箭頭中選一個箭頭，站到這個箭頭所指的圓上，然後甲則離開C走到圖外。
 
-The two players repeat step 5 until one of them reaches the finish. The first to reach the finish wins.
+兩人重複步驟5的動作，直到其中一人到達終點，到達終點的人為贏家。
 
-*Input Format*
+*輸入說明*
 
-The input contains multiple test cases. The first line of each test case has two numbers
-$N \, E \( 1 lt.eq N lt.eq 10000 \, #h(0em) E lt.eq 10 N \)$. The following E
-lines each have two numbers $a \, b \( 1 lt.eq a \, b lt.eq N \)$, indicating an arrow from a
-to b. You may assume the input always represents a valid graph. The last line "0 0" marks the end of input.
+輸入檔含有多筆測資，每筆資料第一行有兩個數字
+$N \, E \( 1 lt.eq N lt.eq 10000 \, #h(0em) E lt.eq 10 N \)$。接下來 E
+行每行有兩個數字 $a \, b \( 1 lt.eq a \, b lt.eq N \)$，表示有箭頭從 a 指向 b。你可以假設輸入檔所代表的圖都是有效的。最後一行則是遊戲開始時站在起點上的人名。N 和 E 都是零``0 0”表示檔案結束。
 
-*Output Format*
+*輸出說明*
 
-Assume the game is played by Mimi and Moumou, and both play optimally — if there is a winning strategy they will take it.
+假設遊戲為Mimi和Moumou兩人進行，且兩人皆十分聰明，如果有必勝的走法那就一定會贏。
 
-For each test case, output the name of the winner (Mimi or Moumou) on a single line.
+對每筆測資輸出遊戲結束後贏家的名字(Mimi或Moumou)，佔一行。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5 6`#linebreak()`1 2`#linebreak()`1 3`#linebreak()`2 3`#linebreak()`2 4`#linebreak()`3 5`#linebreak()`4 5`#linebreak()`Mimi`#linebreak()`0 0`], [`Moumou`],
 )
-==== Problem: Sprout OJ 165 Advancing the Front Line
-*Problem Statement*
+==== Problem: Sprout OJ 165 陣線推進
+*題目敘述*
 
-If you have played strategy games, especially
-AoC, you are certainly familiar with the concept of a "front line."
-In general, the idea is: if the enemy has set up their defenses well, then before capturing certain strongholds,
-you must first capture others — otherwise your forces will either be blocked by walls
-or caught in a pincer attack and wiped out.
+如果你有玩過策略遊戲，尤其是 AoC，的話，一定曉得「戰線」是一種很重要的概念。
+大致上這概念可以這樣說明：如果對方設置陣地得宜，那麼在攻破某些陣地之前，
+一定要先攻破某些陣地，否則會導致我軍不是被城牆擋住，
+就是會被兩邊夾擊、全軍覆沒。
 
-In a typical 1v1 duel, both sides usually rush each other, so neither has much of a base to defend
-and this isn't a big concern. But when the player count grows — say, a 4v4 team battle —
-as the game goes on, the relationships between strongholds can become very complex:
-capturing A requires capturing B and C first, capturing B requires D and E first, and so on.
-To avoid heavy losses, you send out a large number of scouts who sacrifice themselves for the greater good,
-scouting out the layout and positions of all strongholds. Now it is time to form a battle plan.
-Given the prerequisite relationships for capturing each stronghold, can you devise a plan
-to take all strongholds in an order that satisfies every requirement —
-allowing you to fight the enemy without ever being surrounded?
+一般來說兩個玩家單挑對決時，因為通常都是互相快攻，彼此的陣地都還只有本陣，
+這方面問題就不大；但是當玩家數量變多，例如變成 4v4 團體戰的時候，
+隨著遊戲時間增常，陣地之間的關係也容易變得非常複雜，
+想攻破 A 要攻破 B 和 C、想攻破 B又要先攻破D 和E 等等。
+為了避免兵力的大幅損傷，你派出了大量的斥候犧牲小我完成大我，
+先確認了各個陣地的配置以及位置，接著便是擬定作戰計畫的時候了。
+如果已經知道要攻破某個陣地前要先攻破哪些陣地，你能否給出一個方案
+使得根據這個方案進行陣地攻略可以滿足所有要求條件、
+在全程都不腹背受敵的情況下與對方決一死戰呢？
 
-*Input Format*
+*輸入說明*
 
-The first line of input is a positive integer T. There will then be T
-test cases. The first line of each test case has two non-negative integers
-n and m, representing the number of strongholds and the number of prerequisite relationships. Lines 2 through $m + 1$
-each contain two integers a and b
-$\( 0 lt.eq a \, b lt.eq n - 1 \)$, meaning stronghold a must be captured before stronghold b.
-Strongholds are numbered $0$ through $n - 1$.
+輸入的第一行是一個正整數 T。接下來會有
+T 組測試資料，每組測試資料的第一行是兩個非負整數
+n,m，分別代表陣地的數量與陣地間的依賴關係數量；第二行到第
+$m+1$ 行每行由兩個整數 a 和 b
+$\( 0 lt.eq a \, b lt.eq n - 1 \)$組成，代表要攻破陣地 b 之前必須先攻破陣地 a，
+其中陣地從 $0$ ~ $n-1$依序編號。
 
-*Output Format*
+*輸出說明*
 
-If a valid plan exists, output the lexicographically smallest one.
+如果存在題目所要求的方案，為了方便起見請輸出字典序最小的一個。
 
-Otherwise, a bloody battle is inevitable — output \"QAQ\" (without quotes).
+否則代表一場喋血的戰役在所難免，只好輸出\"QAQ\"(不含引號)了。
 
 #block[
-Who says you can only use a queue?
+誰說只能用queue呢？
 
 ]

@@ -1,31 +1,29 @@
 #import "../../template.typ": *
 
-== Basic Knowledge
-=== What is a Tree
-A tree is a connected graph with no cycles and no self-loops. Therefore,
-a tree with $n$ nodes has exactly $n - 1$ edges. Removing any edge will
-split it into two trees, and adding any edge will create a cycle.
+== 基本知識
+=== 什麼是樹
+樹是一個連通圖，裡面沒有環，也沒有自己連自己的邊。因此，
+樹如果有$n$個節點，就會有$n-1$個邊。移除任何一個邊都會
+導致他變成兩棵樹，新增任何邊都會導致出現一個環。
 
-Any two nodes in a tree have a unique path between them, so we have the
-opportunity to find path lengths in $O \( log \( n \) \)$ time. We can also
-develop efficient algorithms tailored to trees.
+樹上的任意兩個點擁有唯一路徑，因此我們有機會在$O \( log \( n \) \)$
+的時間內求出路徑長。也可以發展屬於樹的高效演算法。
 
-Nodes connected to only one edge are called leaf nodes. If a root exists,
-the root node is still called the root regardless of how many edges it connects to.
+只有連接到一個邊的節點我們稱為葉節點。如果有根(root)，則無論
+根連接幾個邊我們都稱他為根結點。
 
 #figure(image("../Images/Tree.png", width: 80.0%),
   caption: [
-    Tree diagram
+    樹示意圖
   ]
 )
 
-=== Data Storage
-Generally, trees are stored the same way as graphs, primarily using adjacency
-lists. However, due to the properties of trees, for a rooted tree we can use
-an array where each node stores its parent node. If edges have weights, an
-edge struct can be defined separately.
+=== 資料儲存
+通常來說，樹的儲存與圖相同，主要以鄰接串列儲存，不過
+由於樹的特性，如果是有根樹的話，我們可以使用一個陣列儲存，
+每個節點將儲存他的parent node。而如果邊有權重，則可以另外定義edge。
 
-#code(title: [Tree Storage])[
+#code(title: [樹的儲存])[
   ```cpp
 const int N=100010;
 struct edge{
@@ -38,14 +36,14 @@ int p[N];// stores the parent
   ```
 ]
 
-=== Tree Traversal
-Two types of search can be used on trees, similar to graphs: Depth-First
-Search (DFS) and Breadth-First Search (BFS).
+=== 樹的遍歷
+樹上可以使用兩種搜索，大致跟圖相同，分別是深度優先搜索(DFS)
+與廣度優先搜索(BFS)。
 
-Both DFS and BFS require rooting the tree, i.e., deciding which node is the
-root. If the problem does not specify, you can simply choose 0 or 1.
+深度優先搜索與廣度優先搜索都會定根，就是決定root是誰，如果題目沒有指定，
+也可以直接選擇0或1。
 
-The following examples use an unweighted graph.
+以下都將以無權重圖演示。
 
 #code(title: [DFS in Tree])[
   ```cpp
@@ -77,46 +75,39 @@ void bfs(int root){
   ```
 ]
 
-On trees, we almost always use DFS, because both DFS and BFS visit all nodes,
-but DFS requires less code — in short, it is the lazy choice.
+在樹上，我們幾乎都使用DFS，因為兩者都會跑完所有節點，
+而DFS的碼量較小，簡單說就是偷懶。
 
-=== Examples and Exercises
-==== Example: Luogu P5908 Cat and Penguins
-*Problem Statement*
+=== 範例與練習
+==== 範例: 洛谷P5908 貓貓和企鵝
+*題目敘述*
 
-A kingdom has $n$ residential areas connected by $n - 1$
-roads. It is guaranteed that every residential area can reach every other one,
-and every road has length $1$.
+王國裡有 $n$ 個居住區，它們之間有 $n-1$ 條道路相連，並且保證從每個居住區出發都可以到達任何一個居住區，並且每條道路的長度都為 $1$。
 
-Except for residential area $1$, each residential area is home to a penguin.
-One day a cat sets out from residential area $1$ and wants to visit some
-penguins. However, the cat is very lazy and will only visit penguins that are
-within distance $d$.
+除了 $1$ 號居住區外，每個居住區住著一隻小企鵝，有一天一隻貓貓從 $1$ 號居住區出發，想要去拜訪一些小企鵝。可是貓貓非常懶，它只願意去距離它在 $d$ 以內的小企鵝們。
 
-Since the cat is very lazy, please tell it how many penguins it can visit.
+貓貓非常懶，因此希望你告訴他，他可以拜訪多少隻小企鵝。
 
-*Input Format*
+*輸入說明*
 
-The first line contains two integers $n \, d$ as described above.
+第一行兩個整數 $n, d$，意義如題所述。
 
-Starting from the second line, there are $n - 1$ lines, each containing two
-integers $u \, v$ indicating there is a road between residential areas $u$ and
-$v$.
+第二行開始，共 $n - 1$ 行，每行兩個整數 $u, v$，表示居民區 $u$ 和 $v$ 之間存在道路。
 
-*Output Format*
+*輸出說明*
 
-A single integer indicating how many penguins the cat can visit.
+一行一個整數，表示貓貓可以拜訪多少隻小企鵝。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5 1`#linebreak()`1 2`#linebreak()`1 3`#linebreak()`2 4`#linebreak()`3 5`], [`2`],
 )
 
-We can add a parameter dis to the dfs function to track the distance traveled so far.
+我們可以在dfs函式內加上一個參數dis，表示至今走過的距離。
 
-#code(title: [Cat and Penguins Solution])[
+#code(title: [貓貓和企鵝題解])[
   ```cpp
 int d;
 int dfs(int now,int parent,int dis=0){
@@ -138,93 +129,88 @@ int main(){
 }
   ```
 ]
-==== Problem: CF 1676 G White-Black Balanced Subtrees
-*Problem Statement*
+==== 問題: CF 1676 G White-Black Balanced Subtrees
+*題目敘述*
 
-You are given a rooted tree of $n$ nodes numbered from $1$ to $n$,
-with root $1$. There is also a string s representing the color of each node:
-if $s_i = B$, node $i$ is black; if $s_i = W$, node $i$ is white.
+給定一棵由$n$個節點組成的根樹，節點從$1$到$n$進行編號，
+根節點為$1$。還有一個字符串s表示每個節點的顏色：
+如果$s_i=B$，則節點$i$是黑色，如果$s_i=W$，
+則節點$i$是白色。
 
-A subtree of the tree is called balanced if the number of white nodes equals
-the number of black nodes. Count the number of balanced subtrees.
+樹的子樹被稱為平衡子樹，如果白色節點的數量等於黑色節點的數量。
+計算平衡子樹的數量。
 
-A tree is an acyclic connected undirected graph. A rooted tree has a designated
-node called the root. In this problem, all trees have root 1.
+樹是一個無環的連通無向圖。根樹是一棵樹中選定的節點，
+該節點被稱為根。在這個問題中，所有樹都有根1。
 
-The tree is specified by a parent array $a_2 \, dots.h.c \, a_n$ of $n - 1$ numbers:
-for all $i = 2 \, dots.h.c \, n$, $a_i$ is the parent of node $i$. The parent of
-node $u$ is the next node on the simple path from $u$ to the root.
+該樹由包含$n-1$個數字的父節點數組$a_2 \, dots.h.c \, a_n$來指定：對於所有$i=2 \, dots.h.c \, n$，
+$a_i$是編號為$i$的節點的父節點。節點$u$的父節點是一個節點，它是從$u$到根之間的一個簡單路徑上的下一個節點。
 
-The subtree of node $u$ is the set of all nodes whose simple path to the root
-passes through $u$. Note that a node is included in its own subtree, and the
-subtree of the root is the entire tree.
+節點u的子樹是所有通過u的節點集合，形成從$u$到根的簡單路徑。
+請注意，一個節點包含在其子樹中，並且根的子樹是整棵樹。
 
-*Input Format*
+*輸入說明*
 
-The first line of input contains an integer $t \( 1 lt.eq t lt.eq 10^4 \)$ --- the number of test cases.
+輸入的第一行包含一個整數$t \( 1 lt.eq t lt.eq 10^4 \)$——測試案例的數量。
 
-The first line of each test case contains an integer $n \( 2 lt.eq n lt.eq 4000 \)$ --- the number of nodes in the tree.
+每個測試案例的第一行包含一個整數$n \( 2 lt.eq n lt.eq 4000 \)$——樹中的節點數量。
 
-The second line of each test case contains $n - 1$ integers $a_2 \, dots.h.c \, a_n （ 1 lt.eq a i < i ）$ --- the parents of nodes $2 \, dots.h.c \, n$.
+每個測試案例的第二行包含$n - 1$個整數$a_2 \, dots.h.c \, a_n （ 1 lt.eq a i < i ）$——節點$2 \, dots.h.c \, n$的父節點。
 
-The third line of each test case contains a string s of length n consisting of characters B and W --- the colors of the tree.
+每個測試案例的第三行包含一個長度為n的字符串s，由字符B和W組成——樹的顏色。
 
-It is guaranteed that the sum of all $n$ values across all test cases does not exceed $2 times 10^5$.
+保證所有測試案例中$n$的值的總和不超過$2 times 10^5$。
 
-*Output Format*
+*輸出說明*
 
-For each test case, output a single integer --- the number of balanced subtrees.
+對於每個測試案例，輸出一個整數——平衡子樹的數量。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3`#linebreak()`7`#linebreak()`1 1 2 3 3 5`#linebreak()`WBBWWBW`#linebreak()`2`#linebreak()`1`#linebreak()`BW`#linebreak()`8`#linebreak()`1 2 3 4 5 6 7`#linebreak()`BWBWBWBW`], [`2`#linebreak()`1`#linebreak()`4`],
 )
-==== Problem: CF 115 A Party
-*Problem Statement*
+==== 問題: CF 115 A Party
+*題目敘述*
 
-A company has $n$ employees, numbered $1$ to $n$. Each employee may have no
-direct manager, or exactly one different employee as their direct manager.
-Employee $A$ is called a superior of employee $B$ if one of the following
-conditions holds:
+一家公司有 $n$ 名員工，編號從 $1$ 到 $n$。每個員工可能沒有直接的經理，
+或者恰好有一位不同編號的員工作為他的直接經理。
+如果滿足以下條件之一，則員工 $A$ 被稱為員工 $B$ 的上級：
 
-Employee $A$ is the direct manager of employee $B$. Employee $B$ has a direct
-manager employee $C$, and employee $A$ is a superior of employee $C$.
-The company has no management cycles, i.e., no employee is a superior of their
-own direct manager.
+員工 $A$ 是員工 $B$ 的直接經理。
+員工 $B$ 有一位直接經理員工 $C$，且員工 $A$ 是員工 $C$ 的上級。
+公司不會存在管理循環，即不存在一位員工是其直接經理的上級。
 
-Today the company will hold a party. This involves dividing all $n$ employees
-into groups: every employee must belong to exactly one group. Furthermore,
-within any group, there cannot be two employees $A$ and $B$ such that $A$ is
-a superior of $B$.
+今天公司將舉辦一個派對。這涉及將所有 $n$ 名員工分為若干組：
+每位員工必須屬於且只能屬於一個組。此外，在任何一個組內，
+不能有兩個員工 $A$ 和 $B$，其中 $A$ 是 $B$ 的上級。
 
-What is the minimum number of groups needed?
+最少需要形成多少組？
 
-*Input Format*
+*輸入說明*
 
-The first line contains integer $n \( 1 lt.eq n lt.eq 2000 \)$ --- the number of employees.
+第一行包含整數 $n \( 1 lt.eq n lt.eq 2000 \)$ — 員工的數量。
 
-The next $n$ lines each contain an integer
-$p_i \( 1 lt.eq p_i lt.eq n #h(0em) or #h(0em) p_i = - 1 \)$. Each
-$p_i$ is the direct manager of employee $i$. If $p_i$ is $- 1$, employee $i$
-has no direct manager.
+接下來的 $n$ 行包含整數
+$p_i \( 1 lt.eq p_i lt.eq n #h(0em) or #h(0em) p_i = - 1 \)$。
+每個 $p_i$ 表示第 $i$ 名員工的直接經理。
+如果$p_i$ 是 $- 1$，表示第 $i$ 名員工沒有直接經理。
 
-It is guaranteed that no employee is their own direct manager
-$\( p_i eq.not i \)$, and there are no management cycles.
+保證不會有員工是自己的直接經理 $\( p_i eq.not i \)$。同時，不會存在管理循環。
 
-*Output Format*
+*輸出說明*
 
-Output a single integer representing the minimum number of groups formed at the party.
+輸出一個整數，表示在派對中將形成的最小群組數量。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5`#linebreak()`-1`#linebreak()`1`#linebreak()`2`#linebreak()`1`#linebreak()`-1`], [`3`],
 )
 
 #block[
-A graph containing multiple trees like this is typically called a forest.
+像這種圖裡面有很多樹的情況我們通常稱為樹林。
 
 ]

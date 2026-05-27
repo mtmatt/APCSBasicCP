@@ -1,29 +1,25 @@
 #import "../../template.typ": *
 
-== Minimum Spanning Tree
-=== Concept
-Minimum spanning trees are often used in road planning problems. Even if we don't directly see them in everyday life,
-they definitely appear in practice — and they come up frequently in competitions.
+== 最小生成樹
+=== 概念
+最小生成樹常常用在處理道路規劃問題，雖然我們沒有直接的看見他在生活中的應用，但是肯定有，而且競賽常常會考喔。
 
-So what is a minimum spanning tree? It is a subset of the graph's edge set that spans all vertices (forms a tree), and among all such subsets,
-the one with the minimum total edge weight.
+那什麼是最小生成樹？就是這個樹的邊集 $in$ 圖的邊集合的子集，所有這樣的集合中，邊權總和最小的那一個。
 
-The two algorithms below differ conceptually, so I'll explain each separately.
+同樣的，兩種演算法的概念並不相同，所以就讓我分別講解吧。
 
 === Kruskal
-==== Concept
+==== 概念
 
-We greedily add edges with the smallest weight. If adding an edge would create a cycle, we skip it. After processing all edges this way,
-we will have found the minimum spanning tree.
+我們盡可能加入權重最小的邊，如果加入後會產生環就不加，就這樣跑完所有的邊就會找到最小生成樹了。
 
-Detecting whether adding an edge creates a cycle requires a DSU (Disjoint Set Union). We merge the connected components containing the two endpoints of each added edge —
-this is exactly the operation DSU is designed for.
+判斷會不會產生環需要 DSU (並查集)，把加入的邊a,b兩端所屬的連通分量合併，這恰好是並查集最擅長的操作。
 
-Sorting is the most expensive step, so the time complexity is $O \( m log \( n \) \)$.
+排序會是複雜度最高的操作，因此時間複雜度為 $O(m log(n))$。
 
-==== Implementation
+==== 實作
 
-#code(title: [Kruskal Algorithm])[
+#code(title: [Kruskal 算法])[
   ```cpp
 struct edge{
     int f,t,w;
@@ -81,87 +77,76 @@ int main(){
 ]
 
 === Prim
-Since I have never used Prim's algorithm, and both algorithms share the same time complexity of $O \( m log \( n \) \)$,
+因為我沒有用過 Prim，而且兩者的時間複雜度同為 $O(m log(n))$。
 
-I will still give a brief overview of the concept. It is somewhat similar to Dijkstra, except that at each step we add
-the edge closest to the set of vertices already determined.
+不過還是稍微介紹一下概念。他有點像 Dijkstra，不過是每次都把距離已經確定的點集合最近的邊加入。
 
-As shown in the figure, the next vertex is the one closest to D or A. B is distance 9 from D and 7 from A, E is distance 15 from D,
-and F is distance 6 from D. Therefore, F is closest to D or A, so vertex F and edge DF are highlighted in the figure.
+如圖，下一個頂點為距離 D 或 A 最近的頂點。B 距 D 為 9，距 A 為 7，E 距 D 為 15，F 距 D 為 6。因此，F 距 D 或 A 最近，因此將頂點 F 與相應邊 DF 圖上比較亮的顏色。
 
 #figure(image("../Images/Graph4.png", width: 50.0%),
   caption: [
   ]
 )
 
-We can also use a `priority_queue` to improve efficiency, giving the same $O \( m log \( n \) \)$ complexity.
+我們同樣可以利用 `priority_queue` 提升效率，所以同樣是 $O(m log(n))$。
 
-=== Examples and Practice
-==== Problem: Sprout OJ 734 Template Problem
-==== Problem: Luogu P1194 Buying Gifts
-*Problem Statement*
+=== 範例與練習
+==== Problem: Sprout OJ 734 模板題
+==== Problem: 洛谷 P1194 買禮物
+*題目敘述*
 
-It's Mingming's birthday again, and Mingming wants to buy $B$ items. Coincidentally, all $B$
-items cost $A$ dollars each.
+又到了一年一度的明明生日了，明明想要買 $B$ 樣東西，巧的是，這 $B$ 樣東西價格都是 $A$ 元。
 
-However, the shop owner announces a promotion: if you buy item $I$ and then buy item
-$J$, you only need to pay $K_(I \, J)$ dollars for the pair. Coincidentally, $K_(I \, J)$ equals
-$K_(J \, I)$.
+但是，商店老闆說最近有促銷活動，也就是：如果你買了第 $I$ 樣東西，再買第 $J$ 樣，那麼就可以只花 $K_(I,J)$ 元，更巧的是，$K_(I,J)$ 竟然等於 $K_(J,I)$。
 
-Mingming wants to know the minimum amount he has to spend.
+現在明明想知道，他最少要花多少錢。
 
-*Input Format*
+*輸入說明*
 
-The first line contains two integers $A \, B$.
+第一行兩個整數，$A,B$。
 
-The following $B$ lines each contain $B$ numbers. The $J$-th number on the $I$-th line is $K_(I \, J)$.
+接下來 $B$ 行，每行 $B$ 個數，第 $I$ 行第 $J$ 個為 $K_(I,J)$。
 
-It is guaranteed that $K_(I \, J) = K_(J \, I)$ and $K_(I \, I) = 0$.
+我們保證 $K_(I,J) = K_(J,I)$ 並且 $K_(I,I) = 0$。
 
-In particular, if $K_(I \, J) = 0$, it means these two items do not trigger any discount.
+特別的，如果 $K_(I,J) = 0$，那麼表示這兩樣東西之間不會導致優惠。
 
-$1 lt.eq B lt.eq 500 \, 0 lt.eq A \, K_(I \, J) lt.eq 1000$
+$1 lt.eq B lt.eq 500, 0 lt.eq A, K_(I,J) lt.eq 1000$
 
-*Output Format*
+*輸出說明*
 
-A single integer representing the minimum amount to spend.
+一個整數，為最小要花的錢數。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3 3`#linebreak()`0 2 4`#linebreak()`2 0 2`#linebreak()`4 2 0`], [`7`],
 )
-==== Problem: Luogu P1396 Rescue
-*Problem Statement*
+==== Problem: 洛谷 P1396 營救
+*題目敘述*
 
-"Knock knock knock..." "Water meter inspection!" What a dedicated meter reader — hard to find these days!
-Xiao Ming was so moved he opened the door $dots.h.c$
+「咚咚咚……」，「查水表！」原來是查水表來了，現在哪裡找這麼熱心上門的查表員啊！小明感動得熱淚盈眶，開起了門 $dots.h.c$
 
-When his mother came home from work, the neighbors said Xiao Ming had been forcibly taken away by a group of strangers in a police car! His mother's experience told her that Xiao Ming was taken to district $t$, while she is in district $s$.
+媽媽下班回家，街坊鄰居說小明被一群陌生人強行押上了警車！媽媽豐富的經驗告訴她小明被帶到了 $t$ 區，而自己在 $s$ 區。
 
-The city has $m$ avenues connecting $n$
-districts. Each avenue connects two districts and has a congestion level.
-Xiao Ming's mother is anxious but refuses to let the crowded streets ruin her elegant composure. Please help her plan a route from
-$s$ to $t$ that minimizes the maximum congestion level along the path.
+該市有 $m$ 條大道連接 $n$ 個區，一條大道將兩個區相連接，每個大道有一個擁擠度。小明的媽媽雖然很著急，但是不願意擁擠的人潮衝亂了她優雅的步伐。所以請你幫她規劃一條從 $s$ 至 $t$ 的路線，使得經過道路的擁擠度最大值最小。
 
-*Input Format*
+*輸入說明*
 
-The first line contains four space-separated values $n$, $m$, $s$, $t$ (see problem statement for meanings).
+第一行有四個用空格隔開的 $n$，$m$，$s$，$t$，其含義見【題目敘述】。
 
-The following $m$ lines each contain three integers $u \, v \, w$, meaning there is an avenue connecting district $u$ and district
-$v$ with congestion level $w$.
+接下來 $m$ 行，每行三個整數 $u, v, w$，表示有一條大道連接區 $u$ 和區 $v$，且擁擠度為 $w$。
 
-$1 lt.eq n lt.eq 10^4$, $1 lt.eq m lt.eq 2 times 10^4$, $w lt.eq 10^4$,
-$1 lt.eq s \, t lt.eq n$. It is guaranteed that $t$ is reachable from $s$.
+$1 lt.eq n lt.eq 10^4$, $1 lt.eq m lt.eq 2 times 10^4$, $w lt.eq 10^4$, $1 lt.eq s, t lt.eq n$。且從 $s$ 出發一定能到達 $t$
 
-*Output Format*
+*輸出說明*
 
-Print a single integer representing the maximum congestion level.
+輸出一行一個整數，代表最大的擁擠度。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3 3 1 3`#linebreak()`1 2 2`#linebreak()`2 3 1`#linebreak()`1 3 3`], [`2`],
 )

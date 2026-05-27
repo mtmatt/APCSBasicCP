@@ -1,94 +1,92 @@
-== Classical Problems
-=== Introduction
-Next, we will look at many classical DP problems.
+#import "../../template.typ": *
 
-=== Fibonacci Variations
-The following problems are all related to the Fibonacci sequence, but with modified transition relations.
+== 經典問題
+=== 前言
+接下來，我們會看到許多DP的經典問題。
 
-==== Example: AtCoder DP Contest A. Frog
-*Problem Statement*
+=== 費氏數列變化
+以下問題都與費氏數列有關，但轉移式有所改變。
 
-There are $N$ stones numbered $1 \, 2 \, dots.h.c \, N$. For each
-$i med \( 1 lt.eq i lt.eq N \)$, the height of stone $i$ is $h_i$.
+==== 範例: AtCoder DP Contest A.Frog
+*題目敘述*
 
-A frog starts at stone $1$. It will repeat the following action some number of times until it reaches stone $N$:
+有 $N$ 個石頭，編號為 $1 \, 2 \, dots.h.c \, N$。對於每個 $i med \( 1 lt.eq i lt.eq N \)$，第 $i$ 個石頭的高度是 $h_i$。
 
-If the frog is currently at stone $i$, it jumps to stone $i + 1$ or stone
-$i + 2$. Here, a cost of $\| h_i - h_j \|$ is incurred, where $j$
-is the stone it jumps to. Find the minimum total cost the frog may incur before reaching stone $N$.
+有一隻青蛙最初位於石頭 $1$。它將重複以下動作數次，直到到達石頭 $N$：
 
-*Input Format*
+如果青蛙目前在石頭 $i$，則跳到石頭 $i + 1$ 或石頭 $i + 2$。在這裡，會產生一個代價 $\| h_i - h_j \|$，其中 $j$ 是要跳到的石頭。找到青蛙到達石頭 $N$ 之前可能產生的最小總代價。
 
-The input is given from standard input in the following format:
+*輸入說明*
+
+輸入以以下格式從標準輸入中給出：
 
 $N$
 
 $h_1 med h_2 med dots.h.c med h_N$
 
-All input values are integers. $2 lt.eq N lt.eq 10^5$, $1 lt.eq h_i lt.eq 10^4$
+所有輸入值均為整數。$2 lt.eq N lt.eq 10^5$， $1 lt.eq h_i lt.eq 10^4$
 
-*Output Format*
+*輸出說明*
 
-Print the minimum possible total cost incurred.
+輸出產生的最小可能總代價。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`4`#linebreak()`10 30 40 20`], [`30`],
-  [Sample Input 2], [Sample Output 2],
+  [範例輸入 2], [範例輸出 2],
   [`6`#linebreak()`30 10 60 10 60 50`], [`40`],
 )
 
-==== Idea
+==== 想法
 
-For this problem we can follow our standard approach, so first we define the state.
+對於這個問題我們可以遵循我們的常規方法，所以首先，我們要定義狀態。
 
-What state can satisfy our needs? For simple problems, we can define the state based on what the problem ultimately asks for. In this problem, the question asks for the minimum total cost before the frog reaches stone $N$, so we can define:
+你認為什麼樣的狀態可以滿足我們的需求呢？如果是簡單的問題，我們可以用題目最後的要求定義狀態，以此題為例。題目要求找到青蛙到達石頭 $N$ 之前可能產生的最小總代價，因此，我們可以這樣定義。
 
-$ d p_n := "the minimum total cost to reach stone" n $
+$ d p_n := "到達" n "產生的最小總代價" $
 
-Next, we need the transition. The problem states we can only move forward 1 or 2 steps,
-so we must have come from stone $n - 1$ or stone $n - 2$. Taking the better of these two cases, we get:
+接著，我們需要轉移式，題目上有提供，我們只能向前走1或2步，
+所以我們一定是從第$n-1$格或第$n-2$格走過來的。於是，從這兩種情況中找出最好的，便可以列出下式。
 
 $ {d p_1 = 0 \, #h(0em) d p_2 = \| a_1 - a_2 \|\
 d p_n = min \( d p_(n - 1) + \| a_n - a_(n - 1) \| \, d p_(n - 2) + \| a_n - a_(n - 2) \| \) $
 
-The initial state is critical: since stone 2 can only be reached from stone 1, there is only one way to reach it.
+其中初始狀態很是關鍵，因為第二格只能從第一格走過來，所以走到第二格只有一種方法。
 
-Time complexity is $O \( n \)$.
+時間複雜度為$O \( n \)$。
 
-==== Example: ZJ b587 Tri Tiling
-*Problem Statement*
+==== 範例: ZJ b587 Tri Tiling
+*題目敘述*
 
-Given a $3 times n$ floor, tile it completely with $1 times 2$ tiles. How many ways are there?
+給你一個 $3 times n$ 的地面，用 $1 times 2$ 的地板磚鋪滿，問有幾種方法。
 
-*Input Format*
+*輸入說明*
 
-Each line contains an integer $n$ representing a $3 times n$
-floor, $0 lt.eq n lt.eq 30$; $n = - 1$ means end of input.
+每行有一個整數 $n$，代表 $3 times n$ 的地面，$0 lt.eq n lt.eq 30$；$n = - 1$ 時代表輸入結束。
 
-*Output Format*
+*輸出說明*
 
-For each input, output the number of valid tilings.
+請對每一個輸入，輸出可能的排法數。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`8`#linebreak()`-1`], [`153`],
 )
 
-==== Idea
+==== 想法
 
-The problem looks tricky. When you encounter such a problem, consider getting out pencil and paper.
-First, as usual, we define the state. Even though this problem is not so simple, we can try starting from the problem's requirement.
+題目看起來很是棘手，如果遇到這種問題的時候可以考慮把紙筆拿出來。
+不過首先，同樣的，我們要定義狀態。雖然這題沒有那麼簡單，但是我們可以從題目的要求定義狀態開始嘗試。
 
-$ d p_n := "the number of ways to tile a" 3 times n #h(0em) "floor with" 1 times 2 #h(0em) "tiles" $
+$ d p_n := "3" times n #h(0em) "的地面，用" 1 times 2 #h(0em) "的地板磚鋪滿的方法數" $
 
-At this point we might first decide on the initial state: if $n lt.eq 1$, then $d p_n = 0$.
-If $n = 2$, then $d p_n = 3$ (you can verify this by drawing a diagram). Next, we find that whenever $n$ is odd,
-it is impossible to tile the floor. So we only need to consider even $n$.
+這時候我們可能會先決定初始狀態，例如，如果$n lt.eq 1$，則$d p_n = 0$。
+如果$n = 2, d p_n = 3$，你可以畫圖說明這點。接著，我們發現，只要$n$是奇數，
+就不可能有任何的方法完成鋪磁磚的工作。所以我們考慮$n$是偶數的情況就可以了。
 
 #figure(image("../Images/DP1.png", width: 50.0%),
   caption: none
@@ -98,27 +96,28 @@ it is impossible to tile the floor. So we only need to consider even $n$.
   caption: none
 )
 
-Based on the figures above and the first figure on the next page, you might think the DP relation looks like this:
+根據上圖以及下頁的第一張圖片，你以為DP式像這樣。
 
 $ {d p_0 = 1 \, d p_2 = 3\
 d p_n = 3 times d p_(n - 2) + 2 times d p_(n - 4) $
 
-But when you happily submit your answer, you find it is wrong. Are there states you haven't considered?
+但是當你滿心歡喜地把答案丟上去，你發現，你竟然錯了。難道還有沒有考慮到的狀態。
 
-At this point we need to re-examine our work for errors — for example, overcounting or undercounting. In this problem, we undercounted. (I just realized this while writing, and the solution came to me at the same moment, so it happens to serve as an example.)
+這時候我們需要重新檢視自己有沒有錯誤，例如多數或少數。以這題為例我們就少數了。(剛剛發現的，解法也是剛剛才想，所以剛好可以成為範例)。
 
 #figure(image("../Images/DP3.png", width: 80.0%),
   caption: none
 )
 
-Generalizing this, we obtain a new DP relation:
+依此類推，我們可得到一個新的DP式。
 
 $ {d p_0 = 1 \, d p_2 = 3\
 d p_n = 3 times d p_(n - 2) + 2 times sum_(i = 1)^(n / 2) d p_(n - 2 i) $
 
-Additionally, though not required for this problem, prefix sums and matrix exponentiation can be used to handle this, with the lowest complexity being $O \( log n \)$.
+另外就是，雖然這題不需要，但是可以使用前綴和以及矩陣快速冪處理這個問題，
+複雜度最低為$O \( log n \)$。
 
-==== Solution Code: ZJ b587
+==== 題解: ZJ b587
 
 ```
 #include<bits/stdc++.h>
@@ -152,29 +151,37 @@ int main(){
 }
 ```
 
-=== Longest Common Subsequence
-Also known as LCS (Longest Common Subsequence). The problem is as follows:
+=== 最長共同子序列
+又稱為"LCS"(Longest Common Subsequence)，問題是這樣的。
 
-Given two strings, find the length of their longest common subsequence—that is, the longest length achievable by deleting some characters from each string (without changing order) so that both strings become equal. For example, the LCS of "aabbaa" and "aba" is 3.
+給你兩個字串，請問他們的最長共同子序列的長度，也就是
+不改變順序的話，藉由刪除某些字元讓兩格字串可以相等的
+最長長度。例如：aabbaa與aba的"LCS"為3。
 
-For this problem, a single variable is clearly insufficient, so we use two variables. First, define the state. Through intuition we know we can define the state as:
+對於這個問題，一個變數明顯是不夠用的，所以我們可以使用
+兩個變數。首先是定義狀態，我們藉由通靈得知，可以這樣定義狀態。
 
-$ d p_(n \, m) := "the LCS of the first" n "characters of string" a "and the first" m "characters of string" b $
+$ "dp"_(n \, m) := "字串" #h(0em) a #h(0em) "的前" #h(0em) n #h(0em) "的字母與字串" #h(0em) b #h(0em) "的前" #h(0em) m #h(0em) "的字母的 LCS" $
 
-With this definition, we can derive the transition. First, if either $n$ or $m$ is $0$, there cannot be any LCS, so LCS must be $0$. Then, for $d p_(n \, m)$, there are two cases: whether the $n$-th character of string $a$ equals the $m$-th character of string $b$. If they are equal, we can take $d p_(n - 1 \, m - 1)$ and add $1$, since the current $n$-th and $m$-th characters match. Otherwise, we can only look at the previous step, which has two options: advance $a$ by one, or advance $b$ by one.
+如果這樣考慮的話，我們就可以推出轉移式。首先，如果n,m其中一個為
+0，那不可能有"LCS"，所以"LCS"一定為0。接著，對於$d p_(n \, m)$，可以分為兩種情況
+字串 a 的第n的字母與字串 b 的第m的字母有沒有相等，如果相等的話，
+我們可以選擇$d p_(n - 1 \, m - 1)$，並加上1，因為加上現在的第n,m個字母相等，
+否則，只能看看前一個，這樣的情況有兩種，一種是a取前一個，另一種是b
+取前一個。
 
 $ {d p_(i \, 0) = d p_(0 \, j) = 0\
 d p_(n \, m) = max \( d p_(n - 1 \, m) \, #h(0em) d p_(n \, m - 1) \) \, #h(0em) i f #h(0em) a_n eq.not b_m\
 d p_(n \, m) = d p_(n - 1 \, m - 1) + 1 \, #h(0em) e l s e $
 
-In practice, a 2D array can be used. Complexity is $O \( n times m \)$.
+實作上可以使用二維陣列。複雜度為$O \( n times m \)$
 
-==== Solution Code: LCS
+==== 題解: "LCS"
 
 ```
 int dp[N][M];
 
-int LCS(string a,string b){
+int "LCS"(string a,string b){
     for(int i=1;i<=a.size();++i){
         for(int j=1;j<=b.size();++j){
             if(a[i-1]!=b[i-1]){
@@ -188,30 +195,32 @@ int LCS(string a,string b){
 }
 ```
 
-=== Longest Increasing Subsequence
-Another very classical problem is LIS (Longest Increasing Subsequence).
-The goal is to delete as few elements as possible so that the remaining elements are strictly increasing (or non-strictly, depending on the problem).
+=== 最長遞增子序列
+另一個很經典的問題就是"LIS"(Longest Increasing Subsequence)。
+同樣是盡量刪除很少的數，以滿足剩下的數字遞增(有沒有嚴格差不多)。
 
-This problem is not trivial. First, define the state:
+這題沒有到非常容易，首先是定義狀態，我們可以這樣定義。
 
-$ d p_n := "the LIS ending at" a_n $
+$ "dp"_n := "以" #h(0em) a_n #h(0em) "為結尾的 LIS" $
 
-Next, since we need the subsequence to be increasing, we must find all elements before position $n$ that are smaller than $a_n$ and try to append $a_n$ after them. However, we cannot determine which one gives the longest result, so we must scan all of them—which gives $O \( n^2 \)$ complexity. The transition is:
+接著，因為我們需要遞增，所以我們需要找前面所有比自己小的數字並嘗試
+接在他後面，然而，這時候我們並沒有辦法決定哪一個是最長的，
+所以必須全部都掃過一次，如此一來複雜度會是$O \( n^2 \)$，而轉移式可以這樣寫。
 
 $ {d p_1 = 1\
 d p_n = max \( d p_i \) + 1 \, #h(0em) i < n #h(0em) a n d #h(0em) a_n gt.eq a_i $
 
-If we only need to output the length, there is a way to speed up the computation to
-$O \( n log \( n \) \)$ using binary search.
+如果說我們只要輸出長度的話，有一個方式可以讓我們的計算速度進步到
+$O \( n log \( n \) \)$。我們會需要二分搜。
 
-==== Robinson-Schensted-Knuth Algorithm
+==== Robinson-Schensted-Knuth 算法
 
-Track the position of each number in the LIS. Place each number as far back as possible to allow longer extensions. Use binary search to speed up the position-finding step.
+紀錄每個數字在 "LIS" 當中的位置。盡量往後放，因為這樣才可以接得更長。以二分搜加速搜尋位置的過程。
 
-==== Solution Code: LIS Length
+==== 題解: "LIS" 長度
 
 ```
-int LIS(vector<int> &v){
+int "LIS"(vector<int> &v){
     vector<int> lis;
     for(int i=0;i<v.size();++i){
         int it=lower_bound(lis.begin(),lis.end(),v[i])-lis.begin();
@@ -225,31 +234,34 @@ int LIS(vector<int> &v){
 }
 ```
 
-If we need the lexicographically smallest LIS, the only $O \( n log \( n \) \)$ solution I have thought of is to use a Treap to query the minimum value; this will be mentioned again in the data structure optimization section.
+而如果要求字典序最小的"LIS"，目前我只有想到一種$O \( n log \( n \) \)$的解，
+就是使用Treap查詢最小值，未來在資料結構優化當中會再次提及。
 
-=== Knapsack Problems
-I recommend reading "Knapsack Problems: Nine Lectures"—it covers many different variants. We will only go over a few here.
+=== 背包問題
+推薦大家去看背包問題九講，裡面有好多不同情況。
+我們只會挑幾個講解。
 
-The most classic knapsack problem is the 0/1 knapsack: each item can either be taken or not taken (hence 0/1). Each item has two values, $w_i$ and $v_i$. We want to maximize the total $v_i$ subject to the constraint that the total $w_i$ does not exceed $W$.
-First, we might think of enumerating all possibilities, which has time complexity $O \( 2^n \)$.
+最經典的背包問題又稱為01背包問題，01的意思就是每樣物品只有拿或不拿兩種選項，
+其中，物品有兩種數值，$w_i$與$v_i$，而我們要最大化$v_i$的總和，且$w_i$的總和不可以大於W。
+首先我們可能會先想到窮舉所有可能性，這樣的時間複雜度為$O \( 2^n \)$。
 
-However, given the constraints $n lt.eq 100 \, W lt.eq 10^5$ where $W$ is the total weight limit,
-$2^n$ will not pass, so we need to develop a new algorithm.
+但是，考慮條件：$n lt.eq 100 \, W lt.eq 10^5$，其中W是總重限制。
+顯然$2^n$不會過，所以我們需要針對這樣的情況開發新的演算法。
 
-First, define the state. Since neither $n$ nor $W$ is very large, we can define:
+首先定義狀態，既然n與W都不是很大，我們可以這樣定義。
 
-$ d p \[ n \] \[ w \] := "the maximum value achievable using the first" n "items with total weight not exceeding" w $
+$ d p \[ n \] \[ w \] := "前" #h(0em) n #h(0em) "個物品總重不大於" #h(0em) w #h(0em) "的最高價值" $
 
-With this, we can set up the transition. Similar to LCS, we need to consider whether we can take the $i$-th item.
+如此一來，我們就可以設定轉移式。與"LCS"有些相似，都需要分為能不能拿第$i$項的情況。
 
 $ {d p \[ 0 \] \[ j \] = 0\
 d p \[ i \] \[ 0 \] = 0\
 d p \[ i \] \[ j \] = d p \[ i - 1 \] \[ j \] \, #h(0em) i f #h(0em) w \[ i \] > j\
 d p \[ i \] \[ j \] = max \( d p \[ i - 1 \] \[ j \] \, d p \[ i - 1 \] \[ j - w \[ i \] \] + v \[ i \] \) $
 
-Both time and space complexity are $O \( n W \)$. Given the small input constraints, this is acceptable.
+時空複雜度都是$O \( n W \)$，因為輸入的數據很小，所以這是可以接受的。
 
-==== Solution Code: 0/1 Knapsack
+==== 題解: 01背包
 
 ```
 ll dp[105][100010],v[105],w[105];
@@ -268,19 +280,20 @@ int main(){
 }
 ```
 
-Next, another variant is the unbounded knapsack, where each type of item can be taken any number of times.
-Given $n$ types of items, item $i$ has weight $w_i$ and value $v_i$, and the knapsack capacity is $W$.
-What is the maximum total value?
+接著，另一種背包問題是無限背包問題，就是每一種物品都可以拿任意數量個。
+給定 $n$ 種物品，第 $i$ 種物品重量$w_i$，價值$v_i$，背包容量 $W$
+請問最大價值($v_i$)總和為何？
 
 $n lt.eq 100 \, W lt.eq 10^5$
 
-For this problem, we can use a similar transition. The only difference is that an item can be used multiple times. So we change $d p \[ i - 1 \] \[ j - w \[ i \] \] + v \[ i \]$ to $d p \[ i \] \[ j - w \[ i \] \] + v \[ i \]$,
-because $d p \[ i \] \[ j - w \[ i \] \] + v \[ i \]$ is the maximum value that includes using item $i$ again.
+對於這個問題，我們可以用相似的轉移式，因為我們的唯一差別在於能否使用
+同一個物品多次。所以我們可以將$d p \[ i - 1 \] \[ j - w \[ i \] \] + v \[ i \]$改為$d p \[ i \] \[ j - w \[ i \] \] + v \[ i \]$，
+因為$d p \[ i \] \[ j - w \[ i \] \] + v \[ i \]$是包含使用過第$i$個物品的情況下的最大值。
 
 $ {d p \[ i \] \[ j \] = d p \[ i - 1 \] \[ j \] \, #h(0em) i f #h(0em) w \[ i \] > j\
 d p \[ i \] \[ j \] = max \( d p \[ i - 1 \] \[ j \] \, d p \[ i \] \[ j - w \[ i \] \] + v \[ i \] \) $
 
-==== Solution Code: Unbounded Knapsack
+==== 題解: 無限背包
 
 ```
 ll dp[105][100010],v[105],w[105];
@@ -300,13 +313,18 @@ int main(){
 }
 ```
 
-The next variant is the bounded knapsack, where item $i$ can be taken at most $c_i$ times. The simplest approach is to split item $i$ into $c_i$ copies that can each be taken at most once, then apply the 0/1 knapsack solution.
+下一個介紹的是有限背包，第$i$個物品可以拿$c_i$個。對於這樣的問題，
+我們最簡單的做法就是將第$i$個物品分成$c_i$個只能拿一次的物品，
+這樣我們就可以用01背包問題的解解開這個問題。
 
-However, this gives time and space complexity of $O \( sum c_i times W \)$. Given $n lt.eq 100 \, c_i lt.eq 100 \, W lt.eq 10^5$, this would result in TLE or MLE, so we need a more efficient approach.
+然而，這樣的時空複雜度為$O \( sum c_i times W \)$，考慮條件$n lt.eq 100 \, c_i lt.eq 100 \, W lt.eq 10^5$。
+這樣的算法會得到TLE或MLE，所以我們必須想出更有效率的做法。
 
-Recall binary exponentiation? We can apply the same idea here: split each item into $O \( log \( c_i \) \)$ pieces. This gives us an $O \( sum log \( c_i \) times W \)$ solution (using 0/1 knapsack).
+還記得快速冪嗎？同樣的方式我們也可以用在這個問題，如此一來，我們就可以
+將所有物品個切成$O \( log \( c_i \) \)$塊。這樣我們就得到$O \( sum log \( c_i \) times W \)$
+的解法了(利用01背包)。
 
-==== Solution Code: Item Splitting
+==== 題解: 物品切割
 
 ```
 using vec=vector<int>;
@@ -334,16 +352,17 @@ pvv CutItem(vector<int> &w,vector<int> &v,vector<int> &c){
 }
 ```
 
-Next, let's look at the grouped knapsack problem. Items are divided into $i$ groups with $n$ items in total; all other constraints are the same as above.
+我們接著看另外一個問題。分組背包問題，題目將物品分成i組，
+總共有n個，其他限制同上。
 
-In this case, we redefine the state:
+這時候，我們可以重新定義狀態。
 
-$ d p \[ i \] \[ j \] := "the maximum value using the first" i "groups of items with total weight not exceeding" j $
+$ d p \[ i \] \[ j \] := "前" #h(0em) i #h(0em) "組物品總重不大於" #h(0em) j #h(0em) "的最高價值" $
 
-The transition tries every item in each group using the 0/1 knapsack approach.
-Time complexity is $O \( n W \)$.
+而轉移式則是對每一組的所有物品都嘗試01背包的放法，
+時間複雜度為$O \( n W \)$。
 
-==== Solution Code: Grouped Knapsack
+==== 題解: 分組背包
 
 ```
 ll dp[105][100010],v[105],w[105];
@@ -365,55 +384,59 @@ int main(){
 }
 ```
 
-Finally, let's look at the multi-constraint knapsack. For example, taking an item also consumes time $t_i$, and the total time available is $T$, while the knapsack also has a weight limit $W$.
+最後我們來看多限制背包問題，例如：今天要拿那個物品會消耗時間$t_i$，
+而你可以拿的時間只有T，同時背包有重量上限W。
 
-This problem is not very difficult. If you have learned the knapsack problems above, you should be able to quickly guess that the transition applies the knapsack over both constraints simultaneously.
+其實這個問題並沒有很困難，如果你有學會上面的背包問題，你應該可以很快的猜到，
+我們的轉移式就是對兩個限制都做一次背包。
 
-$ d p \[ n \] \[ w \] \[ t \] := "the maximum value using the first" n "items with total weight" lt.eq w "and total time" lt.eq t $
+$ d p \[ n \] \[ w \] \[ t \] := "前" #h(0em) n #h(0em) "個物品總重不大於" #h(0em) w #h(0em) "且時間不超過" #h(0em) t #h(0em) "的最高價值" $
 
 $ {d p \[ i \] \[ j \] \[ k \] = d p \[ i - 1 \] \[ j \] \[ k \] \, #h(0em) i f #h(0em) w \[ i \] > j #h(0em) o r #h(0em) t \[ i \] > w\
 d p \[ i \] \[ j \] \[ k \] = max \( d p \[ i - 1 \] \[ j \] \, d p \[ i - 1 \] \[ j - w \[ i \] \] \[ k - t \[ i \] \] + v \[ i \] \) $
 
-The time and space complexity is $O \( n W T \)$.
+其時空複雜度為$O \( n W T \)$。
 
-=== DP on DAGs
-A DAG is a directed acyclic graph. Therefore, when problems occur on DAGs, they can usually be solved using DFS with memoization or topological sort.
+=== DAG上DP
+我們都知道DAG是有向無環圖，因此，有時候會遇到一些問題在DAG上，通常這時候
+都可以使用DFS搭配陣列紀錄或是拓鋪排序來解決。
 
-==== Example: 2021 YiZhong Intra-School Contest Final — Longest Path on a DAG
-*Problem Statement*
+==== 範例: 110宜中校內賽Final DAG上最長路徑
+*題目敘述*
 
-Given a DAG with $n$ nodes and $m$ edges, where each node is identified by a string, find the length of the longest path in the graph.
+有n個點，m條邊的DAG，每個點編號為一個字串，求這個圖上的最長路徑長度。
 
-*Input Format*
+*輸入說明*
 
-The first line contains $n$ and $m$. ($n lt.eq 100 \, m lt.eq 1000$)
+第一行輸入n,m。($n lt.eq 100 \, m lt.eq 1000$)
 
-The following $m$ lines each contain two strings $a$ and $b$, representing a directed edge from $a$ to $b$.
+接下來有m行，每行有兩個字串a,b。表示有一條有向邊從a連到b。
 
-*Output Format*
+*輸出說明*
 
-The length of the longest path on the DAG.
+DAG上最長路徑長度。
 
-==== Idea
+==== 想法
 
-The test data at the time was weak, so DFS could pass directly. But considering topological sort, we find it can be done in $O \( n \)$.
+當年的數據很水，可以用DFS直接過。但是我們考慮使用拓鋪排序，然後我們發現竟然可以在
+$O \( n \)$裡面完成。
 
-=== Examples and Practice
-==== Problem: Atcoder DPC B Frog 2
-*Problem Statement*
+=== 範例與練習
+==== 問題: Atcoder DPC B Frog 2
+*題目敘述*
 
-There are $N$ stones numbered $1 \, 2 \, dots.h.c \, N$. For each stone $i$
-($1 lt.eq i lt.eq N$), its height is $h_i$.
+有 $N$ 個石頭，編號為 $1 \, 2 \, dots.h.c \, N$。對於每個石頭 $i$
+($1 lt.eq i lt.eq N$)，其高度為 $h_i$。
 
-A frog starts at stone $1$. It will repeat the following action multiple times until it reaches stone $N$:
+有一隻青蛙最初位於石頭 $1$。它將重複以下動作多次，直到到達石頭 $N$：
 
-If the frog is currently at stone $i$, it can jump to any of: stone
-$i + 1 \, i + 2 \, dots.h.c \, i + K$. A cost of
-$\| h_i - h_j \|$ is incurred, where $j$ is the stone jumped to. Find the minimum total cost before the frog reaches stone $N$.
+如果青蛙目前在石頭 $i$，則可以跳到以下位置之一：石頭
+$i + 1 \, i + 2 \, dots.h.c \, i + K$。在這裡，會產生一個代價
+$\| h_i - h_j \|$，其中 $j$ 是跳到的石頭。找到在青蛙到達石頭 $N$ 之前可能產生的最小總代價。
 
-*Input Format*
+*輸入說明*
 
-All input values are integers, given in the following format:
+所有輸入值均為整數，並以以下格式呈現：
 
 $N$
 
@@ -421,38 +444,38 @@ $K$
 
 $h_1 \, h_2 \, dots.h.c \, h_N$
 
-$2 lt.eq N lt.eq 10^5$, $1 lt.eq K lt.eq 100$, $1 lt.eq h_i lt.eq 10^4$
+$2 lt.eq N lt.eq 10^5$， $1 lt.eq K lt.eq 100$， $1 lt.eq h_i lt.eq 10^4$
 
-*Output Format*
+*輸出說明*
 
-Output the minimum possible total cost.
+輸出最小可能的總花費。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5 3`#linebreak()`10 30 40 50 20`], [`30`],
 )
 
-==== Problem: Atcoder DPC C Vacation
-*Problem Statement*
+==== 問題: Atcoder DPC C Vacation
+*題目敘述*
 
-Taro's summer vacation starts tomorrow, and he decides to plan it now.
+Taro的暑假明天開始，他決定現在就為它做計劃。
 
-The vacation lasts $N$ days. On each day $i$
-$\( 1 lt.eq i lt.eq N \)$, Taro will choose one of the following activities to do:
+這個假期有 $N$ 天。對於每一天 $i$
+$\( 1 lt.eq i lt.eq N \)$，Taro將選擇以下其中一個活動，並在第 $i$ 天做：
 
-A: Swim in the sea. Gain $a_i$ happiness. B: Catch bugs in the mountains. Gain $b_i$
-happiness. C: Do homework at home. Gain $c_i$ happiness.
-Since Taro gets bored easily, he cannot do the same activity on two consecutive days.
+A：在海裡游泳。獲得 $a_i$ 點快樂值。B：在山上捉蟲子。獲得 $b_i$
+點快樂值。C：在家做作業。獲得 $c_i$ 點快樂值。
+由於Taro容易感到無聊，他不能連續兩天做相同的活動。
 
-Find the maximum possible total happiness Taro can obtain.
+找出Taro所獲得的最大可能總快樂值。
 
-*Input Format*
+*輸入說明*
 
-All input values are integers.
+所有輸入值都是整數。
 
-The input format is as follows:
+輸入格式如下：
 
 $N$
 
@@ -464,35 +487,35 @@ $dots.v$
 
 $a_N quad b_N quad c_N$
 
-$1 lt.eq N lt.eq 10^5$, $1 lt.eq a_i \, b_i \, c_i lt.eq 10^4$
+$1 lt.eq N lt.eq 10^5$， $1 lt.eq a_i \, b_i \, c_i lt.eq 10^4$
 
-*Output Format*
+*輸出說明*
 
-Output the maximum possible total happiness Taro can obtain.
+輸出Taro所獲得的最大可能總快樂值。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3`#linebreak()`10 40 70`#linebreak()`20 50 80`#linebreak()`30 60 90`], [`210`],
 )
 
-==== Problem: Atcoder DPC E Knapsack 2
-*Problem Statement*
+==== 問題: Atcoder DPC E Knapsack 2
+*題目敘述*
 
-There are $N$ items numbered $1$ to $N$. For each $i$
-($1 lt.eq i lt.eq N$), item $i$ has weight $w_i$ and value $v_i$.
+有 $N$ 個物品，編號從 $1$ 到 $N$。對於每個 $i$
+($1 lt.eq i lt.eq N$)，物品 $i$ 的重量為 $w_i$，價值為 $v_i$。
 
-Taro decides to choose some items to carry home in a knapsack. The knapsack's capacity is
-$W$, meaning the total weight of chosen items must not exceed $W$.
+Taro決定在一個背包中選擇一些物品並攜帶回家。背包的容量為
+$W$，這意味著所選物品的重量總和必須不超過 $W$。
 
-Find the maximum possible total value of items Taro carries home.
+找出 Taro 攜帶回家的物品價值的最大可能總和。
 
-*Input Format*
+*輸入說明*
 
-All input values are integers.
+所有輸入值都是整數。
 
-The input format is as follows:
+輸入格式如下：
 
 $N med W$
 
@@ -512,62 +535,71 @@ $1 lt.eq w_i lt.eq W$
 
 $1 lt.eq v_i lt.eq 10^3$
 
-*Output Format*
+*輸出說明*
 
-Output the maximum possible total value of items Taro carries home.
+輸出 Taro 攜帶回家的物品價值的最大可能總和。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3 8`#linebreak()`3 30`#linebreak()`4 50`#linebreak()`5 60`], [`90`],
 )
 
-==== Problem: Atcoder DPC F LCS
-*Problem Statement*
+==== 問題: Atcoder DPC F "LCS"
+*題目敘述*
 
-Given two strings $s$ and $t$. Find the longest string that is a subsequence of both $s$ and $t$.
+給定兩個字符串
+$s$ 和
+$t$。找出一個最長的字符串，它同時是
+$s$ 和
+$t$ 的子序列。
 
-Note: A subsequence of string $x$ is a string obtained by deleting zero or more characters from $x$ and concatenating the remaining characters without changing their order.
+備註
+字符串
+$x$ 的子序列是通過從
+$x$ 中刪除零個或多個字符並連接剩下的字符而獲得的字符串，而且不改變字符的順序。
 
-*Input Format*
+*輸入說明*
 
-The input is given in the following format:
+輸入以以下格式給出：
 
 $s$
 
 $t$
 
-$s$ and $t$ are strings consisting of lowercase English letters.
+$s$ 和 $t$ 是由小寫英文字母組成的字符串。
 $1 lt.eq \| s \| \, \| t \| lt.eq 3000$
 
-*Output Format*
+*輸出說明*
 
-Output the longest string that is a subsequence of both $s$ and $t$. If there are multiple such strings, any one of them is acceptable.
+輸出一個最長的字符串，它是
+$s$ 和
+$t$ 的子序列之一。如果有多個這樣的字符串，可以接受任意一個。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`axyb`#linebreak()`abyxb`], [`axb`],
 )
 
-==== Problem: Atcoder DPC H Grid 1
-*Problem Statement*
+==== 問題: Atcoder DPC H Grid 1
+*題目敘述*
 
-Given a grid with $H$ horizontal rows and $W$ vertical columns. We denote the cell at row $i$ and column $j$ as $\( i \, j \)$.
+給定一個網格，包含 $H$ 個水平行和 $W$ 個垂直列。我們用 $\( i \, j \)$ 表示網格中第 $i$ 行和第 $j$ 列的方格。
 
-For each $\( i \, j \)$, the content of cell $\( i \, j \)$ is represented by character $a_(i \, j)$.
-If $a_(i \, j)$ is `.`, cell $\( i \, j \)$ is an empty cell; if $a_(i \, j)$ is `#`, cell $\( i \, j \)$
-is a wall cell. It is guaranteed that cells $\( 1 \, 1 \)$ and $\( H \, W \)$ are empty cells.
+對於每個 $\( i \, j \)$，方格 $\( i \, j \)$ 的內容用字符 $a_(i \, j)$ 表示。
+如果 $a_(i \, j)$ 是`.`，表示方格 $\( i \, j \)$ 是一個空方格；如果 $a_(i \, j)$ 是`#`，表示方格 $\( i \, j \)$
+是一個牆方格。保證方格 $\( 1 \, 1 \)$ 和 $\( H \, W \)$ 是空方格。
 
-Taro starts from cell $\( 1 \, 1 \)$ and can move right or down to an adjacent empty cell at each step, with the goal of reaching $\( H \, W \)$.
+Taro 從方格 $\( 1 \, 1 \)$ 出發，每次可以向右或向下移動到相鄰的空方格，目標是到達 $\( H \, W \)$。
 
-Find the number of paths from cell $\( 1 \, 1 \)$ to $\( H \, W \)$. Since the answer may be very large, output it modulo $10^9 + 7$.
+求從方格 $\( 1 \, 1 \)$ 到 $\( H \, W \)$ 的 Taro 路徑數量。由於答案可能非常大，請將結果對 $10^9 + 7$ 取模。
 
-*Input Format*
+*輸入說明*
 
-The input is given in the following format:
+輸入以以下格式給出：
 
 $H$ $W$ $a_(1 \, 1) dots.h.c a_(1 \, W)$
 
@@ -575,90 +607,86 @@ $dots.v$
 
 $a_(H \, 1) dots.h.c a_(H \, W)$
 
-$H$ and $W$ are integers. $2 lt.eq H \, W lt.eq 1000$. $a_(i \, j)$
-is either `.` or `#`. Cells $\( 1 \, 1 \)$ and $\( H \, W \)$ are empty.
+$H$ 和 $W$ 為整數。
+$2 lt.eq H \, W lt.eq 1000$。
+$a_(i \, j)$ 為`.`或`#`。方格 $\( 1 \, 1 \)$ 和 $\( H \, W \)$ 是空方格。
 
-*Output Format*
+*輸出說明*
 
-Output the number of paths from cell $\( 1 \, 1 \)$ to $\( H \, W \)$, modulo
-$10^9 + 7$.
+輸出從方格 $\( 1 \, 1 \)$ 到 $\( H \, W \)$ 的 Taro 路徑數量，對
+$10^9 + 7$ 取模。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3 4`#linebreak()`...#`#linebreak()`.#..`#linebreak()`....`], [`3`],
 )
 
-==== Problem: ZJ b589 Super Marathon Race
-*Problem Statement*
+==== 問題: ZJ b589 超級馬拉松賽
+*題目敘述*
 
-A super marathon race is about to begin. In the game, players must run different routes each day.
-Suppose the game has $n$ routes in total; each route has a different point value.
-If a player cannot complete a route within the time limit, they score zero for that route;
-if a player completes a route within the time limit, they earn the route's designated score;
-if a player completes a route in less time than the limit, they can earn double the points.
+一個超級馬拉松比賽將開始。在遊戲中，選手每天需要跑不同的路徑。
+假設遊戲全部有 n 條路徑; 每個路徑得分可以是不同的。
+如果一名選手不能在規定時間內完成一條路徑，他該路徑得到零分;
+如果玩家完成了一條路徑在一個規定的時間，他得到該路徑設定的得分;
+如果玩家完成了一條路徑，用較短的時間，他可以得兩倍分數。
 
-Xiao Ai wants to participate in this race. If she runs a route at normal speed,
-she earns the base score; if she runs at full speed, she earns double the score,
-but she must rest on the next route (scoring 0 due to fatigue).
-Write a program to help Xiao Ai determine which routes she should run at full speed to maximize her total score.
+小愛想參加這個比賽，她如果在一條路徑上按正常速度來跑，
+就只能拿到原始分數，如果他加速跑，就能拿到兩倍分數，
+不過她就會需要在加速跑完後的下一條路徑上休息而速度變慢得到0分，
+請寫一個程式幫助小愛計算哪些路徑應該加速得到兩倍分數而能獲得最高的總得分。
 
-*Input Format*
+*輸入說明*
 
-The input contains multiple test cases. Each test case has two lines: the first line contains a number $n$
-representing the number of routes, $1 lt.eq n lt.eq 40$; the second line contains $n$
-integers representing the base score of each route,
-$10 lt.eq P 1 \, P 2 \, dots.h.c \, P n lt.eq 100$.
+輸入資料包含多組測試資料，每一組測試資料有兩行，第一行有一個數字 n 代表有 n 條路徑要跑 $1 lt.eq n lt.eq 40$，第二行有 n 個整數代表每個路徑的原始得分 $10 lt.eq P 1 \, P 2 \, dots.h.c \, P n lt.eq 100$
 
-When $n = 0$, it indicates end of input.
+當 n 為 0 時代表輸入結束。
 
-*Output Format*
+*輸出說明*
 
-For each test case, output the best total score on a single line.
+對每一組測試資料輸出最好的總得分，每一筆資料輸出一行。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3`#linebreak()`90 60 10`#linebreak()`0`], [`210`],
 )
 
 #quote(block: true)[
-*Hint:* Consider adding more states, or giving states additional definitions.
+*提示:* 請考慮增加狀態，或是讓狀態有附加定義。
 ]
 
-==== Problem: CF 455A Boredom
-*Problem Statement*
+==== 問題: CF 455A Boredom
+*題目敘述*
 
 Alex
-does not like boredom. So whenever he gets bored, he invents games to play. One long winter night, he thought of a game and decided to play it.
+不喜歡無聊。所以每當他感到無聊，他就會想出遊戲來玩。一個漫長的冬夜，他想出了一個遊戲，決定玩一下。
 
-Given a sequence of $n$ integers
-$a$. A player may perform multiple steps. In each step, the player chooses one element of the sequence (say
-$a_k$) and removes it, while also removing all elements equal to $a_(k + 1)$ and $a_(k - 1)$.
-This step gives the player $a_k$ points.
+給定一個由 $n$ 個整數組成的序列 $a$。玩家可以進行多個步驟。在一個步驟中，他可以選擇序列中的一個元素(假設為
+$a_k$)並刪除它，同時必須刪除所有等於 $a_(k + 1)$ 和 $a_(k - 1)$ 的元素。這一步給玩家帶來 $a_k$ 個分數。
 
-Alex is a perfectionist, so he decides to maximize his score. Help him.
+Alex 是一個完美主義者，所以他決定盡可能地獲得最多的分數。請幫助他。
 
-*Input Format*
+*輸入說明*
 
-The first line contains an integer $n$($1 lt.eq n lt.eq 10^5$), representing how many numbers are in Alex's sequence.
+第一行包含一個整數 $n$($1 lt.eq n lt.eq 10^5$)，表示 Alex 的序列中有多少個數字。
 
-The second line contains $n$ integers
-$a_1 \, a_2 \, dots.h.c \, a_n$($1 lt.eq a_i lt.eq 10^5$).
+第二行包含 $n$ 個整數
+$a_1 \, a_2 \, dots.h.c \, a_n$($1 lt.eq a_i lt.eq 10^5$)。
 
-*Output Format*
+*輸出說明*
 
-Output a single integer representing the maximum score Alex can obtain.
+輸出一個整數，表示 Alex 可以獲得的最大分數。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`9`#linebreak()`1 2 1 3 2 2 2 2 3`], [`10`],
 )
 
 #quote(block: true)[
-*Hint:* The state is somewhat unusual — observe the range of values.
+*提示:* 狀態比較特殊，觀察數字範圍。
 ]

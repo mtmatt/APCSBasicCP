@@ -1,6 +1,6 @@
 #import "../../template.typ": *
 
-= Advanced Data Structures <chapter:AdvancedDS>
+= 進階資料結構 <chapter:AdvancedDS>
 
 #include "AD-LazyTag.typ"
 #include "AD-DinamicTree.typ"

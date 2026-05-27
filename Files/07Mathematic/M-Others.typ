@@ -1,7 +1,7 @@
 #import "../../template.typ": *
 
-== Other Topics
-Slides left by a senior — I haven't learned all of it yet, QwQ.
+== 其他東西
+學長留下來的簡報，我沒有全部學會，QwQ。
 
 #link("https://hackmd.io/@Ccucumber12/Hy8nj-fxt#")
 

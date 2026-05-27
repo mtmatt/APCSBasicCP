@@ -1,30 +1,30 @@
 #import "../../template.typ": *
 
-== Implementing STL Data Structures
+== 實作 STL 的資料結構
 
-Since the standard library already provides these structures, it means we can build them ourselves.
+既然官方的函式庫裡面有這樣的東西，就表示我們可以做一個出來。
 
-=== Implementing vector
+=== 實作 Vector
 
-==== Core Concept: Doubling Strategy
+==== 核心概念：倍增法 (Doubling Strategy)
 
-In many dynamic data structures, we need to expand storage at runtime. Taking `Vector` (or C++'s `std::vector`) as an example, when we keep using `push_back` to add elements, the internally pre-allocated memory will eventually run out.
+在許多動態資料結構中，我們需要在執行期間擴充儲存空間。以 #raw("Vector") (或 C++ 的 #raw("std::vector")) 為例，當我們不斷使用 #raw("push_back") 新增元素時，其內部預先分配的記憶體空間總有被用完的時候。
 
-At that point, we must:
-+ Allocate a *larger* block of new memory.
-+ *Copy* all elements from the old memory to the new memory.
-+ *Free* the old memory space to prevent memory leaks.
-+ Point the pointer to the new memory location.
+這時，我們必須：
++ 配置一塊*更大的*新記憶體。
++ *複製*所有舊記憶體中的元素到新記憶體。
++ *釋放*舊的記憶體空間，以防記憶體洩漏。
++ 將指標指向新的記憶體位置。
 
 
-The key question is: how "large" should the new memory be?
+關鍵問題是：新記憶體應該要多「大」？
 
-- *Linear growth (bad)*: If we only add a fixed amount each time (e.g., `capacity + 10`), as the number of elements $n$ grows, memory reallocations become increasingly frequent, causing the average time complexity of `push_back` to become $O(n)$.
-- *Doubling strategy (Amortized O(1))*: If we expand the space to twice its original size (*space $times 2$*) each time, although the cost of a single expansion is high (it requires $O(n)$ time to copy elements), this situation occurs rarely. Through amortized analysis, it can be proven that after a series of `push_back` operations, the *average time complexity of each operation is constant* $O(1)_("amortized")$. This is a classic strategy of trading space for time, ensuring the performance of `Vector`.
+- *線性增長 (不好)*：如果每次都只增加一個固定的量 (例如 #raw("capacity + 10"))，隨著元素數量 $n$ 的增長，重新配置記憶體的次數會越來越頻繁，導致 #raw("push_back") 的平均時間複雜度變為 $O(n)$。
+- *倍增法 (Amortized O(1))*：如果我們每次都將空間擴充為原來的兩倍 (*空間 $times 2$*)，雖然單次擴充的成本很高 (需要 $O(n)$ 的時間複製元素)，但這種情況很少發生。經過均攤分析 (Amortized Analysis)，可以證明，在經過一系列 #raw("push_back") 操作後，每個操作的*平均時間複雜度為常數時間 $O(1)_("amortized")$*。這是一種空間換取時間的經典策略，確保了 #raw("Vector") 的效能。
 
 
 ==== Vector.h
-This is a simplified `Vector` struct for storing integers.
+這是一個簡化版的 #raw("Vector") 結構，用於儲存整數。
 #code(title: [Vector])[
 ```cpp
 struct Vector {
@@ -54,8 +54,8 @@ struct Vector {
 ```
 ]
 
-==== Vector Implementation
-Below is the complete implementation of `push_back` and `resize`, which are the core of `Vector`.
+==== Vector 實作
+以下是 #raw("push_back") 和 #raw("resize") 的完整實作，這是 #raw("Vector") 的核心。
 
 #code(title: [Suggested implementation for Vector.cpp])[
 ```cpp
@@ -133,19 +133,19 @@ Vector& Vector::resize(int new_size) {
 ```
 ]
 
-==== Applications
+==== 應用
 
-Even though we know the standard library is available, the doubling strategy remains a very useful technique, especially when dealing with *search problems with unknown bounds*.
+即便我們知道有函式庫可以用，倍增法依舊是一個很有用的技巧，尤其是在處理*未知範圍的搜索*問題時。
 
-Moreover, once we have a dynamic array (like `std::vector`), both a *Stack* and a *Queue* can be implemented with ease.
+此外，有了動態陣列 (如 #raw("std::vector")) 之後，*堆疊 (Stack)* 與 *佇列 (Queue)* 就可以被輕易地實作出來了。
 
-=== Implementing Stack
+=== 實作 Stack
 
-Let us first implement a stack. You will find that by using the built-in features of `std::vector`, the stack structure can be simulated very conveniently. We treat the *end* of the `vector` as the *top* of the stack.
+首先我們來實作堆疊 (Stack)。你會發現，只要利用 #raw("std::vector") 內建的功能，就可以非常方便地模擬出堆疊的結構。我們將 #raw("vector") 的*尾端*視為堆疊的*頂端 (top)*。
 
-- `push(value)`: place a new element on top of the stack $arrow.r$ `vector.push_back(value)`
-- `pop()`: remove the element at the top of the stack $arrow.r$ `vector.pop_back()`
-- `top()`: peek at the element at the top of the stack $arrow.r$ `vector.back()`
+- #raw("push(value)") : 將新元素放到堆疊頂端 $arrow.r$ #raw("vector.push_back(value)")
+- #raw("pop()") : 移除堆疊頂端的元素 $arrow.r$ #raw("vector.pop_back()")
+- #raw("top()") : 查看堆疊頂端的元素 $arrow.r$ #raw("vector.back()")
 
 
 #code(title: [Implementing Stack with std::vector])[
@@ -229,25 +229,25 @@ int main(void) {
 ```
 ]
 
-=== Implementing Queue
+=== 實作 Queue
 
-Next let us implement a queue. A queue follows the "First In, First Out (FIFO)" principle. If we use `std::vector` directly, pushing at the end (`push_back`) is efficient, but popping from the front (`erase(begin())`) has $O(N)$ time complexity because all subsequent elements must be shifted — this becomes very slow for large data.
+接著我們來實作佇列 (Queue)。佇列的特性是「先進先出 (FIFO)」。如果直接使用 #raw("std::vector")，從尾端推入 (#raw("push_back")) 很有效率，但從頭部彈出 (#raw("erase(begin())")) 的時間複雜度是 $O(N)$，因為需要移動後方所有元素，這在資料量大時會非常慢。
 
-To solve this problem, we will use `std::vector` to simulate a more efficient structure: a *Circular Array*.
+為了解決這個問題，我們將利用 #raw("std::vector") 模擬一個更高效的結構：*環狀陣列 (Circular Array)*。
 
-==== Core Concept: Circular Array
+==== 核心概念：環狀陣列
 
-We use two pointers, `l` (left/front) and `r` (right/rear), to mark the head and tail of the queue.
-- `l`: points to the first element in the queue.
-- `r`: points to *the position one past the last element* of the queue.
-- `sz`: the actual number of elements in the queue.
-- `capacity`: the total capacity of the underlying `vector`.
+我們使用兩個指標 #raw("l") (left/front) 和 #raw("r") (right/rear) 來標記佇列的頭部與尾部。
+- #raw("l"): 指向佇列的第一個元素。
+- #raw("r"): 指向佇列*最後一個元素的下一個位置*。
+- #raw("sz"): 佇列中實際的元素數量。
+- #raw("capacity"): 底層 #raw("vector") 的總容量。
 
-When the `l` or `r` pointer reaches the end of the array, we wrap it back to the beginning — this is the "circular" concept, implemented via the modulo operation (\verb|
+當 #raw("l") 或 #raw("r") 指標移動到陣列末端時，我們會讓它「繞回」到陣列的開頭，這就是「環狀」的概念，可以透過模數運算 (#raw("%")) 實現。
 
-When the queue is full (`sz == capacity`) and we need to push another element, we perform an *expansion*, i.e., the `resize` hinted at in the problem. During expansion, we "straighten out" the elements of the circular array and copy them into a larger new array.
+當佇列已滿 (#raw("sz == capacity")) 且需要再次推入元素時，我們會進行*擴容*，也就是題目提示的 #raw("resize")。擴容時，我們會將環狀陣列中的元素「拉直」，並複製到一個更大的新陣列中。
 
-==== Implementation
+==== 程式實作
 
 #code(title: [Implementing Queue with a Circular Array])[
 ```cpp
@@ -356,41 +356,40 @@ int main(void) {
 ```
 ]
 
-=== Implementing Priority Queue
+=== 實作 Priority Queue
 
-A heap is a special tree-based data structure that simulates tree behavior on top of an array through parent-child index relationships, making it very efficient. Below we use a *Max Heap* as our example, which must satisfy the following properties:
+堆積是一種特殊的樹狀資料結構，它在陣列的基礎上，透過父子節點的索引關係來模擬樹的行為，因此效率很高。以下我們以*最大堆積 (Max Heap)* 為例，其必須滿足以下性質：
 
-+ *Heap Property*: The value of a parent node is always *greater than or equal to* the values of its child nodes. This ensures the maximum value is always at the root of the tree.
-+ *Shape Property*: A heap is a *Complete Binary Tree*. This means every level of the tree is fully filled except possibly the last level, and nodes in the last level are packed as far left as possible. This property allows us to store it compactly in an array.
-
-
-A *Binary Tree* is a tree structure where each node has at most two child nodes.
-
-==== Main Heap Operations
-- *Build Heap:* Transform an unsorted array into a structure that satisfies the heap property. This process is also called *Heapify*.
-- *Insert:* Insert a new element into the heap while maintaining the heap property.
-- *Extract Max:* Remove and return the maximum element (i.e., the root node) from the heap, while maintaining the heap property.
++ *堆積性質 (Heap Property)*: 父節點 (Parent Node) 的值總是*大於等於*其子節點 (Child Nodes) 的值。這確保了最大值永遠在樹的根節點。
++ *結構性質 (Shape Property)*: 堆積是一個*完全二元樹 (Complete Binary Tree)*。這意味著樹的每一層都是滿的，除了最底層；且最底層的節點都盡量靠左對齊。這個性質讓我們能用陣列來緊湊地儲存它。
 
 
-==== Detailed Operation Algorithms
-To implement the above operations, we need two core helper functions: `sift_down` and `sift_up`.
+*二元樹 (Binary Tree)* 是一種每個節點最多只能有兩個子節點的樹狀結構。
 
-*Sift Down*
-When a node's value is smaller than its children, violating the heap property, we swap it with its *larger child* and repeat this process downward until it is no longer smaller than its children or it becomes a leaf node. This operation is the foundation of *Build Heap* and *Extract Max*.
+==== Heap 主要操作
+- *Build Heap (建堆):* 將一個無序的陣列轉換成滿足堆積性質的結構。這個過程也稱為 *Heapify*。
+- *Insert (插入):* 在堆積中插入一個新元素，同時維持堆積性質。
+- *Extract Max (取出最大值):* 移除並回傳堆積中的最大元素（即根節點），同樣要維持堆積性質。
 
-*Sift Up*
-When we add a new element at the end of the heap, this new element may be larger than its parent node. We swap it with its parent and repeat this process upward until its value is less than or equal to its parent, or it has reached the root node. This operation is the foundation of *Insert*.
 
-==== Code Implementation
+==== 操作演算法詳解
+為了實現上述操作，我們需要兩個核心的輔助函式：#raw("sift_down")（下沉）和 #raw("sift_up")（上浮）。
 
-Next, we will implement a max heap. We use `std::vector` to store data and compute parent-child relationships via index arithmetic.
+*Sift Down (下沉)*
+當某個節點的值小於其子節點，破壞了堆積性質時，我們讓它與其*較大的子節點*交換位置，並一路向下重複此過程，直到它不再小於其子節點，或成為葉節點為止。這個操作是 *Build Heap* 和 *Extract Max* 的基礎。
 
-- For a node at index `i`:
-- Its left child index is `2*i + 1`
-- Its right child index is `2*i + 2`
-- Its parent index is `(i - 1) / 2`
+*Sift Up (上浮)*
+當我們在堆積末端加入一個新元素時，這個新元素可能比其父節點大。我們讓它與其父節點交換位置，並一路向上重複此過程，直到它的值小於等於其父節點，或已到達根節點為止。這個操作是 *Insert* 的基礎。
 
-The code template below already provides helper functions for these index calculations.
+==== 程式碼實作與詳解
+
+接下來，我們將實作一個最大堆積。我們使用 #raw("std::vector") 來儲存資料，並透過索引計算來模擬父子關係。
+
+- 索引為 #raw("i") 的節點：
+- 其左子節點索引為 #raw("2*i + 1")
+- 其右子節點索引為 #raw("2*i + 2")
+- 其父節點索引為 #raw("(i - 1) / 2")
+下面的程式碼模板已經提供了這些索引計算的輔助函式。
 
 #code(title: [Implementing Heap with Vector])[
 ```cpp
@@ -497,5 +496,5 @@ int Heap::pop_top() {
 ```
 ]
 
-=== Implementing Set and Map
-Set and Map are two very commonly used data structures, used to store unique elements and key-value pairs respectively. They are typically implemented using a balanced binary search tree (such as a red-black tree) to ensure $O(log n)$ time complexity for operations. Therefore, implementing them from scratch would be quite difficult at this stage. In competitive programming, a Treap is used as a substitute. Treap will be introduced later.
+=== 實作 Set 與 Map
+Set 和 Map 是兩個非常常用的資料結構，分別用於儲存唯一元素和鍵值對。它們通常使用平衡二元搜尋樹 (如紅黑樹) 來實現，以確保操作的時間複雜度為 $O(log n)$。所以這對目前的你們來說，實作起來會有點困難。在競賽上會使用 Treap 取代。 Treap 將會在後面介紹。

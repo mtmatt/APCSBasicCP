@@ -1,10 +1,10 @@
 #import "../../template.typ": *
 
-== Going Further
-You can watch this video #link("https://www.youtube.com/watch?v=CFRhGnuXG-4")[https://www.youtube.com/watch?v=CFRhGnuXG-4]. The key takeaway is to avoid having too many levels of nesting.
+== 更進一步
+可以去看這一部影片 #link("https://www.youtube.com/watch?v=CFRhGnuXG-4")[https://www.youtube.com/watch?v=CFRhGnuXG-4] ，重點是不要有太多層的迴圈。
 
-=== Example: A five-level nesting example
-#code(title: [An example with too many levels])[
+=== 範例：五層的範例
+#code(title: [太多層的例子])[
 ```cpp
 bool check(int a,int b){
     if(a+b>100){
@@ -28,9 +28,9 @@ bool check(int a,int b){
 ```
 ]
 
-The same code can be written like this, making it much easier to grasp what you are trying to express.
+同樣的程式碼可以寫成這樣，會比較容易掌握你要表達的意義。
 
-#code(title: [Improved version])[
+#code(title: [改進的版本])[
 ```cpp
 void modify(int &a,int &b){
     for(int j=0;j<a+b;++j){
@@ -58,4 +58,4 @@ bool check(int a,int b){
 ```
 ]
 
-In addition, we can try to follow another principle: each function should do only one thing and should not exceed 30 lines. This makes code much easier to read.
+除此之外，我們也可以嘗試遵守一個原則，就是一個函數只做一件事情，並且不要超過30行，這樣會讓程式碼更容易閱讀。

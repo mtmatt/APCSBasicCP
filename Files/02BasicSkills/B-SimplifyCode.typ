@@ -1,9 +1,9 @@
 #import "../../template.typ": *
 
-== Macros and Code Simplification Techniques
-Personally, I don't use macros heavily, but many people like them, so I've listed some of the more commonly used ones here for reference.
+== 巨集和程式碼簡化技巧
+我個人其實並沒有大量地使用巨集，但是有許多人喜歡，因此我先列出一些較常用的以供參考。
 
-#code(title: [Macros])[
+#code(title: [巨集們])[
 ```cpp
 using namespace std;
 
@@ -37,9 +37,9 @@ using pll=pair<ll,ll>;
 ```
 ]
 
-There are also some that I never use at all.
+還有一些我完全沒有在使用的。
 
-#code(title: [More Macros])[
+#code(title: [更多巨集們])[
 ```cpp
 using ld=long double;
 template<typename T> using Stack=stack<T,vector<T>>;
@@ -63,5 +63,5 @@ using pdd=pair<ld,ld>;
 ]
 
 #tip[
-Some might say that not everything here is actually a macro — and you would be correct. However, since they serve similar purposes, I refer to them all as macros here.
+有人會說，這裡面有些不是巨集，沒有錯，你是對的，不過因為功能近似，所以我在這裡通稱他們巨集。
 ]

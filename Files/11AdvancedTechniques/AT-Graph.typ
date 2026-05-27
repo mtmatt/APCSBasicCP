@@ -1,65 +1,61 @@
-== Advanced Graph Theory
+#import "../../template.typ": *
+
+== 進階圖論
 === DFS Tree
-The DFS Tree is a way to analyze a graph. We run DFS on the graph
-and classify all the edges.
+DFS Tree 是一個用來分析圖的一種方式，我們會對一張圖做DFS，然後對所有邊分類。
 
 #figure(image("../Images/AT1.png", width: 80.0%),
   caption: none
 )
 
-For an undirected graph, we can classify edges into two types:
+如果是無向圖，則我們可以將邊分為兩類。
 
-- Tree Edge: the destination vertex is being visited for the first time during DFS.
+- Tree Edge ：到達的點在DFS過程中是第一次被拜訪。
 
-- Back Edge: the destination vertex has *already* been visited during DFS.
+- Back Edge：到達的點在DFS過程中*不*是第一次被拜訪。
 
-For a directed graph, we can classify edges into four types:
+而如果是有向圖，則我們可以將邊分為四類。
 
-- Tree Edge: the destination vertex is being visited for the first time during DFS.
+- Tree Edge ：到達的點在DFS過程中是第一次被拜訪。
 
-- Back Edge: the destination is an ancestor of the source (smaller depth, and the common ancestor is one of the two vertices themselves).
+- Back Edge ：到達的點在他出發點的上面(深度較小，且共同祖先就是其中一個點)
 
-- Forward Edge: the destination is a descendant of the source (greater depth, and the common ancestor is one of the two vertices themselves).
+- Forward Edge ：到達的點在他出發點的下面(深度較大，且共同祖先就是其中一個點)
 
-- Cross Edge: an edge between different subtrees (the common ancestor is *not* either of the two vertices).
+- Cross Edge ：不同家族間的邊。(共同祖先*不*是其中一個點)
 
 #figure(image("../Images/AT2.png", width: 80.0%),
   caption: none
 )
 
-Several properties can be derived from the DFS Tree. For example, regarding cycles: if an edge is a Back Edge,
-it definitely lies on a cycle passing through that edge. If it is a Cross Edge, it may or may not be on a cycle,
-but any such cycle must pass through at least two Cross Edges or Back Edges.
+有一些性質可以從DFS Tree得到。例如環，如果一個邊是Back Edge，那他一定有環經過這個邊，如果他是Cross Edge，則有可能有環在上面，且必定經過至少兩個Cross Edge或Back Edge。
 
-=== Edge-Biconnected Components
-Before introducing edge-biconnected components, we should first define edge-biconnectivity. We say vertices $a$ and $b$ are
-edge-biconnected if removing any single edge from the graph does not disconnect $a$ from $b$.
+=== 邊雙連通分量
+介紹邊雙連通分量前，我們應該要先介紹邊雙聯通的定義。如果我們說點$a$到點$b$為邊雙連通，那麼就算我們刪掉這張圖的任何一條邊也不會影響$a$與$b$的聯通性。
 
-Edge-biconnectivity satisfies transitivity: if $a$ and $k$ are edge-biconnected, and $k$ and $b$ are edge-biconnected,
-then $a$ and $b$ are also edge-biconnected.
+邊雙連通滿足遞移律，也就是如果$a$到$k$邊雙連通，且$k$到$b$也邊雙連通，那麼$a$到$b$就會邊雙連通。
 
-In this context, a new term emerges: a bridge (also called a cut edge) — an edge whose removal disconnects the graph.
+在這個情況下我們會有一個新的名詞，橋(Bridge / Cut Edge)，就是如果沒有他整張圖就沒有連通的邊。
 
-To find all bridges, we need a new algorithm: Tarjan's algorithm.
+倘若我們想要找到所有的橋，我們就會需要一個新的演算法-Tarjan算法。
 
 #figure(image("../Images/AT3.png", width: 50.0%),
   caption: none
 )
 
-Side note: Many algorithms Tarjan invented are named after him, which can sometimes be confusing.
+小插曲：有許多他發明的演算法都以他的名字命名，所以有時候會讓人混淆。
 
-Concretely, we can use the DFS Tree. First, a Back Edge is never a bridge, because
-all Tree Edges keep the remaining graph connected (within each connected component).
+具體來說，我們可以運用DFS Tree，首先，Back Edge一定不是橋，因為所有的Tree Edge一定會讓剩餘圖連通(對於每一個連通分量而言)。
 
-To determine whether a Tree Edge is a bridge, we need a new function: $l o w \( v \)$.
+那怎麼判斷Tree Edge是不是橋，我們需要有一個新的函數：$"low"(v)$。
 
-$ l o w \( v \) := "the minimum depth of any ancestor reachable from" v "without using" v"'s parent edge" $
+$"low"(v) := "在不透過v的父邊的情況下，能夠到達深度最淺的祖先的深度"$
 
-The other function we already have is $d e p \( v \)$: the depth of $v$ in the tree, i.e., its distance from the root.
+另一個原來就有的函數是$"dep"(v)$，就是他在樹上的深度，也是到根節點的距離。
 
-If $l o w \( v \) = d e p \( v \)$, then $v$'s parent edge is a bridge. $l o w \( v \)$ can be computed via DP.
+如果$"low"(v)="dep"(v)$，則他的父邊就是橋。而$"low"(v)$可以用DP求得。
 
-==== Code: Edge-Biconnected Components
+==== Code: 邊雙連通
 
 ```
 const int N=100010;
@@ -83,8 +79,8 @@ void dfs(int x){
 }
 ```
 
-=== Other Topics
-Still under construction — please visit #link("https://hackmd.io/@Ccucumber12/HylySg2xF#")
+=== 其他東西
+油漆未乾，請轉駕至 #link("https://hackmd.io/@Ccucumber12/HylySg2xF#")
 
 #figure(image("../Images/AT4.png", width: 20.0%),
   caption: none

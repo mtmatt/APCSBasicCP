@@ -1,6 +1,6 @@
 #import "../../template.typ": *
 
-= Mathematics <chapter:Mathematic>
+= 數學 <chapter:Mathematic>
 
 #include "M-PrimeTest.typ"
 #include "M-GCD.typ"

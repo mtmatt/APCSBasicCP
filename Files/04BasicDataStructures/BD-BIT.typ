@@ -1,21 +1,21 @@
 #import "../../template.typ": *
 
-== Binary Indexed Tree
-A Binary Indexed Tree (BIT) is a helper structure for fast dynamic range sum queries.
+== 樹狀數組
+樹狀數組又稱為BIT，是個快速動態求取區間和的助手。
 
-=== Review
-Remember prefix sums? They are also used to compute range sums, but as you may have noticed, if any single value needs to be modified, the entire prefix array must be updated, which increases the time complexity significantly.
+=== 回顧
+還記得前綴和嗎，他也是用來求區間和的，但你應該會發現，若當中有一個值需要被修改，那整列都會被動到，因此複雜度就會增加。
 
-The following comparison table illustrates the power of BIT.
+以下是一個比較表，可以讓你了解BIT的強大之處。
 
 #table(columns: 3, stroke: .5pt, inset: 5pt,
-  [Data Structure],
-  [Range Sum Query],
-  [Point Update],
-  [Plain Array],
+  [資料結構],
+  [查詢區間和],
+  [單點修改值],
+  [純陣列],
   [$O(n)$],
   [$O(1)$],
-  [Prefix Sum],
+  [前綴和],
   [$O(1)$],
   [$O(n)$],
   [BIT],
@@ -23,13 +23,13 @@ The following comparison table illustrates the power of BIT.
   [$O(log(n))$],
 )
 
-=== Purpose and Concept
-BIT is used to compute range sums quickly while also guaranteeing fast updates. It feels like a product combining the advantages of plain arrays and prefix sums, though it is also the most complex of the three. In the diagram below, each number represents the interval that node stores.
+=== 用途與概念
+BIT用於在快速求取區間和的同時，又能保證快速修改。感覺像是陣列與前綴和的優點結合下的產物，不過其複雜程度也是三者之中最高的。示意圖中數字代表它儲存的區間。
 
 #align(center)[#image("../Images/BIT.png", width: 100%)]
-#align(center)[_BIT Diagram_]
+#align(center)[_BIT 示意圖_]
 
-For example, to find the sum of `1-5`, you can query `1-4` plus `5`. The table below shows the intervals needed for each prefix query.
+如果想要知道`1-5`的和，可以查詢`1-4+5`。以下為查詢所需區間表。
 
 #table(columns: 8, stroke: .5pt, inset: 5pt,
   [1],
@@ -50,40 +50,40 @@ For example, to find the sum of `1-5`, you can query `1-4` plus `5`. The table b
   [1--8],
 )
 
-We can observe that when there are $8$ elements, at most $3$ intervals need to be queried to get the prefix sum `1-n`. Then, just like with prefix sums, we can compute any range sum using `(1 to R) - (1 to L-1)`.
+可以發現，在元素數量為$8$時，最多會需要查詢$3$個區間就可以得到`1-n`的值，接著就像前綴和那樣，用`1~R - 1~(L-1)`就可以求出所有區間的和了。
 
-=== Implementation
-BIT is generally implemented using an array, with each interval's maximum index as the storage position (e.g., `1-4` is stored at position `4`). What about querying and updating? This part is a bit more complex and requires understanding binary representation. If you already understand binary, keep reading.
+=== 實作
+BIT一般都是用陣列實作，用區間最大值作為存放位置(例如`1-4`放在`4`)。那搜尋與修改呢？這部分就比較複雜了，需要了解一些二進位制，如果你已經理解二進位制了，那就繼續往下看吧。
 
 *lowbit*
 
-lowbit is the rightmost set bit in binary representation. For example: 6 (000110) has lowbit 2 (000010).
+lowbit是在二進位下右邊看過來最前面的1，例如：6(000110)就是2(000010)
 
-*Query*
+*查詢*
 
-We can observe that subtracting `lowbit(x)` from $x$ repeatedly will eventually reach 0, and along the way it passes through all the intervals needed. Take 7 as an example.
+可以發現，$x$重複$-"lowbit"(x)$會變成0，且途中會經過所有需要的區間。以7為例。
 
 ```text
 7(000111) \to 6(000110) \to 4(000100 \to 0(000000))
 ```
 
-By summing up all the intervals encountered, we get the range sum. This also explains why the query complexity is $O(log(n))$: a number $n$ has at most $log(n)$ bits.
+只要將所有經過的區間加在一起，就可以得到區間和了。這也呼應為何他查尋的複雜度為$O(log(n))$，因為$n$最多只會有$log(n)$個 bit。
 
-*Update*
+*修改*
 
-Update works similarly, but instead we add `lowbit(x)` to $x$, which ensures all intervals that contain the updated position are also updated. Take $3$ as an example.
+修改也有些相似，變成$x$加上$"lowbit"(x)$，就會將上面有包含到他的區間也都更新到。以$3$為例。
 
 ```text
 3(000011) \to 4(000100) \to 8(001000)
 ```
 
-Because each step causes a carry, this process also takes at most $O(log(n))$ steps. This also highlights the importance of `lowbit`.
+因為每一次都會進位，所以這樣最多也是$O(log(n))$。也可以發現`lowbit`的重要性。
 
-*Code*
+*程式碼*
 
 #code(title: [BIT])[
 ```cpp
-#define lowbit(x) (x&-x)
+#define "lowbit"(x) (x&-x)
 // equivalent to: int lowbit(int x){ return x&-x;}
 // Using a define or function won't make your code faster to write,
 // but it makes it easier to understand.
@@ -96,14 +96,14 @@ ll a[200010];
 // The build function constructs the BIT by updating all elements one by one
 void build(int n){
     for(int i=1;i<=n;++i)
-        for(int x=i;x<200005;x+=lowbit(x))
+        for(int x=i;x<200005;x+="lowbit"(x))
             bt[x]+=a[i];
 }
 
 // Point add
 void add(int x,int k){
     a[x]+=k;
-    for(int i=x;i<=200005;i+=lowbit(i))
+    for(int i=x;i<=200005;i+="lowbit"(i))
         bt[i]+=k;
 }
 
@@ -115,7 +115,7 @@ void modify(int x,int k){
 // Query the prefix sum from 1 to x
 ll find_sum(int x){
     ll ret=0;
-    for(int i=x;i>0;i-=lowbit(i))
+    for(int i=x;i>0;i-="lowbit"(i))
         ret+=bt[i];
     return ret;
 }
@@ -127,36 +127,36 @@ ll query(int l,int r){
 ```
 ]
 
-=== Examples and Practice
-==== Problem: ZJ d796 Regional Survey (adapted from POJ 1195 Mobile phones)
+=== 範例與練習
+==== Problem: ZJ d796 區域調查(POJ.1195 Mobile phones 改編)
 
-*Problem Statement*
+*題目敘述*
 
-Given a matrix $T(1,1), T(1,2),.... T(N,M)$, either query the sum from $T(x_1,y_1)$ to $T(x_2,y_2)$, or update the value of $T(x_1,y_1)$.
+給一個矩陣 $T(1,1), T(1,2),.... T(N,M)$，求 $T(x_1,y_1)$  到 $T(x_2,y_2)$ 的總和 或者是修改 $T(x_1,y_1)$ 的值。
 
-*Input Description*
+*輸入說明*
 
-The first line of each test case contains two positive integers $N$ and $Q$ $( 1 <= N <= 250,  Q <= 5 times 10^5)$.
+每組輸入的第一行會有兩個正整數 $N \; Q$ $( 1 <= N <= 250,  Q <= 5 times 10^5)$。
 
-The next $N$ lines each contain $N$ elements $M$ $( 0 <= M <= 32767 )$.
+接下來會有 $N$ 行，每行上會有 $N$ 個元素 $M$ $( 0 <= M <= 32767 )$。
 
-The next $Q$ lines follow. If the first number is $1$, there are four more numbers:
+接下來會有 $Q$ 行，倘若第一個數字為$1$，則接下來會有四個數字：
 
-$x_1 , y_1 , x_2 , y_2,\quad 1 <= x_1 , y_1 , x_2 , y_2 <= 250$
+$x_1 , y_1 , x_2 , y_2， 1 <= x_1 , y_1 , x_2 , y_2 <= 250$
 
-Output the sum of all elements $S={( x , y )   |   x_1 <= x <= x_2, y_1 <= y <= y_2 }$.
+請輸出元素 $S={( x , y )   |   x_1 <= x <= x_2, y_1 <= y <= y_2 }$符合的所有元素總和。
 
-If the first number is $2$, there are three more numbers:
+倘若第一個數字為$2$，則接下來會有三個數字：
 
-$x_1 , y_1 , V,\quad 1 <= x_1 , y_1 <= 250 , 0 <= V <= 32767$
+$x_1 , y_1 , V， 1 <= x_1 , y_1 <= 250 , 0 <= V <= 32767$
 
-Update $( x_1 , y_1 )= V$. No output is required for this operation.
+請修改 $( x_1 , y_1 )= V$ ，此行不必輸出。
 
-*Output Description*
+*輸出說明*
 
-For a query operation, output the sum of the elements in the region. For an update operation, output nothing.
+若為調查，則輸出區域中的元素總和，若為修改，則不必輸出。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
   [Sample Input 1], [Sample Output 1],
@@ -164,60 +164,59 @@ For a query operation, output the sum of the elements in the region. For an upda
 )
 
 #tip[
-BIT can also be extended to two dimensions.
+BIT同樣可以做成二維。
 ]
 
-==== Problem: ZJ d847 98th Academic Year Central Taiwan District Informatics Olympiad — 2D Rank Finding Problem
+==== Problem: ZJ d847 98學年度中投區資訊學科能力競賽 2D rank finding problem
 
-*Problem Statement*
+*題目敘述*
 
-2D rank finding problem: Given two points $A = (a_1,a_2)$ and $B = (b_1,b_2)$ in 2D space, we define $A > B$ if and only if $a_1 > b_1$ and $a_2 > b_2$, meaning point A is to the upper-right of point B. Note that not every pair of points has a defined ordering — for example, points A and E, or D and E in the diagram below, are incomparable. Given $N$ points $(x_1,y_1), (x_2,y_2), dots.c, (x_n,y_n)$, define the rank of a point as the number of points in the given set that are smaller than it.
+二度空間上的排名計算問題(2D rank finding problem)：給定二度平面空間$(2D)$上的點$A = (a_1,a_2)$與點$B = (b_1,b_2)$，其大小關係定義為若$A > B$若且唯若 $a_1 > b_1$ 且 $a_2 > b_2$，亦即A點在B點的右上方。值得注意的是，並非任意兩點均可以決定大小關係，如下圖中的點A與點E，點D與點E等，無法決定這兩點的大小關係故為無法比較(incomparable)。給定N個點$(x_1,y_1), (x_2,y_2), dots.c, (x_n,y_n)$，定義某一個點的排名(rank) 為所給的點集合中，比該點小的點的個數。
 
-Design a program that reads point names and coordinates from a file and computes the rank of every point in the given set.
+設計一個程式，從檔案讀取點的名稱與座標，計算出在所給定的集合中，所有點的排名值。
 
-*Input Description*
+*輸入說明*
 
-There are multiple test cases.
+有多組測試資料。
 
-The first line of each test case contains a number $N   ( 1 <= N <= 10000 )$.
+每組的第一行有一個數字$N \; ( 1 <= N <= 10000 )$。
 
-The next $N$ lines each contain two numbers $x,   y   ( 1 <= x , y <= 1000 )$.
+接下來會有$N$行，每行上會有兩個數字  $x, \; y \; ( 1 <= x , y <= 1000 )$。
 
-*Output Description*
+*輸出說明*
 
-For each point $( x , y )$ in the input order, output how many points $( a , b )$ satisfy $a < x$ and $b < y$ (i.e., are strictly to the lower-left).
+請按照輸入的順序，求出對於 $( x , y )$ 有多少個點 $( a , b )$ 在它的左下方 $a < x , b < y$。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
   [Sample Input 1], [Sample Output 1],
   [`5`#linebreak()`961 404`#linebreak()`640 145`#linebreak()`983 888`#linebreak()`539 71`#linebreak()`437 532`], [`2`#linebreak()`1`#linebreak()`4`#linebreak()`0`#linebreak()`0`],
 )
 
-==== Problem: Low-lying Distance (APCS October 2020)
+==== Problem: 低地距離(2020年10月APCS)
 
-*Problem Statement*
+*題目敘述*
 
-Given an array of length $2n$ where each number from $1$ to $n$ appears exactly $2$ times.
+輸入一個長度為 $2n$ 的陣列，其中 $1 - n$ 的每個數字都剛好各 $2$ 次。
 
-The low-lying value of $i$ is defined as the number of values smaller than $i$ located between the two occurrences of $i$.
+$i$ 的低窪值的定義是兩個數值為 $i$ 的位置中間，有幾個小於 $i$ 的數字。
 
-For example, in $[3, 1, 2, 1, 3, 2]$: the low-lying value of $1$ is $0$, of $2$ is $1$, and of $3$ is $3$.
+以 $[3, 1, 2, 1, 3, 2]$ 為例，$1$的低窪值為 $0, 2$ 的低窪值為 $1, 3$ 的低窪值為 $3$。
 
-For each number from $1$ to $n$, compute its low-lying value (i.e., how many numbers between its two occurrences are smaller than it), and output the total sum of all low-lying values. The answer may exceed the C++ `int` limit.
+請對於每個 $1 - n$ 的數字都求其低窪值（兩個相同的數字之間有幾個數字比它小），輸出低窪值的總和，答案可能會超過 $C++$ `int` 的上限。
 
-*Input Description*
+*輸入說明*
 
-The first line contains a positive integer $n,   n <= 10^5$.
+第一行有一個正整數 $n, \; n <= 10^5$。
 
-The second line contains $2n$ positive integers separated by spaces, with each number from $1$ to $n$ appearing exactly twice.
+第二行有 $2n$ 個正整數，以空格分隔，保證 $1 - n$ 每個數字都恰好出現兩次。
 
+*輸出說明*
 
-*Output Description*
+輸出 $1 - n$ 每個數字的低窪值總和。
 
-Output the sum of the low-lying values for all numbers from $1$ to $n$.
-
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
   [Sample Input 1], [Sample Output 1],

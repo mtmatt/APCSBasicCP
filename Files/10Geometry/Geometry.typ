@@ -1,4 +1,6 @@
-= Computational Geometry <chapter:Geometry>
+#import "../../template.typ": *
+
+= 計算幾何 <chapter:Geometry>
 
 #include "G-Vector.typ"
 #include "G-Operation.typ"

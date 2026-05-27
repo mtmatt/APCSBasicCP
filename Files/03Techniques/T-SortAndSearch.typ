@@ -1,18 +1,18 @@
 #import "../../template.typ": *
 
-== Sorting and Searching
+== 排序與搜尋
 
-=== Sorting
-#align(right)[_Author: ShangJhe Li_]
-Sorting means reorganizing all data so that it is convenient for later searching. Many algorithms are built on top of sorting—binary search is one example.
+=== 排序
+#align(right)[_ShangJhe Li_]
+排序就是將所有的資料重新整理，方便後面搜索使用。許多演算法都是建立在排序上，例如二分搜尋法就是其中之一。
 
-There are many sorting algorithms; the most common are merge sort and quicksort. For detailed sorting algorithms, please refer to other resources.
+排序有很多種，最常見的就是合併排序、快速排序。詳細的排序演算法可以參考其他網站。
 
-In competitive programming with C++, we can directly use the `sort()` function to sort everything. (That said, it is still recommended to learn the two algorithms mentioned above.)
+在程式競賽上，如果你使用C++，則我們可以直接利用 #raw("sort()") 函式將所有東西排好。(但還是建議上述兩個演算法要學會)
 
-In general, `sort` uses `less<T>` for comparison, i.e., ascending order. So we only need to pass the start and end pointers.
+一般情況下， #raw("sort") 都會用 #raw("less<T>") 來排序，也就是由小到大。因此我們只需要給他你要排序的起點終點就可以了。
 
-#code(title: [Basic sort])[
+#code(title: [一般的sort])[
 ```cpp
 int n,a[100];
 sort(a,a+n);
@@ -22,9 +22,9 @@ sort(b.begin(),b.end());
 ```
 ]
 
-If you want to sort in descending order, there are several ways to do so.
+但如果你希望他由大到小，我們有許多方式可以用。
 
-#code(title: [Sort in Descending Order])[
+#code(title: [由大到小排])[
 ```cpp
 int n,a[100];
 sort(a,a+n,greater<int>());
@@ -52,94 +52,88 @@ sort(b.begin(),b.end(),cmp);
 ```
 ]
 
-Sharp-eyed readers may have noticed that the last three methods can be used to implement all kinds of custom sorting.
+眼尖的你或許有發現可以利用後面三種方法，完成各種方式的排序。
 
-That is exactly why we do not need to implement sorting algorithms from scratch for now.
+沒有錯，這就是為什麼我們暫時不需要學習自己寫演算法。
 
-==== Example: 1st Excellence Cup C. Safe Sorter
+==== Example: 第一屆卓越盃 C.Safe Sorter
 
-Our safe is now placed into a sorter with many nodes (as shown below). The placement rules are as follows.
+我們的保險箱現在要放到一個分類器之中，此分類器有許多節點(如下圖)，放入的規則如下。
 
 #align(center)[#image("../Images/SaveSorter.png", width: 100%)]
 
-- If the node is empty, the safe occupies that node.
-- Otherwise, if the safe being inserted has more gold bars than the safe already at the node, it is sent to the right.
-- Otherwise it is sent to the left.
-- This continues until the safe occupies an empty node.
+- 如果該節點還沒有任何保險箱，此保險箱就會佔據該節點
+- 否則若這個要放入的保險箱裡面的金塊比在該節點的保險箱還要多，他會被往右邊送
+- 否則就往左邊送
+- 必須送到他占用一個節點為止
 
+以下圖為例
 
-Using the figure below as an example:
+- 第一個放進來的保險箱有 8 個金塊
+- 第二個有 10 個，因此他被放在右邊
+- 第三個有 14 個，因此第一步會先往右送，發現右邊的節點也有保險箱了，因而再次被往右送
+- 第四個有 3 個，於是被放在左邊
+- 其他依此類推
 
-- The first safe inserted has 8 gold bars.
-- The second has 10, so it is placed to the right.
-- The third has 14: it first goes right, finds the right node already occupied, and is sent right again.
-- The fourth has 3, so it is placed to the left.
-- And so on.
+由於分類器內部構造太大，不方便進入，所以開發者在分類器中內建一套電梯探訪順序，以及記錄規則供使用者參考，避免保險箱被重複計算或是漏算。如下
 
+- 當此節點的左邊有保險箱，電梯優先向左
+- 當此節點的左邊的保險箱都被記錄過了，或是左邊根本沒有保險箱，紀錄當前所在的節點裡面保險箱的金條數量
+- 然後電梯向右
 
-Because the internal structure of the sorter is too large to enter, the developer has built in an elevator traversal order and recording rules for users to reference, to avoid counting safes more than once or missing any. The rules are as follows:
+同樣以上圖為例
 
-- If this node has a safe to the left, the elevator goes left first.
-- When all safes to the left of this node have been recorded, or there is no safe to the left, record the number of gold bars in the safe at the current node.
-- Then the elevator goes right.
+- 節點 8 的左邊有其他保險箱 >> 電梯向左
+- 進到節點 3 >> 同上 >> 電梯向左
+- 進到節點 1 >> 左右邊都沒有保險箱 >> 記下 1 >> 電梯回到節點 3
+- 左邊都記錄過了 >> 記下 3 >> 右邊有保險箱 >> 電梯向右
+- 進到節點 6 >> 左邊有其他保險箱 >> 電梯向左
+- 進到節點 4 >> 左右邊都沒有保險箱 >> 記下 4 >> 電梯回到節點 6
+- 左邊都記錄過了 >> 記下 6 >> 右邊有保險箱 >> 電梯向右
+- 進到節點 7 >> 左右邊都沒有保險箱 >> 記下 7 >> 電梯回到節點 6
+- 電梯回到節點 3 >> 電梯回到節點 8 >> 左邊保險箱紀錄完畢 >> 記下 8 >> 右邊有保險箱 >> 電梯向右
+- 進到節點 10 >> 左邊沒有保險箱 >> 記下 10 >> 右邊有保險箱 >> 電梯向右
+- 進到節點 14 >> 左邊有保險箱 >> 電梯向左
+- 進到節點 13 >> 左右邊都沒有保險箱 >> 記下 13 >> 電梯回到節點 14
+- 左邊保險箱紀錄完畢 >> 記下 14
+- 電梯回到節點 10 >> 電梯回到節點 8
+- 紀錄完畢
 
-
-Using the same figure as an example:
-
-- Node 8 has safes to the left >> elevator goes left
-- Enters node 3 >> same >> elevator goes left
-- Enters node 1 >> no safes on either side >> record 1 >> elevator returns to node 3
-- Left side fully recorded >> record 3 >> safe to the right >> elevator goes right
-- Enters node 6 >> safe to the left >> elevator goes left
-- Enters node 4 >> no safes on either side >> record 4 >> elevator returns to node 6
-- Left side fully recorded >> record 6 >> safe to the right >> elevator goes right
-- Enters node 7 >> no safes on either side >> record 7 >> elevator returns to node 6
-- Elevator returns to node 3 >> elevator returns to node 8 >> left side fully recorded >> record 8 >> safe to the right >> elevator goes right
-- Enters node 10 >> no safe to the left >> record 10 >> safe to the right >> elevator goes right
-- Enters node 14 >> safe to the left >> elevator goes left
-- Enters node 13 >> no safes on either side >> record 13 >> elevator returns to node 14
-- Left side fully recorded >> record 14
-- Elevator returns to node 10 >> elevator returns to node 8
-- Recording complete
-
-
-Final result:
+最後結果如下
 
 `1 3 4 6 7 8 10 13 14`
 
-*Input Format*
+*輸入說明*
 
-- The first line contains $1$ number $t$, the number of test cases.
-- The first line of each test case contains $1$ number $n$, the number of safes initially placed.
-- The second line contains $n$ numbers $a_1,a_2...a_n$, where $a_i$ is the number of gold bars in the $i$-th safe placed into the sorter.
-
+- 第一行輸入 $1$ 個數字 $t$ ，代表有 $t$ 比測試資料
+- 每筆測資第一行輸入 $1$ 個數字 $n$ ，表示一開始的保險箱有幾個
+- 第二行輸入 $n$ 個數字 $a_1,a_2...a_n$ ， $a_i$ 代表第 $i$ 個放入分類器的保險箱有幾塊金條
 
 $t <= 10$ $,$ $n$ $,$ $a_i$ $<= 10^5$
 
-*Output Format*
+*輸出說明*
 
-Record only once after all safes have been placed.
+僅全部的保險箱放完以後進行一次紀錄
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`2`#linebreak()`3`#linebreak()`3 2 1` `9` `8 10 14 3 1 6 7 4 13`], [`1 2 3`#linebreak()`1 3 4 6 7 8 10 13 14`],
-  [Sample Input 2], [Sample Output 2],
+  [範例輸入 2], [範例輸出 2],
   [`18`], [`9`],
 )
 
-*Subtasks and Scoring*
+*子題組與配分*
 
-- Subtask 1: safes are inserted in decreasing order, worth $10%$
-- Subtask 2: no additional constraints, worth $90%$
+- 第一子題組 : 放入的順序為由大到小，占 $10\%$
+- 第二子題組 : 無其他限制，占 $90\%$
 
+仔細閱讀題目後我們可以發現，經過複雜的操作後，輸出值恰為由小到大排序的數列。所以我們就可以使用#raw("sort()")解決。
 
-After reading the problem carefully, we can see that after the complex sequence of operations, the output is exactly the sequence sorted in ascending order. So we can solve it with `sort()`.
+=== 線性搜尋
 
-=== Linear Search
+說實話，線性搜尋就是暴力而已，直接放上程式碼。
 
-Honestly, linear search is just brute force. Here is the code directly.
-
-#code(title: [Linear Search])[
+#code(title: [線性搜尋])[
 ```cpp
 int finding(vector<int> &v,int target){
     for(int i=0;i<v.size();++i){
@@ -152,40 +146,38 @@ int finding(vector<int> &v,int target){
 ```
 ]
 
-Of course, we can place other interesting conditions inside the if statement. That is also why I still included this section.
+當然，我們可以在if裡面放入其他有趣的判斷式。這也是我仍然有放這個單元的原因。
 
-=== Binary Search
-*Author: Li Zhuoyue*
-#align(right)[_Author: Li Zhuoyue_]
+=== 二分搜尋
+*作者：李卓岳*
+#align(right)[_李卓岳_]
 
-Binary search can be applied in many scenarios—whenever you have a *monotone interval*, binary search can be used. The main problem types are:
+二分搜能運用到的場合相當多，只要是*單調區間*便可使用二分查找，主要的題目類型有:
 
-- Finding a specific value
-- Finding the first element greater than or equal to some number
-- Finding the last element less than or equal to some number
+- 尋找特定值
+- 查找第一個大於等於某數的元素
+- 查找最後一個小於等於某數的元素
 - ...
 
+二分搜說難也難、說簡單也簡單，主要是實作過程中有*許多細節*需要注意：
 
-Binary search is both difficult and easy; the implementation has *many details* to watch out for:
+- #raw("left, right")要初始為$(0,n-1)$還是$(0,n)$?
+- #raw("while")判斷式中要填#raw("left<=right")還是#raw("left<right")?
+- 更新#raw("left")和#raw("right")時#raw("mid")要$+1$還是$-1$?
 
-- Should `left` and `right` be initialized to $(0,n-1)$ or $(0,n)$?
-- Should the `while` condition be `left <= right` or `left < right`?
-- Should `mid` be incremented or decremented by $1$ when updating `left` and `right`?
+就這些細節可知二分搜有許多類型和細節，為求解題方便以下將提出一套思路使你在面對各類型的題目時，都能輕易找出對應的寫法。
 
+==== 實作
 
-Given these details, binary search has many variants and subtleties. For problem-solving convenience, the following presents a unified approach so you can easily find the correct implementation for any type of problem.
+==== Example: 大於等於
 
-==== Implementation
+*問題定義*
 
-==== Example: Greater Than or Equal To
+給定一*單調上升之數列*，求第一個*大於等於某特定值*的元素索引值並定義其為「下界」，當下界不存在則回傳數組長度。
 
-*Problem Definition*
+*思路*
 
-Given a *monotonically increasing sequence*, find the index of the first element *greater than or equal to a given value*—defined as the "lower bound". If the lower bound does not exist, return the length of the array.
-
-*Approach*
-
-Given the array `[1,2,4,5,5,6,7]`, with the target value $5$, the lower bound should be $3$.
+給定數組#raw("[1,2,4,5,5,6,7]")，令特定值為$5$則應該回傳下界為$3$。
 
 #table(columns: 7, stroke: .5pt, inset: 5pt,
   [0],
@@ -204,25 +196,23 @@ Given the array `[1,2,4,5,5,6,7]`, with the target value $5$, the lower bound sh
   [7],
 )
 
-We can see the sequence can be split into *a right side where all elements are >= the target* and *a left side where all elements are < the target*. The index we return is exactly the *lower bound of the subsequence that is >= the target*.
+可以看到我們能將數列分為*右側都大於等於特定值*和*左側都小於特定值*，而我們回傳之索引值正好是*大於等於特定值的數列之下界*。
 
-First, we express the approach using a *closed interval*:
+首先，我們以*閉區間*之寫法來表達思路：
 
-- The interval range is `[left, right]`, with `left` pointing to index $0$ and `right` pointing to index $6$.
-- `mid` is the midpoint of `[left, right]`.
-- *When `left > right`, the interval is empty.*
+- 區間範圍為#raw("[left,right]")，#raw("left")指向索引值$0$，#raw("right")指向索引值$6$
+- #raw("mid")為#raw("[left,right]")的中間位置
+- *當#raw("left>right")時，區間為空*
 
+依據上述思路提出，演算法步驟：
 
-Based on this approach, the algorithm steps are:
++ 若#raw("arr[mid]>=")特定值，則#raw("[mid,right]")區間內所有元素均大於等於特定值，因此#raw("right")左移，故*#raw("right=mid-1")*。
++ 否則，則是#raw("[left,mid]")區間內所有元素均小於特定值，因此#raw("left")右移，故*#raw("left=mid+1")*。
++ 重複上述動作直到區間被刪減為空，*此時#raw("left")將會停在下界，故回傳#raw("left")*。
 
-+ If `arr[mid] >=` the target, then all elements in `[mid, right]` are >= the target, so move right leftward: *`right = mid - 1`*.
-+ Otherwise, all elements in `[left, mid]` are < the target, so move left rightward: *`left = mid + 1`*.
-+ Repeat until the interval is empty. *At this point `left` will be at the lower bound, so return `left`.*
+*程式碼*
 
-
-*Code*
-
-You can run the following code to aid your understanding.
+可執行下列程式碼以利思考。
 
 #code(title: [Code])[
 ```cpp
@@ -252,15 +242,15 @@ int main(){
 ```
 ]
 
-==== Example: Less Than or Equal To
+==== Example: 小於等於
 
-*Problem Definition*
+*問題定義*
 
-Given a *monotonically increasing sequence*, find the index of the last element *less than or equal to a given value*—defined as the "upper bound".
+給定一*單調上升之數列*，求最後一個*小於等於某特定值*的元素索引值並定義其為「上界」。
 
-*Approach*
+*思路*
 
-Given the array `[1,2,4,5,5,6,7]`, with the target value $5$, the upper bound should be $4$.
+給定數組#raw("[1,2,4,5,5,6,7]")，令特定值為$5$則應該回傳下界為$3$。
 
 #table(columns: 7, stroke: .5pt, inset: 5pt,
   [0],
@@ -279,19 +269,17 @@ Given the array `[1,2,4,5,5,6,7]`, with the target value $5$, the upper bound sh
   [7],
 )
 
-We can similarly split the sequence into a right side (all > the target) and a left side (all <= the target). By observation, *the upper bound of the <= side and the lower bound of the > side are adjacent*, so *upper bound $=$ lower bound $- 1$*. Therefore, every upper-bound problem can be *converted into the "complementary" lower-bound problem*.
+首先我們一樣能將數列分為右側都大於特定值和左側都小於等於特定值，透過觀察我們可以發現，*小於等於特定值的數列上界和大於特定值下界是相鄰的*所以*上界 $=$ 下界 $- 1$*。因此，所有找上界的問題，都可以*轉換為「互補的」找下界的問題*。
 
-- The interval range is `[left, right]`, with `left` pointing to index $0$ and `right` pointing to index $6$.
-- `mid` is the midpoint of `[left, right]`.
-- *When `left > right`, the interval is empty.*
-- This time we are searching for elements strictly greater than the target, so *change the `right` condition to `a[mid] > x`*.
+- 區間範圍為#raw("[left,right]")，#raw("left")指向索引值$0$，#raw("right")指向索引值$6$
+- #raw("mid")為#raw("[left,right]")的中間位置
+- *當#raw("left>right")時，區間為空*
+- 這次要查找的元素為大於特定值，故*#raw("right")判斷式要改為#raw("a[mid]>x")*
 
-
-Applying the same algorithm steps as before:
-+ If `arr[mid] >=` the target, all elements in `[mid, right]` are >= the target, so move right leftward: *`right = mid - 1`*.
-+ Otherwise, all elements in `[left, mid]` are < the target, so move left rightward: *`left = mid + 1`*.
-+ Repeat until the interval is empty. *At this point `left` is at the lower bound and `right` is at `left - 1`, which is the "upper bound", so return `right`.*
-
+依據之前的思路提出相同的演算法步驟：
++ 若#raw("arr[mid]>=")特定值，則#raw("[mid,right]")區間內所有元素均大於等於特定值，因此#raw("right")左移，故*#raw("right=mid-1")*。
++ 否則，則是#raw("[left,mid]")區間內所有元素均小於特定值，因此#raw("left")右移，故*#raw("left=mid+1")*。
++ 重複上述動作直到區間被刪減為空，*此時#raw("left")將會停在下界而#raw("right")會停在#raw("left-1")的位置即為「上界」，故回傳#raw("right")*。
 
 #code(title: [Code])[
 ```cpp
@@ -321,14 +309,14 @@ int main(){
 ```
 ]
 
-==== Summary
-Whether finding the lower bound or the upper bound, binary search can always be implemented using the "find the lower bound" approach.
+==== 總結
+二分搜無論是找下界、還是找上界，都可以套用「找下界」的思路來實作。
 
-==== C++ Binary Search Functions
+==== C++二分搜函式
 
-$1.$ `lower_bound(begin,end,num,greater())`
+$1.$ #raw("lower_bound(begin,end,num,greater())")
 
-Binary-searches the range `[begin, end-1)` for the first number less than or equal to `num`. Returns the address of that number if found; otherwise returns `end`.
+從陣列的#raw("begin")位置到#raw("end-1")位置二分查詢第一個小於或等於#raw("num")的數字，找到返回該數字的地址，不存在則返回#raw("end")。
 
 #code(title: [Code])[
 ```cpp
@@ -348,9 +336,9 @@ int main(){
 ```
 ]
 
-$2.$ `upper_bound(begin,end,num,greater())`
+$2.$ #raw("upper_bound(begin,end,num,greater())")
 
-Binary-searches the range `[begin, end-1)` for the first number less than `num`. Returns the address of that number if found; otherwise returns `end`.
+從陣列的#raw("begin")位置到#raw("end-1")位置二分查詢第一個小於#raw("num")的數字，找到返回該數字的地址，不存在則返回#raw("end")。
 
 #code(title: [Code])[
 ```cpp
@@ -370,9 +358,9 @@ int main(){
 ```
 ]
 
-$3.$ `binary_search(begin,end,num,greater())`
+$3.$ #raw("binary_search(begin,end,num,greater())")
 
-Binary-searches the range `[begin, end-1)` to check whether `num` exists in the array. Returns `True` if found; otherwise returns `False`.
+從陣列的#raw("begin")位置到#raw("end-1")位置二分查詢#raw("num")是否存在陣列中，找到返回#raw("True")，不存在則返回#raw("False")。
 
 #code(title: [Code])[
 ```cpp
@@ -392,57 +380,57 @@ int main(){
 ```
 ]
 
-=== Examples and Practice
-==== Problem: Beauty of Brute Force
+=== 範例與練習
+==== Problem: 暴力之美
 
-*Problem Statement*
+*題目敘述*
 
-Given an array, find the smallest value that is greater than $m$.
+給你一個陣列，請幫我找到一個數字是比$m$大的最小值。
 
-*Input Format*
+*輸入說明*
 
-The first line contains two positive integers $n, m$.
-The next line contains $n$ positive integers.
+第一行有兩個正整數$n, m$
+接下來一行有$n$個正整數。
 
 $n <= 10^7$
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5 3`#linebreak()`6 3 7 5 1`], [`5`],
-  [Sample Input 2], [Sample Output 2],
+  [範例輸入 2], [範例輸出 2],
   [`10 3`#linebreak()`5 3 7 5 1 7 5 3 8 4`], [`4`],
 )
 
 #tip[
-Binary search would actually fail to pass here! Think about why. That's right — because $log(n)$ is over $20$ in this case!
+二分搜反而不會過呢！想想為什麼。沒有錯，因為這時候的 $log(n)$ 可是有 $20$ 多喔！
 ]
 
-==== Problem: `APCS_2022/1` 4. Wall Posters
+==== Problem: #raw("APCS_2022/1") 4.牆上海報
 
-*Problem Statement*
+*題目敘述*
 
-There is a fence consisting of $n$ planks, each with heights $h_1, h_2, dots.c , h_n$. There are $k$ posters to be placed on the fence; the width of each poster is $w_1, w_2, dots.c w_k$ and all have height $1$.
-To place posters at height $x$, the $i$-th poster must be placed on a contiguous segment of $w_i$ planks all with height at least $x$. All posters must be placed at the same height, in order, and without overlapping (adjacent placement is allowed). Find the maximum height at which all posters can be placed.
+有一個由$n$個木板所組成的柵欄，每個木板的高度為$h_1, h_2, dots , h_n$，有$k$張海報要張貼在柵欄上，每張海報的寬度為$w_1, w_2, dots w_k$並且高度均為$1$。
+若要張貼海報在高度為$x$的高度，則第$i$張海報需要張貼在一個長度為$w_i$的連續並且高度都不小於$x$的木板上，且每張海報張貼的高度需要一致、按照順序並不能重疊(可以相連)。詢問最高可以貼到多高的位置。
 
-*Input Format*
+*輸入說明*
 
-The first line contains two positive integers $n, k$.
-The next line contains $n$ positive integers representing the height of each plank.
-The last line contains $k$ positive integers representing the width of each poster.
+第一行有兩個正整數$n, k$
+接下來一行有$n$個正整數代表每個木板的高度
+最後一行有$k$個正整數代表每張海報的寬度。
 
-$n <= 2 times 10^5$, $k <= 5000$, $h_i <= 10^9$, $sum(w_i) <= n$
+$n <= 2 times 10^5$，$k <= 5000$，$h_i <= 10^9$，$sum{w_i} <= n$
 
-*Output Format*
+*輸出說明*
 
-Output 1 line containing 1 integer representing the maximum height.
+輸出共 1 行，包含 1 個整數，代表最大高度。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5 1`#linebreak()`6 3 7 5 1`#linebreak()`3`], [`3`],
-  [Sample Input 2], [Sample Output 2],
+  [範例輸入 2], [範例輸出 2],
   [`10 3`#linebreak()`5 3 7 5 1 7 5 3 8 4`#linebreak()`2 2 1`], [`5`],
 )

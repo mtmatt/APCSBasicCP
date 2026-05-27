@@ -1,48 +1,48 @@
 #import "../../template.typ": *
 
-== Fundamentals
-=== What is a Graph?
-A graph $G$ consists of vertices $V$ and edges $E$, written as $G = \( V \, E \)$. Sounds complicated?
+== 基本知識
+=== 圖是什麼
+圖 $G$ 由點 $V$ 與邊 $E$ 構成，記做 $G=(V,E)$ 。聽起來很難？
 
-It's really just something that looks like this.
+其實就是像這樣的東西。
 
 #figure(image("../Images/Graph1.png", width: 50.0%),
   caption: [
-    Illustration of a "graph"
+    ``圖"的示意圖
   ]
 )
 
-=== Useful Online Tool
+=== 線上好用工具
 #link("https://csacademy.com/app/graph_editor/")
 
-The graphs it draws look like this.
+他畫出來的圖長這樣。
 
 #figure(image("../Images/Graph2.png", width: 50.0%),
   caption: [
   ]
 )
 
-=== Use Cases
-So that's what a graph is — but what kinds of problems does it actually lead to?
-==== Example: Basic Graph Problem
-Given a directed graph G and a starting vertex s,
+=== 用途
+所以這就是圖，不過這樣的東西到底會問怎樣的問題呢？
+==== 範例：圖的基本問題
+輸入一個有向圖 G 與一個起點 s
 
-- Count the number of vertices reachable from s (not including s itself).
+- 請計算由 s 出發可以到達的點數(不包含 s)。
 
-- Compute the sum of distances from s to each reachable vertex.
+- 並且計算這些可以到達的點與 s 的距離和。
 
-- Assume every edge has length 1.
+- 假設每個邊的長度均為 1。
 
-- There may be multiple edges between the same pair of vertices.
+- 兩點之間可能有多個邊。
 
-- An edge's start and end vertices are not necessarily distinct.
+- 邊的起點與終點未必不同。
 
-=== Storing a Graph
-==== Adjacency List
+=== 存圖
+==== 鄰接串列 (Adjacency List)
 
-Since adjacency matrices are rarely needed in competitions, I'll cover adjacency lists first.
+因為比賽中多數都用不到鄰接矩陣 (Adjacency Matrix)，所以我先講鄰接串列。
 
-Simply put, we use an array of vectors to store the relationships between vertices.
+簡單說就是用 Vector 陣列存放點和點之間的關係。
 
 #code(title: [Storing a Graph])[
   ```cpp
@@ -51,23 +51,23 @@ vector<int> g[N];
   ```
 ]
 
-Here, g\[x\] holds all vertices reachable from x (note that g\[x\] is a vector).
-To add an edge from a to b, there are two cases:
+其中，g\[x\]就是從x出發可以到達的所有點(注意g[x]是一個 Vector)。
+如果你要新增一個從 a 到 b 的邊，則分為兩種情況。
 
-+ Directed graph: `g[a].push_back(b);`
++ 有向圖 `g[a].push_back(b);`
 
-+ Undirected graph, also add: `g[b].push_back(a);`
++ 無向圖還要加上 `g[b].push_back(a);`
 
-We do this because in an undirected graph, edges can be traversed in both directions — if a can reach b, then b can also reach a.
+會這樣做是因為，無向圖的邊是可以雙向通行的，所以如果a可以到b，則b也可以到a。
 
-==== Adjacency Matrix
+==== 鄰接矩陣 (Adjacency Matrix)
 
-An adjacency matrix uses a `g[n][n]` array to represent the graph, where `g[a][b]>0` means
-a can reach b. This representation is intuitive, but requires $O \( n^2 \)$ memory.
-Compared to the $O \( n + m \)$ of the adjacency list, this is much higher — in competitions, constraints like $n lt.eq 10^5 \, #h(0em) m lt.eq 2 times 10^5$ are very common.
+鄰接矩陣使用一個`g[n][n]`表示圖形，其中`g[a][b]>0`表示
+a可以到b，這樣的存圖方式也很直覺，但是會需要花費$O \( n^2 \)$的記憶體空間。
+相較於上一個存圖方式的$O \( n + m \)$而言會高許多，因為競賽上常常出現$n lt.eq 10^5 \, #h(0em) m lt.eq 2 times 10^5$的情況。
 
-=== BFS (Breadth-First Search)
-Visits vertices in order of the number of edges from the starting vertex. The implementation uses a simple data structure: a queue.
+=== BFS (廣度優先搜索)
+依照到原點所需要經過的邊數由小到大的順序訪問點。以程式來實作的話需要一些簡單的資料結構 (Queue)。
 
 #code(title: [BFS on a Graph])[
   ```cpp
@@ -90,7 +90,7 @@ void BFS(int s){
   ```
 ]
 
-However, to solve the example problem above, we need some extra bookkeeping.
+不過，如果要解決前面的例題，我們還需要其他東西，幫忙協助計算。
 
 #code(title: [Solution to the Basic Graph Problem])[
   ```cpp
@@ -124,10 +124,10 @@ int bfs(int s){
   ```
 ]
 
-=== DFS (Depth-First Search)
-Unlike BFS, DFS keeps going as long as there is a path forward,
-and only backtracks when it hits a dead end. This might sound complicated, but
-the code is similar to tree DFS, so it's still quite straightforward.
+=== DFS (深度優先搜索)
+跟剛剛BFS走的順序不一樣，在DFS的時候，我們只要有路就一直走，
+直到沒有路我們才考慮上一個有其他路的點。聽起來有點複雜，不過
+程式的寫法與樹 (Tree) 上面的有點像，所以還是很簡單的。
 
 #code(title: [Solution to the Basic Graph Problem])[
   ```cpp
@@ -143,58 +143,58 @@ void DFS(int n){
   ```
 ]
 
-Note that the isv marking must happen before the recursive DFS call; otherwise, if a cycle exists, the program will fall into an infinite loop.
+需要注意的是，isv標記的順序要在DFS往下前，否則如果遇到還就會
+陷入無窮迴圈。
 
-Because DFS is noticeably easier to write, it is almost always used when DFS is applicable.
+因為 DFS 明顯比較好寫，因此在可以用 DFS 的情況下幾乎會使用他。
 
-=== Examples and Practice
-==== Example: AP325 P-7-2 Collecting Treasures by Car
-*Problem Statement*
+=== 範例與練習
+==== 範例：AP325 P-7-2 開車蒐集寶物
+*題目敘述*
 
-You are participating in a treasure-hunting game. You have a map with n treasure locations,
-each holding some items of value. Since your team is the best,
-you are guaranteed to collect all treasure at any location you reach.
+參加一個蒐集寶物的遊戲，你拿到一個地圖，地圖上有 n 個藏寶點，
+每個藏寶點有若干價值的寶物，由於你的團隊是最頂尖的，
+只要能到達藏寶點一定可以取得該藏寶點的寶藏。
 
-On the map there are m roads in total, each connecting two treasure locations,
-and every road is bidirectional.
+從地圖上看得到一共有 m 條道路，每條道路連接兩個藏寶點，
+而且每條道路都是雙向可以通行的。
 
-At the start of the game, you may request a helicopter to transport your team to any treasure location.
-You will also receive a car with plenty of fuel, but the helicopter can only take you once,
-so you must decide where to start in order to maximize the total value of the treasure collected.
+在遊戲的一開始，你可以要求直升機將你的團隊運送到某個藏寶點，
+而且你可以獲得一部車與充足的油料，但是直升機的載送只有一次，
+所以你必須決定要從哪裡開始才可以獲得最多的寶藏總價值。
 
-*Input Format*
+*輸入說明*
 
-The first line contains two positive integers n and m, representing the number of treasure locations and roads. Locations are numbered $0$ to $n - 1$.
+第一行是兩個正整數 n 與 m ，代表藏寶地點數與道路數，地點是以 $0$ ~ $n - 1$ 編號，
 
-The second line contains n
-non-negative integers, each representing the treasure value at the corresponding location. Each location's treasure value does not exceed $100$.
+第二行 n 個非負整數，依序是每一個地點的寶藏價值，每個地點的寶藏價值不超過 $100$ 。
 
-The following m lines each contain two integers a and b, representing the two locations connected by a road.
+接下來有 m 行，每一行兩個整數 a 與 b 代表一個道路連接的兩個地點編號。
 
-n does not exceed $5 times 10^4$, m does not exceed $5 times 10^5$.
+n 不超過 $5 times 10^4$，m 不超過 $5 times 10^5$。
 
-There may be multiple roads between the same pair of locations, and some roads may connect a location to itself.
+兩點之間可能有多條道路，有些道路的兩端點可能是同一地點。
 
-*Output Format*
+*輸出說明*
 
-The maximum total treasure value obtainable.
+最大可以獲得的寶藏總價值。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`7 6`#linebreak()`5 2 4 2 1 1 8`#linebreak()`5 1`#linebreak()`1 3`#linebreak()`1 4`#linebreak()`2 0`#linebreak()`2 0`#linebreak()`3 3`], [`9`],
 )
 
 #block[
-In general, the graph given in a problem may not allow reaching every vertex from the starting point.
-When this happens, we say the graph is disconnected; conversely, a graph where every vertex is reachable from the start is called a connected graph.
-
+通常題目給的圖不一定可以從起點到達所有的點，
+這樣我們會說這個圖是非連通的，反之從起點可以到任何地方的稱為連通圖。
 ]
-We can accumulate and return the total value during DFS, so our DFS is no longer void — it can return int
-(or long long, etc.).
+我們可以在DFS的過程中記錄並回傳總價值，所以我們的DFS不再是void，而可以是int
+(或 long long 之類的)。
 
-Since the graph may be disconnected, we need to check every vertex and find the maximum total sum among all connected components (i.e., each connected subgraph).
+因為圖非連通，所以我們需要對每一個點都做確認，並找出所有的連通分量(也就是每一個
+連通的子圖)裡面所有點的總和的最大值。
 
 #code(title: [Solution to Collecting Treasures by Car])[
   ```cpp
@@ -229,79 +229,79 @@ int main(){
 }
   ```
 ]
-==== Problem: CSES 1192 Counting Rooms
-*Problem Statement*
+==== 問題：CSES 1192 Counting Rooms
+*題目敘述*
 
-Given a map, count the number of rooms. The map has $n times m$ cells,
-each of which is either floor or wall. You can walk on floor tiles in the four cardinal directions (up, down, left, right),
-and all positions reachable this way count as the same room.
+給你一張圖，請你算出房間數量。地圖有 $n times m$ 個格子，
+每一個格子不是地板就是牆壁。你可以往上下左右的地板行走，
+所有依照這個方式走的到的位置都算同一個房間。
 
-*Input Format*
+*輸入說明*
 
-The first line contains two integers $n \, m$, followed by $n$ rows of $m$ characters. `#`
-represents a wall, `.` represents floor.
+第一行輸入兩個數字 $n \, m$ ，緊接著是 $n$ 行 $m$ 列的字元(字串)， `#` 表示牆壁，`.` 表示地板。
 
-*Output Format*
+*輸出說明*
 
-A single integer representing the number of rooms.
+一個整數表示房間數。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5 8`#linebreak()`########`#linebreak()`#..#...#`#linebreak()`####.#.#`#linebreak()`#..#...#`#linebreak()`########`], [`3`],
 )
 
 #block[
-You can use constant arrays to express relative directions, like this:
+可以使用常數陣列表達相對方位，如下：
 
 `const int dr[]{1,0,-1,0}, dc[]{0,1,0,-1};`
 
 ]
-==== Problem: CSES 1193 Labyrinth
-*Problem Statement*
+==== 問題：CSES 1193 Labyrinth
+*題目敘述*
 
-Given a map, find a path from A to B. The map has $n times m$ cells,
-each of which is either floor or wall. You can walk on floor tiles in the four cardinal directions.
+給你一張圖，請你從 A 走到 B。地圖有 $n times m$ 個格子，
+每一個格子不是地板就是牆壁。你可以往上下左右的地板行走，所有依照這個方式走的到的位置都算同一個房間。
 
-*Input Format*
+*輸入說明*
 
-The first line contains two integers $n \, m$, followed by $n$ rows of $m$ characters. `#`
-represents a wall, `.` represents floor, A is the start, and B is the destination.
+第一行輸入兩個數字 $n \, m$ ，緊接著是 $n$ 行 $m$ 列的字元(字串)，
+ `#` 表示牆壁，`.` 表示地板 ， A 是起點， B 是終點。
 
-*Output Format*
+*輸出說明*
 
-If a path exists, first print "YES"; otherwise print "NO".
+如果存在路徑，首先輸出"YES"，否则打印"NO"。
 
-If a path exists, print the length of the shortest path, followed by a description of the path — a string consisting of the characters L (left),
-R (right), U (up), and D (down). Any valid answer is accepted.
+如果存在路徑，輸出最短路徑的長度，以及路徑描述，路徑描述是由字元 L(左)、
+R(右)、U(上)和 D(下)组成的字串。可以打印任何有效的解答。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5 8`#linebreak()`########`#linebreak()`#.A#...#`#linebreak()`#.##.#B#`#linebreak()`#......#`#linebreak()`########`], [`YES`#linebreak()`9`#linebreak()`LDDRRRRRU`],
 )
-==== Problem: CSES 1666 Building Roads
-*Problem Statement*
+==== 問題：CSES 1666 Building Roads
+*題目敘述*
 
-Given $n$ vertices and $m$ undirected edges, find the minimum number of edges needed to make the graph connected,
-and provide a specific solution. Vertices are numbered $1 dots.h.c n$.
+給你 $n$ 個點 $m$ 條無向邊。
+請你找出要讓這張圖連通的最少所需新增邊數。
+還有給出具體方案。節點編號為 $1 dots.h.c n$。
 
-*Input Format*
+*輸入說明*
 
-The first line contains two integers $n \, m$, followed by $m$ lines each containing an edge $a_i \, b_i$.
+第一行輸入兩個數字 $n,m$ ，接下來有 $m$ 行，輸入邊 $a_i,b_i$。
 
-There are no self-loops or multi-edges.
+保證沒有自環或重邊。
 
-*Output Format*
+*輸出說明*
 
-The first line outputs the number of edges to add. Subsequent lines give the specific edges to add. If there are multiple valid answers,
-any one of them is accepted.
+第一行輸出需要加上幾條邊，第二行以後給出具體加哪條，如果有多解，
+則輸出任何一個都可以。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`4 2`#linebreak()`1 2`#linebreak()`3 4`], [`1`#linebreak()`2 3`],
 )

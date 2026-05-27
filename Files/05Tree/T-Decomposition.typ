@@ -1,29 +1,26 @@
 #import "../../template.typ": *
 
-== Heavy-Light Decomposition
-=== Concept
-Heavy-Light Decomposition (HLD) is a special technique for trees. Through
-preprocessing, it reduces the time complexity of range maximum, range minimum,
-and range sum queries to $O \( log^2 \( n \) \)$, which is much faster than
-the naive $O \( n \)$ approach.
+== 輕重鍊剖分
+=== 概念
+輕重鍊剖分是樹上的特殊方法，他可以藉由預處理的方式，將查詢
+區間最大最小值與區段總和的時間複雜度降到$O \( log^2 \( n \) \)$以下，
+相較於原來的$O \( n \)$而言會快上許多。
 
-First, root the tree as usual, then run one DFS to determine the subtree size
-of every node.
+首先同樣要先定根，接著我們透過一次DFS確定每個節點的子樹大小。
 
-In HLD, we always extend the chain by connecting to the child with the largest
-subtree, which is called a heavy edge. All other edges are called light edges.
-This guarantees that the number of chains does not exceed $O \( log \( n \) \)$.
+在輕重鍊剖分中，我們會優先從子樹最大的節點往下連接，又稱為重邊
+，而其他的邊則稱為輕邊。這樣可以保證我們的鍊的數量不會超過$O \( log \( n \) \)$條。
 
 #figure(image("../Images/HLD.png"),
   caption: [
-    Heavy-Light Decomposition diagram
+    輕重鍊剖分示意圖
   ]
 )
 
-=== Implementation
-The implementation requires several arrays.
+=== 實作
+實作上我們會需要很多個陣列。
 
-#code(title: [Heavy-Light Decomposition with Segment Tree])[
+#code(title: [輕重鍊剖分與線段樹])[
   ```cpp
 using ll=long long;
 const int N=100010;
@@ -216,132 +213,100 @@ ll add(int u,int v,ll k){
   ```
 ]
 
-=== Examples and Exercises
-==== Problem: 1st Excellence Cup G. Safe Tariff (Hard)
-*Problem Statement*
+=== 範例與練習
+==== 問題：第一屆卓越盃 G. Safe Tariff(Hard)
+*題目敘述*
 
-There are $n$ island nations in the Pacific Ocean, conveniently named $1$
-through $n$. These island nations all use a common currency called the
-International Silver Coin. There is a great deal of trade between these
-nations, one type of which is gold brick shipping. There are a number of fixed
-shipping routes between these nations, which are the primary means of exchange
-and trade. Each route connects exactly two nations in both directions. If a
-route connects nation $u$ and nation $v$, it is denoted $\( u \, v \)$ or
-$\( v \, u \)$ — both representations are equivalent, meaning nations $u$ and
-$v$ can trade directly. If nations $u$ and $v$ have no direct route, they may
-still trade through multiple routes. If there exists a series of routes
-$\( u \, p_1 \) \, \( p_1 \, p_2 \) . . . \( p_r \, v \)$, then nations $u$
-and $v$ can trade; otherwise they cannot.
+太平洋上有 $n$ 個島嶼國家，為了方便起見將其命名為 $1$
+~ $n$ 。這些島嶼國家皆使用一個共同貨幣，他們稱其為國際銀幣。
+各個國家之間有許多貿易往來，其中一種便是金磚航運。
+並且在這些國家之間有一些固定的航線往來，這些航線也是交流與物產貿易的主要手段。
+每一條航線都是往返固定兩個國家。若一航線是往返國家 $u$ ，
+則以 $\( u \, v \)$ 或 $\( v \, u \)$ 表示該航線，兩種表示方法相同，
+代表國家 $u$ 與國家 $v$ 可以直航交易兩地。
+如果國家 $u$ 與國家 $v$之間沒有航線直接往返也可能透過複數航線進行貿易。
+若存在一系列的航線 $\( u \, p_1 \) \, \( p_1 \, p_2 \) . . . \( p_r \, v \)$ 則國家 $u$ 與國家 $v$ 之間便可以進行貿易，
+反之則不行。
 
-To protect the Pacific ecosystem, all nations agree to maintain as few routes
-as possible while still allowing trade between any two island nations. It is
-clear that $n - 1$ routes are sufficient for $n$ nations.
+為了保護太平洋的生態，所有國家的共識是在任兩個島嶼國家之間都能夠進行貿易往來的前提下維持
+盡可能少的航線。顯而易見的，在 $n$ 個國家的情況下僅需要 $n - 1$ 條航線就足夠了。
 
-Each nation imposes tariffs on goods to protect its domestic industries from
-cheap foreign goods and predatory competition. In the Pacific, tariffs are
-levied per unit of cargo: goods on a ship are taxed once at each route they
-pass through. Different goods have different tax rates; for gold bricks, the
-tariff is $c$ International Silver Coins per safe.
+每個國家為了保護自己內部的產業不受到外部的低價商品傾銷、惡性競爭。
+因此對各項商品都設定有關稅。而在太平洋上關稅課徵的方式是針對貨物數量，
+在每一航線上船上所装載的商品都要被抽一次税金。依據商品的種類不同有不同的抽税方式；
+而針對金磚，則是每一個保險箱要課徵 $c$ 個國際銀幣。
+然而因為金磚航運生意普普，因此*所有*國家起初並不是非常重視，
+也就沒有對其課徵關稅。
 
-However, since the gold brick shipping business is mediocre, *all* nations
-initially did not pay much attention to it and imposed no tariff on it.
+黃瓜學長是一個專做金磚航運的 *"為何年輕人都不愛讀近體詩"* 企業的老闆，
+客戶所在的國家與當下金磚能出貨的國家不同，可能會被課徵關稅也不同。
+他希望可以收取合理的價格以避免無法獲利，或是被投訴價格過高不符合公平貿易。
+因此他需要計算航線上會被課徵多少關稅。
 
-Senior Cucumber is the CEO of a company called *"Why Don't Young People Like
-Reading Classical Poetry"* that specializes in gold brick shipping. Since the
-customer's nation and the nation from which gold bricks can be shipped differ,
-the tariff charged may vary. He wants to charge a reasonable price to avoid
-operating at a loss or being accused of price gouging in violation of fair
-trade. He therefore needs to calculate how much tariff will be levied on a
-given route.
+並且，由於最近發生金融危機，加上疫情高漲，許多原來不課徵關稅的國家也嗅到了這股商機，
+選擇開始課徵關稅。所以黃瓜學長必須隨時調整售價來因應關稅的變動。
+以免傷害到 *"為何年輕人都不愛讀近體詩"* 的競爭力。
 
-Moreover, due to a recent financial crisis and a surging epidemic, many nations
-that previously imposed no tariff have sensed an opportunity and started
-levying tariffs. Senior Cucumber must constantly adjust his prices to account
-for tariff changes, to prevent *"Why Don't Young People Like Reading Classical
-Poetry"* from losing its competitive edge.
+*輸入說明*
 
-*Input Format*
+第一行輸入 $2$ 個數字 $n$ $q$ ，代表有 $n$ 個國家， $q$ 次操作。
 
-The first line contains $2$ integers $n$ $q$, representing $n$ nations and $q$ operations.
+接下來有 $n - 1$ 行，每行有 $2$ 個數字 $u$ $v$ ，代表國家 $\( u \, v \)$ 之間有直接的航道。
 
-The next $n - 1$ lines each contain $2$ integers $u$ $v$, indicating a direct
-shipping route between nations $\( u \, v \)$.
+接下來有 $q$ 行，每行有 $3$ 個數字 $o p$ $a$ $b$ 。
 
-The next $q$ lines each contain $3$ integers $o p$ $a$ $b$.
+若 $o p = 1$ ，代表黃瓜學長收到訂單(從國家 $a$ 輸送到國家 $b$ )。
 
-If $o p = 1$, Senior Cucumber has received an order (ship from nation $a$ to nation $b$).
+否則 $o p = 2$ ，代表國家 $a$ ，將關稅改為 $b$ 國際銀幣/保險箱。
 
-Otherwise $o p = 2$, nation $a$ sets its tariff to $b$ International Silver Coins per safe.
+$o p in upright("1,2")$, $n \, q$ $lt.eq 10^5$， $a \, b lt.eq n$
 
-$o p in upright("1,2")$, $n \, q$ $lt.eq 10^5$, $a \, b lt.eq n$
+*輸出說明*
 
-*Output Format*
+對於 $o p = = 1$ 輸出所需關稅(輸出國 $\( a \)$ 不會課關稅，但輸入國 $\( b \)$ 會)。
 
-For $o p = = 1$, output the total tariff (the exporting nation $\( a \)$ does
-not levy tariff, but the importing nation $\( b \)$ does).
-
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`7 10`#linebreak()`6 5`#linebreak()`7 5`#linebreak()`4 3`#linebreak()`4 5`#linebreak()`4 2`#linebreak()`6 1`#linebreak()`1 3 7`#linebreak()`1 3 1`#linebreak()`2 6 207`#linebreak()`1 7 4`#linebreak()`1 6 4`#linebreak()`2 2 683`#linebreak()`2 3 119`#linebreak()`1 5 6`#linebreak()`2 1 579`#linebreak()`2 1 947`], [`0`#linebreak()`0`#linebreak()`0`#linebreak()`0`#linebreak()`207`],
 )
-==== Problem: Luogu P2680 Transport Plan
-*Problem Statement*
+==== 問題：洛谷P2680 運輸計畫
+*題目敘述*
 
-In the year 2044, humanity has entered the cosmic era.
+公元 2044 年，人類進入了宇宙紀元。
 
-Nation L has $n$ planets and $n - 1$ bidirectional space lanes, each built
-between two planets. These $n - 1$ lanes connect all of L's planets.
+L 國有 $n$ 個星球，還有 $n - 1$ 條雙向航道，每條航道建立在兩個星球之間，這 $n - 1$ 條航道連通了 L 國的所有星球。
 
-Xiao P manages a logistics company that has many transport plans. Each plan
-has the form: a logistics spaceship needs to travel from planet $u_i$ along
-the fastest space route to planet $v_i$. Obviously, traveling a lane takes
-time; for lane $j$, the time for any spaceship to traverse it is $t_j$, and
-any two spaceships do not interfere with each other.
+小 P 掌管一家物流公司，該公司有很多個運輸計劃，每個運輸計劃形如：有一艘物流飛船需要從 $u_i$ 號星球沿最快的宇航路徑飛行到 $v_i$ 號星球去。顯然，飛船駛過一條航道是需要時間的，對於航道 $j$，任意飛船駛過它所花費的時間為 $t_j$，並且任意兩艘飛船之間不會產生任何干擾。
 
-To encourage technological innovation, Nation L's king allows Xiao P's
-logistics company to participate in the construction of Nation L's lanes,
-specifically allowing Xiao P to convert one lane into a wormhole — a
-spaceship traversing a wormhole takes zero time.
+為了鼓勵科技創新，L 國國王同意小 P 的物流公司參與 L 國的航道建設，即允許小 P 把某一條航道改造成蟲洞，飛船駛過蟲洞不消耗時間。
 
-Before the wormhole is built, Xiao P's logistics company has already accepted
-$m$ transport plans. After the wormhole is built, all $m$ plans start
-simultaneously with all spaceships departing at the same time. When all $m$
-transport plans are complete, Xiao P's company finishes its current phase of work.
+在蟲洞的建設完成前，小 P 的物流公司就預接了 $m$ 個運輸計劃。在蟲洞建設完成後，這 $m$ 個運輸計劃會同時開始，所有飛船一起出發。當這 $m$ 個運輸計劃都完成時，小 P 的物流公司的階段性工作就完成了。
 
-If Xiao P can freely choose which lane to convert into a wormhole, what is
-the minimum time for Xiao P's company to complete this phase of work?
+如果小 P 可以自由選擇將哪一條航道改造成蟲洞，試求出小 P 的物流公司完成階段性工作所需要的最短時間是多少？
 
-*Input Format*
+*輸入說明*
 
-The first line contains two positive integers $n \, m$, the number of planets
-in Nation L and the number of transport plans Xiao P's company has accepted.
-Planets are numbered $1$ to $n$.
+第一行包括兩個正整數 $n \, m$，表示 L 國中星球的數量及小 P 公司預接的運輸計劃的數量，星球從 $1$ 到 $n$ 編號。
 
-The next $n - 1$ lines describe the lanes. Line $i$ contains three integers
-$a_i \, b_i$ and $t_i$, indicating that the $i$-th bidirectional lane is
-built between planets $a_i$ and $b_i$ and takes time $t_i$ to traverse.
+接下來 $n - 1$ 行描述航道的建設情況，其中第 $i$ 行包含三個整數 $a_i \, b_i$ 和 $t_i$，表示第 $i$ 條雙向航道修建在 $a_i$ 與 $b_i$ 兩個星球之間，任意飛船駛過它所花費的時間為 $t_i$。
 
-The next $m$ lines describe the transport plans. Line $j$ contains two
-positive integers $u_j$ and $v_j$, indicating the $j$-th transport plan
-travels from planet $u_j$ to planet $v_j$.
+接下來 $m$ 行描述運輸計劃的情況，其中第 $j$ 行包含兩個正整數 $u_j$ 和 $v_j$，表示第 $j$ 個運輸計劃是從 $u_j$ 號星球飛往 $v_j$號星球。
 
-Data guarantees: $1 lt.eq a_i \, b_i lt.eq n$, $0 lt.eq t_i lt.eq 1000$, $1 lt.eq u_i \, v_i lt.eq n$.
+數據保證 $1 lt.eq a_i \, b_i lt.eq n$， $0 lt.eq t_i lt.eq 1000$， $1 lt.eq u_i \, v_i lt.eq n$。
+    
+*輸出說明*
 
-*Output Format*
+一個整數，表示小 P 的物流公司完成階段性工作所需要的最短時間。
 
-A single integer representing the minimum time for Xiao P's logistics company
-to complete this phase of work.
-
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`6 3`#linebreak()`1 2 3`#linebreak()`1 6 4`#linebreak()`3 1 7`#linebreak()`4 3 6`#linebreak()`3 5 5`#linebreak()`3 6`#linebreak()`2 5`#linebreak()`4 5`], [`11`],
 )
 
-#block[
-Fast I/O is required; remember to refer back to the earlier sections.
-
+#tip[
+需要快讀快寫，記得往前翻。
 ]

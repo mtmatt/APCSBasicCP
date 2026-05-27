@@ -1,6 +1,6 @@
 #import "../../template.typ": *
 
-= Basic Graph Theory <chapter:GraphBasic>
+= 圖論初階 <chapter:GraphBasic>
 
 #include "G-Basic.typ"
 #include "G-TopologicalSort.typ"

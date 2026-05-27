@@ -1,7 +1,7 @@
 #import "../../template.typ": *
 
-== Universal Header File
-Have you ever found including header files to be a hassle? Below is a rather extreme example.
+== 泛用標頭檔
+你是否有為引入標頭檔而感到困擾呢？下方是一個較為極端的例子。
 
 #code(title: [Code])[
 ```cpp
@@ -26,9 +26,9 @@ Have you ever found including header files to be a hassle? Below is a rather ext
 ```
 ]
 
-All of the above can actually be replaced with the single line below, which is incredibly convenient for contests.
+但其實這些都可以用以下一行取代，對於考試而言可以說方便許多。
 
-#code(title: [Universal Header File])[
+#code(title: [泛用標頭檔])[
 ```cpp
 #include<bits/stdc++.h>
 ```

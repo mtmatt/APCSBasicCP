@@ -1,246 +1,256 @@
 #import "../../template.typ": *
 
-== Examples and Practice
-=== Number Theory
+== 範例與練習
+=== 數論
 ==== Problem: CF 1553A Digits Sum
-*Problem Statement*
+*題目敘述*
 
-Let us define $S \( x \)$ as the sum of the digits of integer $x$ in the decimal system. For example, $S \( 5 \) = 5$, $S \( 10 \) = 1$, $S \( 322 \) = 7$.
+讓我們定義 $S \( x \)$ 為數字 $x$ 在十進制系統中各位數的總和。例如，$S \( 5 \) = 5$，$S \( 10 \) = 1$，$S \( 322 \) = 7$。
 
-We call an integer $x$ "interesting" if $S \( x + 1 \) < S \( x \)$. In each test case, you are given an integer $n$. Your task is to count how many interesting integers $x$ exist in the range $1 lt.eq x lt.eq n$.
+如果 $S \( x + 1 \) < S \( x \)$，我們將稱整數 $x$ 為有趣的。在每個測試中，你將會給定一個整數 $n$。你的任務是計算出在 $1 lt.eq x lt.eq n$ 範圍內有多少個有趣的整數 $x$。
 
-*Input*
+*輸入說明*
 
-The first line contains an integer $t$ ($1 lt.eq t lt.eq 1000$) — the number of test cases.
+第一行包含一個整數 $t$ ($1 lt.eq t lt.eq 1000$) - 測試案例的數量。
 
-The next $t$ lines each contain an integer $n$ ($1 lt.eq n lt.eq 10^9$), representing the value of $n$ in the $i$-th test case.
+接下來的 $t$ 行，第 $i$ 行包含一個整數 $n$ ($1 lt.eq n lt.eq 10^9$)，表示第 $i$ 個測試案例的數字 $n$。
 
-*Output*
+*輸出說明*
 
-Output $t$ integers, where the $i$-th integer is the answer to the $i$-th test case.
+輸出 $t$ 個整數，第 $i$ 個整數應該是第 $i$ 個測試案例的答案。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5`#linebreak()`1`#linebreak()`9`#linebreak()`10`#linebreak()`34`#linebreak()`880055535`], [`0`#linebreak()`1`#linebreak()`1`#linebreak()`3`#linebreak()`88005553`],
 )
 ==== Problem: CF 1542C Strange Function
-*Problem Statement*
+*題目敘述*
 
-Let $f \( i \)$ denote the smallest positive integer $x$ such that $x$ is not a divisor of $i$.
+讓 $f \( i \)$ 表示最小的正整數 $x$ 使得 $x$ 不是 $i$ 的因數。
 
-Compute $sum_(i = 1)^n f \( i \)$ modulo $10^9 + 7$. In other words, compute $f \( 1 \) + f \( 2 \) + dots.h.c + f \( n \)$ modulo $10^9 + 7$.
+計算 $sum_(i = 1)^n f \( i \)$ 模 $10^9 + 7$。換句話說，計算 $f \( 1 \) + f \( 2 \) + dots.h.c + f \( n \)$ 模 $10^9 + 7$。
 
-*Input*
+*輸入說明*
 
-The first line contains an integer $t$ ($1 lt.eq t lt.eq 10^4$), the number of test cases.
+第一行包含一個整數 $t$ ($1 lt.eq t lt.eq 10^4$)，表示測試案例的數量。
 
-The next $t$ lines each contain a single integer $n$ ($1 lt.eq n lt.eq 10^16$).
+接下來的 $t$ 行為 $t$ 個測試案例，每個測試案例只包含一個整數 $n$ ($1 lt.eq n lt.eq 10^16$)。
 
-*Output*
+*輸出說明*
 
-For each test case, output a single integer $a n s$, where $a n s = sum_(i = 1)^n f \( i \)$ modulo $10^9 + 7$.
+對於每個測試案例，輸出一個整數 $a n s$，其中 $a n s = sum_(i = 1)^n f \( i \)$ 模 $10^9 + 7$。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5`#linebreak()`1`#linebreak()`9`#linebreak()`10`#linebreak()`34`#linebreak()`880055535`], [`0`#linebreak()`1`#linebreak()`1`#linebreak()`3`#linebreak()`88005553`],
 )
 ==== Problem: CF 913A Modular Exponentiation
-*Problem Statement*
+*題目敘述*
 
-The following is a well-known problem: given integers $n$ and $m$, compute
+以下問題是一個眾所周知的問題：給定整數 $n$ 和 $m$，計算
 
 $ 2^n med \( mod med m \) $
 
-where $2^n = 2 times 2 times dots.h.c times 2$ ($n$ factors), and `mod` denotes the remainder of division.
+其中 $2^n = 2 times 2 times dots.h.c times 2$ (共 $n$ 個因子)，並且 `mod` 表示除法的餘數。
 
-Now solve the "reverse" problem. Given integers $n$ and $m$, compute
+現在請你解決這個「反向」問題。給定整數 $n$ 和 $m$，計算
 
 $ m med \( mod med 2^n \) $
 
-*Input*
+*輸入說明*
 
-The first line contains an integer $n$ ($1 lt.eq n lt.eq 10^8$).
+第一行包含一個整數 $n$ ($1 lt.eq n lt.eq 10^8$)。
 
-The second line contains an integer $m$ ($1 lt.eq m lt.eq 10^8$).
+第二行包含一個整數 $m$ ($1 lt.eq m lt.eq 10^8$)。
 
-*Output*
+*輸出說明*
 
-Output a single integer representing the value of $m med \( mod med 2^n \)$.
+輸出一個整數，表示 $m med \( mod med 2^n \)$ 的值。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`4`#linebreak()`42`], [`10`],
-  [Sample Input 2], [Sample Output 2],
+  [範例輸入 2], [範例輸出 2],
   [`1`#linebreak()`58`], [`0`],
 )
 
-Luogu P1082 \[NOIP2012 Advanced Division\] Congruence Equation
+洛谷P1082 [NOIP2012 提高組] 同餘方程
 
-*Problem Statement*
+*題目敘述*
 
-Find the minimum positive integer solution for $x$ in the congruence equation $a x equiv 1 med \( mod med b \)$.
+求關於 $x$ 的同餘方程 $a x equiv 1 med \( mod med b \)$ 的最小正整數解。
 
-*Input*
+*輸入說明*
 
-One line containing two integers $a \, b$ separated by a space.
+一行，包含兩個整數 $a,b$，用一個空格隔開。
 
 $2 lt.eq a \, b lt.eq 2 \, 000 \, 000 \, 000$
 
-*Output*
+*輸出說明*
 
-A single integer $x_0$, the minimum positive integer solution. The input is guaranteed to have a solution.
+一個整數 $x_0$，即最小正整數解。輸入數據保證一定有解。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3 10`], [`7`],
 )
-==== Problem: 洛谷P1495 [Template] Chinese Remainder Theorem (CRT) / Cao Chong Raises Pigs
-*Problem Statement*
+==== Problem: 洛谷P1495 【模板】中國剩餘定理(CRT)/ 曹沖養豬
+*題目敘述*
 
-Ever since Cao Chong weighed the elephant, Cao Cao began wondering how to put his son to work. He sent Cao Chong to raise pigs at a farm in the Central Plains. Cao Chong was unhappy about this and worked carelessly. One day Cao Cao wanted to know the number of sows, so Cao Chong decided to mess with him. For example, suppose there are $16$ sows. If you build $3$ pens, $1$ pig has no place to stay. If you build $5$ pens, still $1$ pig has no place to go. If you build $7$ pens, $2$ pigs have no place to go. As Cao Cao's personal secretary, it is your duty to report the exact pig count to him — how do you figure it out?
+自從曹沖搞定了大象以後，曹操就開始捉摸讓兒子幹些事業，
+於是派他到中原養豬場養豬，可是曹沖滿不高興，於是在工作中馬馬虎虎，
+有一次曹操想知道母豬的數量，於是曹沖想狠狠耍曹操一把。舉個例子，
+假如有 $16$ 頭母豬，如果建了 $3$ 個豬圈，剩下 $1$ 頭豬就沒有地方安家了。
+如果建造了 $5$ 個豬圈，但是仍然有 $1$ 頭豬沒有地方去，
+然後如果建造了 $7$ 個豬圈，還有 $2$ 頭沒有地方去。
+你作為曹總的私人秘書理所當然要將准確的豬數報給曹總，你該怎麼辦？
 
-*Input*
+*輸入說明*
 
-The first line contains an integer $n$ — the number of times pens are built. The next $n$ lines each contain two integers $a_i \, b_i$, meaning $a_i$ pens were built and $b_i$ pigs have no place to go. You may assume $a_1 tilde.op a_n$ are pairwise coprime.
+第一行包含一個整數 $n$ — 建立豬圈的次數，接下來 $n$ 行，
+每行兩個整數 $a_i \, b_i$，表示建立了 $a_i$ 個豬圈，
+有 $b_i$ 頭豬沒有去處。你可以假定 $a_1 tilde.op a_n$ 互質。
 
 $1 lt.eq n lt.eq 10$，$0 lt.eq b_i < a_i lt.eq 100000$，$1 lt.eq product a_i lt.eq 10^18$
 
-*Output*
+*輸出說明*
 
-Output a single positive integer — the minimum number of sows Cao Chong could be raising.
+輸出包含一個正整數，即為曹沖至少養母豬的數目。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3`#linebreak()`3 1`#linebreak()`5 1`#linebreak()`7 2`], [`16`],
 )
 ==== Problem: AtCoder ABC 186E Throne
-*Problem Statement*
+*題目敘述*
 
-We have $N$ chairs arranged in a circle, one of which is a throne.
+我們有 $N$ 把椅子排成一個圓環，其中一把是王座。
 
-Takahashi initially sits in a chair that is $S$ chairs away from the throne in the clockwise direction. He repeatedly performs the following move.
+高橋最初坐在距離王座順時針方向 $S$ 把椅子的位置上。現在，他會重複進行以下動作。
 
-Move: Move clockwise to the chair $K$ positions ahead of his current chair.
+動作：往順時針方向，走到距離他目前所坐的椅子 $K$ 把椅子的位置上。
 
-After how many moves will he first sit on the throne? If he never sits on it, report $- 1$.
+他將在第幾次動作後首次坐在王座上？如果他永遠不會坐在上面，請報告 $- 1$。
 
-You need to solve $T$ test cases.
+你需要解決 $T$ 個測試案例。
 
-*Input*
+*輸入說明*
 
-Input is given in the following format. The first line is:
+輸入以以下格式給出。第一行的格式如下
 
 $T$
 
-Then the following $T$ lines represent $T$ test cases. Each line is:
+然後，接下來的 $T$ 行表示 $T$ 個測試案例。每行的格式如下：
 
 $N #h(0em) S #h(0em) K$
 
 $1 lt.eq T lt.eq 100$，$2 lt.eq N lt.eq 10^9$，
 $1 lt.eq S < N$，$1 lt.eq K lt.eq 10^9$
 
-*Output*
+*輸出說明*
 
-Output a single positive integer — the number of moves until Takahashi first sits on the throne.
+輸出一個整數，表示高橋首次坐到王座上的動作次數。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`4`#linebreak()`10 4 3`#linebreak()`1000 11 2`#linebreak()`998244353 897581057 595591169`#linebreak()`10000 6 14`], [`2`#linebreak()`-1`#linebreak()`249561088`#linebreak()`3571`],
 )
 ==== Problem: ZJ d308 Chocolate Adventure Factory
-*Problem Statement*
+*題目敘述*
 
-Zhe-Wei, as president of CRC, is in big trouble...
+哲緯身為CRC的社長，現在遇上了大麻煩...
 
-Because of an upcoming informatics camp, he spared no expense and ordered chocolates from the world's largest chocolate factory — Wonka Industries — to distribute to the participating students.
+因為資訊營的到來，他不惜成本，向世界上最大的巧克力工廠—旺卡公司訂購了塊巧克力要分給來參加資訊營的同學。
 
-Zhe-Wei has learned through special channels that $m$ team members will attend the camp. In the spirit of fairness, he wants to distribute the chocolates equally among the team members.
+現在哲緯利用了特殊的管道知道了總共會有 $m$ 名小隊員會來參加資訊營，為了公平起見，他要把這些巧克力平分給小隊員們。
 
-But here's the problem: it's very likely that the chocolates cannot be divided evenly among the team members, meaning there will be leftovers. As fate would have it, the factory owner Willy Wonka has a peculiar obsession.
+不過現在問題來了，很可能巧克力沒有辦法被小隊員均分完、也就是有剩下，好巧不巧的是出產巧克力的工廠老闆Willy Wonka有特殊的怪癖，
 
-He ordered Zhe-Wei not to have any leftover chocolates, and not to return the extras either — otherwise Willy Wonka would have the Oompa Loompas throw Zhe-Wei into the chocolate river.
+他命令哲緯不可以剩下巧克力，也不能把多出來的巧克力退還給他，不然Willy Wonka就要讓工廠裡的矮人們把哲緯丟進巧克力河裡。
 
-Caught between a rock and a hard place...........................................
+在左右為難之下...........................................
 
-Zhe-Wei decided to eat all the leftover chocolates himself~(￣▽￣)~(＿△＿)~(￣▽￣)~(＿△＿)~(￣▽￣)~
+哲緯決定要把剩下來的巧克力全部吃光光~(￣▽￣)~(＿△＿)~(￣▽￣)~(＿△＿)~(￣▽￣)~
 
-Can you help calculate exactly how many chocolates Zhe-Wei has to eat, so he can mentally prepare?
+你能幫幫忙算一下哲緯要負責吃掉的巧克力究竟有多少塊，讓他能夠有心理準備嗎？
 
-*Input*
+*輸入說明*
 
-Two positive integers n and m, representing n chocolates and m team members.
+兩個正整數 $n,m$，代表有 $n$ 塊巧克力及 $m$ 個小隊員。
 
-We guarantee:
+我們保證：
 
 $n < 10^1000000$，$m < 1000000$
 
-*Output*
+*輸出說明*
 
-A single integer representing the number of chocolates Zhe-Wei must eat.
+一個整數，代表哲緯要負責吃掉的巧克力塊數。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`9999 1188`], [`495`],
 )
 
-=== Combinatorics
+=== 組合
 ==== Problem: CF 610A Pasha and Stick
-*Problem Statement*
+*題目敘述*
 
-Pasha has a stick whose length is a positive integer $n$. He wants to make three cuts, dividing the stick into four parts. Each part must have a positive integer length, and the lengths must sum to $n$.
+Pasha有一根木棍，其長度為一個正整數 $n$。他想要進行三次切割，將木棍分成四個部分。每個部分的長度必須是正整數，而這些部分的長度總和為 $n$。
 
-Pasha likes rectangles but dislikes squares, so he wants to know how many ways he can cut the stick into four parts such that the parts can form a rectangle but not a square.
+Pasha喜歡長方形，但討厭正方形，所以他想知道有多少種方式可以將木棍切割成四個部分，使得這些部分可以組成一個長方形，但無法組成一個正方形。
 
-Your task is to help Pasha count the number of such cuts. Two cuts are considered different if there exists some integer $x$ such that the number of parts with length $x$ differs between the two cuts.
+你的任務是幫助Pasha計算這種切割方式的數量。如果兩種切割方式中存在一個整數 $x$，使得第一種方式中長度為 $x$ 的部分數量與第二種方式中的數量不同，
+則這兩種方式被視為不同的方式。
 
-*Input*
+*輸入說明*
 
-The first line of input contains a positive integer $n$ ($1 lt.eq n lt.eq 2 times 10^9$), the length of Pasha's stick.
+輸入的第一行包含一個正整數 $n$ ($1 lt.eq n lt.eq 2 times 10^9$)，代表Pasha的木棍的長度。
 
-*Output*
+*輸出說明*
 
-Output a single integer representing the number of ways to cut Pasha's stick into four parts such that the parts can form a rectangle (by connecting the endpoints) but not a square.
+輸出一個整數，表示將Pasha的木棍切割成四個部分的方式數量，使得可以通過連接這些部分的端點形成一個長方形，但無法形成一個正方形。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`6`], [`1`],
-  [Sample Input 2], [Sample Output 2],
+  [範例輸入 2], [範例輸出 2],
   [`20`], [`4`],
 )
 ==== Problem: CF 52B Right Triangles
-*Problem Statement*
+*題目敘述*
 
-Given an $n times m$ grid containing only dots ('.') and asterisks ('\*'), count the number of right triangles whose vertices are all at the centers of asterisk ('\*') cells and whose two legs are parallel to the sides of the grid. A right triangle is a triangle with one 90-degree angle.
+給定一個 $n times m$ 的場地，場地上只包含句點('.')和星號('*')。
+你的任務是計算所有頂點位於星號('*')單元格中心的、兩邊平行於場地邊的直角三角形的數量。直角三角形是指其中一個角是直角(即90度角)的三角形。
 
-*Input*
+*輸入說明*
 
-The first line contains two positive integers $n$ and $m \( 1 lt.eq n \, m lt.eq 1000 \)$. The next $n$ lines each contain $m$ characters describing the grid layout. Only '.' and '\*' will appear.
+第一行包含兩個正整數 $n$ 和 $m \( 1 lt.eq n \, m lt.eq 1000 \)$。接下來的 $n$ 行，每行包含 $m$ 個字符，描述了場地的佈局。只會出現 '.' 和 '\*'。
 
-*Output*
+*輸出說明*
 
-Output a single integer representing the total number of right triangles in the grid. Do not use the `%lld` format specifier in C++ to read or write 64-bit integers. It is recommended to use cout (or `%I64d`).
+輸出一個整數，表示場地中的直角三角形的總數。請不要在 C++ 中使用 `\%lld\` 格式說明符來讀取或寫入 64 位整數。最好使用 cout (也可以使用 `\%I64d\`)。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`2 2`#linebreak()`**`#linebreak()`*.`], [`1`],
-  [Sample Input 2], [Sample Output 2],
+  [範例輸入 2], [範例輸出 2],
   [`3 4`#linebreak()`*..*`#linebreak()`.**.`#linebreak()`*.**`], [`9`],
 )

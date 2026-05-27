@@ -1,7 +1,7 @@
 #import "../../template.typ": *
 
 
-= Competition Tips and Tricks
+= 競賽用小技巧
 
 #include "B-Complexity.typ"
 #include "B-IOSpeedUp.typ"

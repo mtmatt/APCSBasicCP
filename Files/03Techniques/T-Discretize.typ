@@ -1,31 +1,31 @@
 #import "../../template.typ": *
 
-== Discretization
-=== Concept
-Discretization is a classic application of sorting; it can compress a very large value range down to around $10^6$. First, why do we need to compress the value range? That is a great question. Let's look at the following example.
+== 離散化
+=== 概念
+離散化是排序的一個經典應用，可以將過大的值域範圍壓縮到$10^6$左右。 首先，為什麼要壓縮值域，這是一個很好的問題，我們看以下範例。
 
-==== Example: CSES 1619 Restaurant Customers
+==== 範例: CSES 1619 Restaurant Customers
 
-*Problem Statement*
+*題目敘述*
 
-You have n customers with their arrival and departure times at a restaurant. What is the maximum number of customers present in the restaurant at any point in time?
+你有n個顧客在餐廳的到達和離開時間。請問在任何時間，餐廳中最多有多少顧客？
 
-*Input Format*
+*輸入說明*
 
-The first line contains an integer n: the number of customers.
+第一行輸入一個整數n：顧客數量。
 
-The following n lines each describe a customer. Each line contains two integers $a$ and $b$: the arrival time and departure time of a customer.
+之後，有n行描述顧客。每行有兩個整數$a$和$b$：一個顧客的到達時間和離開時間。
 
 $1 <= n <= 2 times 10^5$，$1 <= a < b <= 10^9$
 
-*Output Format*
+*輸出說明*
 
-Output a single integer: the maximum number of customers present.
+輸出一個整數：最多顧客的數量。
 
-*Idea*
-There is a straightforward solution (I haven't written the difference array section yet; I'll add it when I have time): mark all entry and exit times, that is, add +1 at entry and -1 at exit, then scan through the array once from start to finish and record the maximum value.
+*想法*
+有一個很容易的解(我竟然還沒有寫差分，如果有空再補)就是標記所有進出時間，也就是在進入的時候+1，出去的時候-1， 最後從頭到尾掃過陣列一次，並記錄最大值就可以了。
 
-#code(title: [Difference Array Example])[
+#code(title: [差分範例])[
 ```cpp
 const int N=400010;
 
@@ -54,10 +54,10 @@ int main(){
 ```
 ]
 
-However, we can see that a and b have a very large range. In this case, we can use discretization to shrink the range.
-The `unique()` function removes duplicate elements, and `resize()` reallocates memory for the vector so that its size matches the number of remaining elements after removal.
+但是我們看到a和b都有很大的範圍。在這種情況下，我們可以使用離散化來縮小範圍。
+其中，`unique()`函式可以將重複的東西刪除，而`resize()`會重新分配記憶體空間給`vector`，讓大小符合刪除完之後的元素個數。
 
-#code(title: [Discretization Example])[
+#code(title: [離散化範例])[
 ```cpp
 const int N=400010;
 
@@ -91,11 +91,11 @@ int main(){
 ```
 ]
 
-*Alternative*
+*另解*
 
-This problem can also be solved using a `map<int,int>`. Interested readers may try it out.
+其實也可以透過`map<int,int>`解決這個問題，有興趣的同學可以試試看。
 
-=== Notes
-Discretization can only be used when the actual values being compressed are not the focus of the computation. If the exact values matter for the calculation, changing them will lead to incorrect answers (WA). Therefore, discretization is only applicable to problems where only the distinctness of values or their relative order needs to be considered.
+=== 注意事項
+離散化只能用在壓縮值域的值並不是計算的重點時，因為如果計算上值很重要，那就會導致你更改到數值，進而吃WA。所以離散化只能用在，只需要考慮值的不同，或是大小順序即可的題目。
 
-Additionally, as mentioned above, most of the time there are other methods to substitute for discretization (more examples will appear later), so you can choose not to learn it (just kidding).
+另外就是像上面說的，大多時候都可以用其他方法替代(後面還有其他範例)，所以也可以不用學(誤)。

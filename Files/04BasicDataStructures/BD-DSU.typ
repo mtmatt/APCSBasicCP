@@ -1,37 +1,37 @@
 #import "../../template.typ": *
 
-== Disjoint Set Union
-=== Introduction
-Disjoint Set Union, also known as DSU, is a data structure specifically designed to handle union and find operations on sets.
+== 並查集
+=== 前言
+並查集又稱為DSU(Disjoint Set Union)，顧名思義就是專門處理合併與查詢集合的資料結構。
 
-We often encounter problems like: are two people in the same group, or how to merge two groups. If we use a set to perform these operations, a query takes $O(log(n))$ and a union takes $O(n log(n))$. By using DSU, we can reduce the query time complexity to $O(alpha(n))$, where $alpha(n)$ is the inverse of the Ackermann function $A(n,n)$. Intuitively, within the variable ranges typical in competitive programming, it will never exceed $4$, so it can be treated as a constant.
+我們常常會遇到這樣的問題，兩個人是否同組，合併兩個組別的問題。如果使用set來執行操作，則查詢需要$O(log((n)))$，合併需要$O(n log((n)))$。而如果使用DSU，則可以將查詢的操作時間複雜度降到$O(alpha(n))$，其中$alpha(n)$是阿克曼函數$A(n,n)$的反函數，比較直觀的說法就是他在正常資訊競賽的變數範圍內都不會大於$4$，因此可以視為常數。
 
-=== Concept
-DSU is almost always implemented using the concept of trees, so if you do not yet know what a tree is, you can flip to the tree section first.
+=== 概念
+我們幾乎都是使用樹的概念存放DSU，因此如果你還不知道樹是什麼東西，你可以先翻到樹的介紹。
 
-Every element in DSU stores one piece of information: who is above it. You can think of it like this — above you is your senior, above your senior is your teacher, above your teacher is the school principal, and you all belong to Yilan High School. We can draw the following diagram as a reference.
+DSU裡面的每個元素都會存放著一個訊息，就是他的上面有誰。你可以想像成，你上面是你的學長姐，你學長姐上面是你們的老師，你們老師的上面是學校校長，而你們都屬於宜蘭高中。因此，我們可以畫這樣的圖以供參考。
 
-*Find*
+*查詢*
 
-The arrows in the diagram indicate who is above a given node. During a find operation, simply keep going up until you reach the topmost node. If two nodes share the same topmost node, we say those two nodes belong to the same set.
+圖中的箭頭表示該節點的上面是誰。查詢時，只要不斷的往上找就可以找到最頂部的節點，如果兩個節點的最頂部相同，則我們稱這兩個節點在同一個集合中。
 
 #align(center)[#image("../Images/DSU.png", width: 100%)]
-#align(center)[_DSU Diagram_]
+#align(center)[_並查集示意圖_]
 
-*Union*
+*合併*
 
-Merging two groups (a, b) is very simple: just connect the top of node a with the top of node b — that is, set the top of a's root to be above the top of b's root, or vice versa. Either direction works.
+合併兩個組別(a,b)非常簡單，我們只要將節點a的頂，與節點b的頂結合就可以了，也就是說，將a的頂設為b的頂的上面，或是反過來，都可以完成。
 
-=== Union by Rank (Heuristic Merging)
-Union by rank improves efficiency by attaching the root of the larger set on top of the root of the smaller set. A DSU without union by rank has an expected complexity of $O(n)$; adding union by rank reduces this to $O(log(n))$.
+=== 啟發式合併
+啟發式合併藉由將大的集合的頂，設在小的集合上面，以增進運行效率。原本沒有啟發式合併的並查集，期望複雜度為$O(n)$，加上啟發式合併之後可以降到$O(log((n)))$。
 
-=== Path Compression
-If during a find operation we connect all traversed nodes directly to the topmost node, we can further improve the complexity to an average of $O(alpha(n))$, which can be treated as the constant $4$ in competitive programming.
+=== 路徑壓縮
+如果我們在查詢的時候，將所有經過的節點直接連上最頂的那一個，我們可以進一步改善複雜度到平均$O(alpha(n))$，在競賽中可以視為常數$4$。
 
-=== Implementation
-In practice, path compression alone is usually sufficient for most tasks, so union by rank can be omitted.
+=== 實作
+實作上，因為通常加上路徑壓縮就足以勝任大部分任務，所以我們可以省略啟發式合併。
 
-#code(title: [DSU Implementation])[
+#code(title: [DSU 實作])[
 ```cpp
 const int N=100010;
 int dsu[N];
@@ -50,75 +50,75 @@ int Union(int a,int b){
 ```
 ]
 
-=== Examples and Practice
+=== 範例與練習
 
-==== Problem: Implement union by rank.
+==== 問題：請實作啟發式合併。
 
-==== Problem: UVA793 A - Network Connections
+==== 問題：UVA793 A - Network Connections
 
-*Problem Statement*
+*題目敘述*
 
-There are $n$ computers numbered $1$ through $n$, followed by a series of commands. The command `c a b` means connect $a$ and $b$; the command `q a b` means query whether $a$ and $b$ are connected. Finally, output the total number of queries that received a "connected" answer and the total number that received a "not connected" answer.
+有$n$台電腦，編號為$1$至$n$，接下來有若干個指令，指令為`c a b`代表連接$a$和$b$，指令為`q a b`代表詢問$a$與$b$是否相連，最後請輸出總共有幾次詢問是得到「相連」的答案，以及總共有幾次詢問是得到「不相連」的答案。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`10`#linebreak()`c 1 5`#linebreak()`c 2 7`#linebreak()`q 7 1`#linebreak()`c 3 9`#linebreak()`q 9 6`#linebreak()`c 2 5`#linebreak()`q 7 5`], [`1,2`],
 )
 
-*Small Detail*
+*小小細節*
 
-UVA is quite old and has some quirky rules, such as not having a newline at the end of the last line. You must follow these rules to receive `AC`.
+UVA因為很老，有一些奇怪的規定，例如最後一行不要換行等等，總之要遵守才會得到`AC`。
 
-==== Problem: ZJ d831 Graduation Trip
+==== 問題：ZJ d831 畢業旅行
 
-*Problem Statement*
+*題目敘述*
 
-The bonds of friendship forged over many years are finally blooming in this graduation season.
+多年來友情的羈絆，終於將在這畢業的季節開花結果。
 
-In recent days, classmates have been passionately discussing graduation trip destinations at all hours. Xiao Ming says that if they go to Leofoo Village, they can also visit Window on China; Xiao Mei says that if they go to Hengchun, Kenting is just a few dozen kilometers away and they must go there too; Xiao Hua mentions that Little Ghost Lake and Big Ghost Lake seem to be close together and both look like fun places.
+這幾天，班上同學們無時無刻都熱烈討論著畢業旅行的地點。小明說，如果要去六福村，可以順便去小人國；小美說，如果去了恆春的話，墾丁就在幾十公里外了，一定也要去玩；小華表示，小鬼湖跟大鬼湖好像很近，似乎都是很有趣的地方。
 
-As class president, after hearing so many "if we go here we can also go there" suggestions from classmates, you decide to find the graduation trip that lets the class visit the most attractions.
+身為班長，聽到同學這麼多「去了哪裡也可以去哪裡」的資訊後，你決定要為班上的同學們，找到一個能玩最多景點的畢業旅行。
 
-*Input Description*
+*輸入說明*
 
-There are multiple test cases, ending at EOF.
+有多組測試資料，以 EOF 結束。
 
-The first line of each test case contains two positive integers $n (n <= 10^6)$ and $m (m <= 10^5)$, indicating there are $n$ attractions numbered $0$ through $(n-1)$. The next $m$ lines each contain two integers $a$ and $b   (0 <= a,b<n)$, meaning visiting $a$ also allows visiting $b$ (and vice versa).
+每組測試資料的第一行有兩個正整數 $n (n <= 10^6)$ 和 $m (m <= 10^5)$，表示景點有 $n$ 個，編號為 $0 - (n-1)$。接下來有 $m$ 行，每行有兩個整數 $a$ 和 $b \; (0 <= a,b<n)$，表示去了 $a$ 的同時也可以去 $b$(反過來也一樣)。
 
-*Output Description*
+*輸出說明*
 
-Output a single number representing the maximum number of attractions that can be visited on the graduation trip.
+輸出一個數字，表示畢業旅行最多可以玩的景點數量。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`6 4`#linebreak()`0 1`#linebreak()`2 3`#linebreak()`1 3`#linebreak()`5 4`#linebreak()`1000000 0`#linebreak()`1000000 1`#linebreak()`0 999999`], [`4`#linebreak()`1`#linebreak()`2`],
 )
 
-==== Problem: Luogu P1536 Village Connectivity
+==== 問題：洛谷P1536 村村通
 
-*Problem Statement*
+*題目敘述*
 
-A city surveyed its town transportation conditions and produced a road statistics table. The table lists the towns directly connected by each road. The city government's "Village Connectivity Project" aims to make any two towns in the city reachable from each other (not necessarily via a direct road — indirect connectivity is sufficient). Calculate the minimum number of additional roads that need to be built.
+某市調查城鎮交通狀況，得到現有城鎮道路統計表。表中列出了每條道路直接連通的城鎮。市政府「村村通工程」的目標是使全市任何兩個城鎮間都可以實現交通（但不一定有直接的道路相連，只要相互之間可達即可）。請你計算出最少還需要建設多少條道路？
 
-*Input Description*
+*輸入說明*
 
-The input contains several test cases. The first line of each test case contains two positive integers separated by a space: the number of towns $n$ and the number of roads $m$. The next $m$ lines correspond to $m$ roads, each containing a pair of positive integers separated by a space representing the two towns directly connected by that road. For simplicity, towns are numbered $1$ through $n$.
+輸入包含若干組測試數據，每組測試數據的第一行給出兩個用空格隔開的正整數，分別是城鎮數目 $n$ 和道路數目 $m$ ；隨後的 $m$ 行對應 $m$ 條道路，每行給出一對用空格隔開的正整數，分別是該條道路直接相連的兩個城鎮的編號。簡單起見，城鎮從 $1$ 到 $n$ 編號。
 
-Note: there may be multiple roads between two towns.
+注意：兩個城市間可以有多條道路相通。
 
-The last line of the input is a single integer $0$, marking the end of the test data.
+在輸入數據的最後，為一行一個整數 $0$，代表測試數據的結尾。
 
-*Output Description*
+*輸出說明*
 
-For each test case, output one integer on its own line representing the minimum number of roads that still need to be built.
+對於每組數據，對應一行一個整數。表示最少還需要建設的道路數目。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`4 2`#linebreak()`1 3`#linebreak()`4 3`#linebreak()`3 3`#linebreak()`1 2`#linebreak()`1 3`#linebreak()`2 3`#linebreak()`5 2`#linebreak()`1 2`#linebreak()`3 5`#linebreak()`999 0`#linebreak()`0`], [`1`#linebreak()`0`#linebreak()`2`#linebreak()`998`],
 )

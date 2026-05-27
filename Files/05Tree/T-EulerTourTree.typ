@@ -1,19 +1,14 @@
 #import "../../template.typ": *
 
-== Euler Tour on Trees
-=== What is an Euler Tour
-Generally speaking, an Euler tour refers to a path that traverses every edge
-exactly once. However, trees clearly have no such path. So the Euler tour on a
-tree refers to a path where every edge is traversed exactly twice. We can
-record such a path using DFS.
+== 樹上尤拉路徑
+=== 什麼是尤拉路徑
+通常而言，尤拉路徑是指所有的邊都只通過一次的路徑，不過樹上很明顯沒有這東西。所以樹上的尤拉路徑指的是每個邊都通過兩次的路徑。我們可以藉由DFS來記錄這樣的路徑。
 
-=== Applications
-Using this method together with data structures, LCA queries can also be
-answered in $O \( log \( n \) \)$ time. In addition, there are other problems
-that make use of this technique.
+=== 用途
+藉由這方法，配合資料結構，同樣可以$O(log(n))$完成LCA的查詢。不僅如此，有一些其他問題也會用到這個操作。
 
-=== Construction
-#code(title: [Euler Tour on Trees])[
+=== 建構
+#code(title: [樹上尤拉路徑])[
   ```cpp
 vector<int> g[100010] ;
 vector<int> et ;
@@ -31,50 +26,34 @@ void dfs(int x, int p) {
   ```
 ]
 
-If you want to use this to solve LCA problems, you also need to store an extra
-variable: the depth. The LCA of two nodes is then the position of the minimum
-depth between the two nodes in the Euler tour.
+如果你希望它可以用來解決LCA問題，你還需要多存一個變數，就是深度。而此時兩個節點的LCA就會是兩個節點之間的深度最小值位置。
 
-=== Examples and Exercises
+=== 範例與練習
 ==== Problem: CF 620 E New Year Tree
-*Problem Statement*
+*題目敘述*
 
-The New Year holidays are over, but Resha does not want to throw away the New
-Year tree. He invited his best friends Kerim and Gural to help him redecorate
-the New Year tree.
+新年假期結束了，但 Resha 不想丟掉新年樹。他邀請了他最好的朋友 Kerim 和 Gural 幫助他重新裝飾新年樹。
 
-The New Year tree is an undirected tree with n vertices rooted at vertex 1.
+新年樹是一個有 n 個頂點且根在頂點 1 的無向樹。
 
-You need to handle two types of queries:
+你需要處理兩種類型的查詢：
 
-+ Change the color of all vertices in the subtree of vertex v to color c.
++ 將頂點 v 的子樹中的所有頂點顏色更改為顏色 c。
 
-+ Find the number of distinct colors in the subtree of vertex v.
++ 查找頂點 v 的子樹中不同顏色的數量。
 
-*Input Format*
+*輸入說明*
 
-The first line contains two integers $n$ and $m$ $\( 1 lt.eq n \, m lt.eq 4 times 10^5 \)$
---- the number of vertices in the tree and the number of queries.
+第一行包含兩個整數 $n$ 和 $m$ \( 1 lt.eq n \, m lt.eq 4 times 10^5 \) --- 樹中頂點的數量和查詢的數量。
 
-The second line contains $n$ integers $c_i$ $\( 1 lt.eq c_i lt.eq 60 \)$ --- the
-color of the $i$-th vertex.
+第二行包含 $n$ 個整數 $c_i$ \( 1 lt.eq c_i lt.eq 60 \) --- 第 $i$ 個頂點的顏色。
 
-The next $n - 1$ lines each contain two integers $x_j$ and $y_j$
-$\( 1 lt.eq x_j \, y_j lt.eq n \)$ --- the two endpoints of the $j$-th edge.
-It is guaranteed the input forms a valid undirected tree.
+接下來的 $n - 1$ 行，每行包含兩個整數 $x_j$ 和 $y_j$ \( 1 lt.eq x_j \, y_j lt.eq n \) --- 第 $j$ 條邊的兩個頂點。保證給出的是正確的無向樹。
 
-The last $m$ lines contain the query descriptions. Each description begins
-with an integer $t_k \( 1 lt.eq t_k lt.eq 2 \)$ --- the type of the $k$-th query.
-For a type-1 query, two more integers $v_k$ and $c_k$
-$\( 1 lt.eq v_k lt.eq n \, 1 lt.eq c_k lt.eq 60 \)$ follow --- the subtree rooted at
-$v_k$ will be repainted with color $c_k$. For a type-2 query, one more integer
-$v_k$ $\( 1 lt.eq v_k lt.eq n \)$ follows ---
-find the number of distinct colors in the subtree of $v_k$.
+最後的 $m$ 行包含查詢的描述。每個描述以整數 $t_k \( 1 lt.eq t_k lt.eq 2 \)$ --- 第 $k$ 個查詢的類型。對於第一類型的查詢，接下來是兩個整數 $v_k$ 和 $c_k$ \( 1 lt.eq v_k lt.eq n \, 1 lt.eq c_k lt.eq 60 \) follow --- 子樹將用顏色 $c_k$ 重新著色的頂點號碼 $v_k$。對於第二類型的查詢，接下來是一個整數 $v_k$ \( 1 lt.eq v_k lt.eq n \) --- 需要查找其子樹中不同顏色數量的頂點號碼。
 
-*Output Format*
+*輸出說明*
 
-For each type-2 query, output a single integer $a$ ---
-the number of distinct colors in the subtree of the given vertex.
+對於每個第二類型的查詢，輸出一個整數 $a$ --- 查詢中給定的頂點的子樹中不同顏色的數量。
 
-Each number should be printed on a separate line in the order the queries
-appear in the input.
+每個數字應該以單獨的行按照輸入中出現的查詢順序進行輸出。

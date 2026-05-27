@@ -1,19 +1,20 @@
-This chapter mainly translates some English problems for your practice.
-Note that I may not be able to solve all of them either.
+#import "../../template.typ": *
 
-== Practice Problems
+這個章節主要是幫你們翻譯一些英文題目，以供你們練習使用，不過我可能也沒有辦法解開。
+
+== 習題們
 ==== Problem: AtCoder ABC 126D Even Relation
 *Problem Statement*
 
-We have a tree with N vertices numbered $1$ to $N$. The $i$-th edge connects vertex $u_i$ and vertex $v_i$, and has length $w_i$. Your goal is to paint each vertex of the tree white or black (painting all vertices the same color is also allowed), such that the following condition is satisfied:
+我們有一個樹，其中有N個編號從$1$到$N$的頂點。樹中的第$i$條邊連接頂點$u_i$和頂點$v_i$，其長度是$w_i$。你的目標是將樹中的每個頂點塗成白色或黑色(將所有頂點塗成同一種顏色也可以)，使得滿足以下條件：
 
-For any two vertices painted the same color, the distance between them is an even number.
+對於任意兩個塗成相同顏色的頂點，它們之間的距離是一個偶數。
 
-Find a valid coloring and output it. It can be proven that at least one valid coloring exists under the constraints of this problem.
+找到一種滿足條件的頂點塗色方案並輸出。可以證明，在本題的限制條件下，至少存在一種這樣的塗色方案。
 
 *Input Description*
 
-Input is given from standard input in the following format:
+輸入以以下格式從標準輸入中給出：
 
 $N$
 
@@ -25,7 +26,7 @@ $dots.v$
 
 $u_(N - 1) v_(N - 1) w_(N - 1)$
 
-All values in the input are integers. $1 lt.eq N lt.eq 10^5$
+輸入中的所有值都是整數。 $1 lt.eq N lt.eq 10^5$
 
 $1 lt.eq u_i lt.eq v_i lt.eq N$
 
@@ -33,31 +34,31 @@ $1 lt.eq w_i lt.eq 10^9$
 
 *Output Description*
 
-Output the coloring in $N$ lines. The $i$-th line should contain $0$ if vertex $i$ is painted white, and $1$ if vertex $i$ is painted black.
+輸出滿足條件的頂點塗色方案，共$N$行。第$i$行應該包含$0$，如果頂點$i$塗成白色，包含$1$，如果頂點$i$塗成黑色。
 
-If multiple valid colorings exist, any one of them is accepted.
+如果有多個滿足條件的塗色方案，可以接受任何一個方案。
 
 *Sample Test*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3`#linebreak()`1 2 2`#linebreak()`2 3 1`], [`0`#linebreak()`0`#linebreak()`1`],
 )
 
 ==== Problem: AtCoder ABC 127D Integer Cards
 *Problem Statement*
 
-You have $N$ cards. The $i$-th card has the integer $A_i$ written on it.
+你有 $N$ 張卡片。在第 $i$ 張卡片上寫有整數 $A_i$。
 
-In order, for each $j = 1 \, 2 \, dots.h.c \, M$, you perform the following operation once:
+按照順序，對於每個 $j = 1 \, 2 \, dots.h.c \, M$，你將執行以下操作一次：
 
-Operation: Choose at most $B_j$ cards (possibly zero). Replace the integer written on each chosen card with $C_j$.
+操作：最多選擇 $B_j$ 張卡片(可能為零)。將所選卡片上寫的整數替換為 $C_j$。
 
-Find the maximum possible sum of integers on the cards after $M$ operations.
+找到在 $M$ 次操作之後，卡片上整數的最大可能總和。
 
 *Input Description*
 
-Input is given from standard input in the following format:
+輸入以以下格式從標準輸入中給出：
 
 $N$
 
@@ -73,7 +74,7 @@ $dots.v$
 
 $B_M C_M$
 
-All values in the input are integers.
+輸入中的所有值都是整數。
 
 $1 lt.eq N lt.eq 10^5$
 
@@ -85,29 +86,29 @@ $1 lt.eq B_i lt.eq N$
 
 *Output Description*
 
-Output the maximum possible sum of integers on the cards after $M$ operations.
+輸出在 $M$ 次操作之後卡片上整數的最大可能總和。
 
 *Sample Test*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3 2`#linebreak()`5 1 4`#linebreak()`2 3`#linebreak()`1 5`], [`14`],
 )
 
 ==== Problem: AtCoder ABC 128E Integer Cards
 *Problem Statement*
 
-There is an infinitely long street extending from west to east, which we treat as a number line.
+有一條無限長的街道，從西到東延伸，我們將其視為一個數線。
 
-$N$ road construction projects are scheduled on this street. The $i$-th project will block the point at coordinate $X_i$ from time $S_i - 0.5$ to time $T_i - 0.5$.
+在這條街道上預定進行 $N$ 個道路施工。第 $i$ 個施工將從時間 $S_i - 0.5$ 至時間 $T_i - 0.5$ 封鎖座標 $X_i$ 的點。
 
-$Q$ people are standing at coordinate $0$. The $i$-th person starts at coordinate $0$ at time $D_i$, walks in the positive direction at speed $1$, and stops when they reach a blocked point.
+$Q$ 人站在座標 $0$ 處。第 $i$ 個人將在時間 $D_i$ 從座標 $0$ 開始，以速度 $1$ 往正方向行走，並在到達封鎖點時停止行走。
 
-Find the distance each of the $Q$ people will walk.
+找出每個第 $Q$ 個人將行走的距離。
 
 *Input Description*
 
-Input is given from standard input in the following format:
+從標準輸入中以以下格式給出：
 
 $N$
 
@@ -125,7 +126,7 @@ $dots.v$
 
 $D_Q$
 
-All values in the input are integers.
+輸入中的所有值都是整數。
 
 $1 lt.eq N \, Q lt.eq 2 times 10^5$
 
@@ -135,40 +136,40 @@ $1 lt.eq X_i lt.eq 10^9$
 
 $0 lt.eq D_1 < D_2 < dots.h.c < D_Q lt.eq 10^9$
 
-If $i eq.not j$ and $X_i = X_j$, then the intervals $\[ S_i \, T_i \)$ and
-$\[ S_j \, T_j \)$ do not overlap.
+如果 $i eq.not j$ 且 $X_i = X_j$，則區間 $\[ S_i \, T_i \)$ 和
+$\[ S_j \, T_j \)$ 不重疊。
 
 *Output Description*
 
-Output $Q$ lines. The $i$-th line should contain the distance the $i$-th person will walk, or $- 1$ if that person walks indefinitely.
+輸出 $Q$ 行。第 $i$ 行應該包含第 $i$ 個人將行走的距離，如果該人將無限行走則輸出 $- 1$。
 
 *Sample Test*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [], [],
 )
 
 ==== Problem: AtCoder ABC 140D Face Produces Unhappiness
 *Problem Statement*
 
-There are $N$ people standing in a line from west to east.
+有 $N$ 人從西到東站在一條隊列上。
 
-You are given a string $S$ of length $N$ describing the direction each person faces. If the $i$-th character of $S$ is L, the $i$-th person from the west faces west; if the $i$-th character is R, that person faces east.
+給定一個長度為 $N$ 的字串 $S$，表示每個人的朝向。如果 $S$ 的第 $i$ 個字元是 L，則表示從西邊數來第 $i$ 個人朝向西；如果 $S$ 的第 $i$ 個字元是 R，則表示該人朝向東。
 
-A person is happy if the person directly in front of them faces the same direction. However, if no one is in front of a person, they are unhappy.
+一個人如果面對的是與他/她相同朝向的人，則他/她是快樂的。但如果一個人前面沒有人，則他/她不快樂。
 
-You may perform the following operation between $0$ and $K$ times (inclusive):
+你可以進行任意次數的以下操作，次數範圍在 $0$ 到 $K$(包含邊界)之間：
 
-Operation: Choose integers $l$ and $r$ satisfying
-$1 lt.eq l lt.eq r lt.eq N$, and rotate the segment of the line from person $l$ to person $r$ by $180$ degrees. That is, for each
-$i = 0 \, 1 \, dots.h.c \, r - l$, after the operation, person $l + i$ stands at the position of person $r - i$ and faces the opposite direction.
+操作：選擇整數 $l$ 和 $r$，滿足
+$1 lt.eq l lt.eq r lt.eq N$，並將隊列中的一部分進行 $180$ 度旋轉：從第 $l$ 人到第 $r$ 人。也就是說，對於每個
+$i = 0 \, 1 \, dots.h.c \, r - l$，在操作後，第 $l + i$ 人會站在第 $r - i$ 人的位置，且朝向相反。
 
-What is the maximum number of people you can make happy?
+你能使最多多少人快樂？
 
 *Input Description*
 
-Input is given from standard input in the following format:
+輸入以以下格式從標準輸入中給出：
 
 $N$
 
@@ -176,43 +177,43 @@ $K$
 
 $S$
 
-$N$ is an integer satisfying $1 lt.eq N lt.eq 10^5$.
+$N$ 是一個整數，滿足 $1 lt.eq N lt.eq 10^5$。
 
-$K$ is an integer satisfying $1 lt.eq K lt.eq 10^5$.
+$K$ 是一個整數，滿足 $1 lt.eq K lt.eq 10^5$。
 
-The string $S$ has length $N$.
+字串 $S$ 的長度為 $N$。
 
-Each character of $S$ is L or R.
+字串 $S$ 的每個字元都是 L 或 R。
 
 *Output Description*
 
-Output the maximum number of happy people after at most $K$ operations.
+在最多 $K$ 次操作後，輸出可能的最大快樂人數。
 
 *Sample Test*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`4 4`#linebreak()`1 9 3 5`], [`6`],
 )
 
 ==== Problem: AtCoder ABC 141D Powerful Discount Tickets
 *Problem Statement*
 
-Takahashi plans to buy $N$ items one by one.
+Takahashi打算逐一購買 $N$ 個物品。
 
-The price of the $i$-th item is $A_i$ yen (Japanese currency).
+他購買第 $i$ 個物品的價格是 $A_i$ 日元(日本的貨幣單位)。
 
-He has $M$ discount tickets, and he can use any number of them when buying an item.
+他有 $M$ 張折扣券，每次購買物品時可以使用任意數量的折扣券。
 
-If he uses $Y$ tickets when buying an item priced at $X$ yen, he can purchase it for
+如果在購買價格為 $X$ 日元的物品時使用了 $Y$ 張折扣券，他可以以
 $floor.l frac(2 Y, X) floor.r$
-yen (rounded down to the nearest integer).
+日元(向下取整到最近的整數)的價格購買物品。
 
-Find the minimum total amount needed to buy all items.
+求購買所有物品所需的最小金額。
 
 *Input Description*
 
-Input is given from standard input in the following format:
+輸入以以下格式從標準輸入給出：
 
 $N$
 
@@ -226,7 +227,7 @@ $dots.v$
 
 $A_N$
 
-All values in the input are integers.
+輸入中的所有值都是整數。
 
 $1 lt.eq N \, M lt.eq 10^5$
 
@@ -234,31 +235,31 @@ $1 lt.eq A_i lt.eq 10^9$
 
 *Output Description*
 
-Output the minimum total amount needed to buy all items.
+輸出購買所有物品所需的最小金額。
 
 *Sample Test*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3 3`#linebreak()`2 13 8`], [`9`],
 )
 
 ==== Problem: AtCoder ABC 142E Get Everything
 *Problem Statement*
 
-We have $N$ locked treasure chests numbered $1$ to $N$.
+我們有 $N$ 個被鎖住的寶箱，編號從 $1$ 到 $N$。
 
-A store sells $M$ keys. The $i$-th key costs $a_i$
-yen (Japanese currency) and can open $b_i$ chests: chests $c_(i 1)$,
-$c_(i 2)$, $dots.h.c$, $c_(i b_i)$.
+商店出售 $M$ 把鑰匙。第 $i$ 把鑰匙的價格是 $a_i$
+日元(日本的貨幣單位)，並且可以打開 $b_i$ 個寶箱：寶箱 $c_(i 1)$,
+$c_(i 2)$, $dots.h.c$, $c_(i b_i)$。
 
-Each purchased key can be used any number of times.
+每個購買的鑰匙可以使用任意次數。
 
-Find the minimum cost to open all chests. If it is impossible to open all chests, output $- 1$.
+求解打開所有寶箱所需的最小成本。如果無法打開所有寶箱，輸出 $- 1$。
 
 *Input Description*
 
-Input is given from standard input in the following format:
+輸入以以下格式從標準輸入給出：
 
 $N quad M$
 
@@ -268,7 +269,7 @@ $dots.v$
 
 $a_M quad b_M quad c_(M 1) quad c_(M 2) quad dots.h.c quad c_(M b_M)$
 
-All values in the input are integers.
+輸入中的所有值都是整數。
 
 $1 lt.eq N lt.eq 12$
 
@@ -282,21 +283,21 @@ $1 lt.eq c_(i 1) < c_(i 2) < dots.h.c < c_(i b_i) lt.eq N$
 
 *Output Description*
 
-Output the minimum cost to open all chests. If it is impossible to open all chests, output $- 1$.
+輸出打開所有寶箱所需的最小成本。如果無法打開所有寶箱，輸出 $- 1$。
 
 *Sample Test*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [], [],
 )
 
 ==== Problem: AtCoder ABC 143D Triangles
 *Problem Statement*
 
-Takahashi has $N$ distinguishable sticks. The $i$-th stick has length $L_i$.
+Takahashi擁有$N$根可以互相區分的棒子。第$i$根棒子的長度是$L_i$。
 
-He wants to form a triangle using these sticks. Let $a$, $b$, and $c$ be the lengths of the three sticks used. The following conditions must all be satisfied:
+他打算用這些棒子組成一個三角形。令$a$、$b$和$c$為使用的三根棒子的長度。在此情況下，必須滿足以下所有條件：
 
 $a < b + c$
 
@@ -304,11 +305,11 @@ $b < c + a$
 
 $c < a + b$
 
-How many different triangles can be formed? Two triangles are considered different if there is a stick used in one but not the other.
+有多少種不同的三角形可以組成？當有一根棒子只在其中一個三角形中使用時，兩個三角形被視為不同的。
 
 *Input Description*
 
-Input is given from standard input in the following format:
+輸入以以下格式從標準輸入給出：
 
 $N$
 
@@ -320,32 +321,32 @@ $1 lt.eq L_i lt.eq 10^3$
 
 *Output Description*
 
-Output the number of different triangles that can be formed.
+輸出可以組成的不同三角形的數量。
 
 *Sample Test*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`4`#linebreak()`3 4 2 1`], [`1`],
 )
 
 ==== Problem: AtCoder ABC 144E Gluttony
 *Problem Statement*
 
-Takahashi will participate in an eating contest. The contest has N teams competing, and Takahashi's team consists of N members numbered 1 to N from youngest to oldest. Member $i$ has an endurance coefficient of $A_i$.
+Takahashi將參加一場吃比賽。這場比賽中，會有N個隊伍進行競爭，Takahashi的隊伍由從年幼到年長的N個選手組成，編號從1到N。成員i的消耗係數為$A_i$。
 
-The contest provides N food items numbered 1 to N, each with difficulty $F_i$. The contest details are as follows:
+在比賽中，會提供N道食物，編號從1到N，每個食物的難度為$F_i$。比賽的詳細信息如下：
 
-A team should assign one member to each food item, and the same member should not be assigned to multiple food items.
-The time a member takes to finish a food item is $x times y$ seconds, where $x$ is the member's endurance coefficient and $y$ is the food's difficulty.
-The team's score is the longest time any individual member takes to finish their food.
-Before the contest, Takahashi's team decides to do some training. In one training session, a member can reduce his/her endurance coefficient by 1, as long as it does not go below 0. However, for financial reasons, the N members combined can train at most K times in total.
+一個隊伍應該為每個食物分配一個成員，並且不應該將同一個成員分配給多個食物。
+一個成員完成食物所需的時間為$x times y$秒，其中$x$是成員的消耗係數，$y$是食物的難度。
+隊伍的分數是一個個體成員完成食物所花的最長時間。
+在比賽之前，Takahashi的隊伍決定進行一些訓練。在一次訓練中，一個成員可以將他/她的消耗係數減少1，前提是不能低於0。然而，由於財務原因，N個成員總共最多只能進行K次訓練。
 
-Given that the team chooses the amount of training for each member and assigns food items optimally, what is the minimum possible team score?
+在選擇成員的訓練量並合理分配食物的情況下，隊伍的最小可能分數是多少？
 
 *Input Description*
 
-Input is given from standard input in the following format:
+輸入以以下格式從標準輸入給出：
 
 $N med K$
 
@@ -353,7 +354,7 @@ $A_1 med A_2 med dots.h.c med A_N$
 
 $F_1 med F_2 med dots.h.c med F_N$
 
-All input values are integers.
+所有輸入值都是整數。
 
 $1 lt.eq N lt.eq 2 times 10^5$
 
@@ -365,32 +366,31 @@ $1 lt.eq F_i lt.eq 10^6 \( 1 lt.eq i lt.eq N \)$
 
 *Output Description*
 
-Output the minimum possible team score.
+輸出隊伍的最小可能分數。
 
 *Sample Test*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3 5`#linebreak()`4 2 1`#linebreak()`2 3 1`], [`2`],
 )
 
 ==== Problem: AtCoder ABC 145F Laminate
 *Problem Statement*
 
-We will create an artwork by painting some cells black in a white square grid with
-$10^9$ rows and $N$ columns. The current plan is: for the $i$-th column from the left,
-we paint the bottom $H_i$ cells black and leave the rest white.
-Before starting work, you may choose at most $K$ columns (or none at all) and change
-their $H_i$ values to any integer in the range $0$ to $10^9$ (inclusive).
-Different columns may be assigned different $H_i$ values.
-Then, you repeatedly perform the following operation to create the modified artwork:
+我們將透過在一個白色正方形網格中塗黑一些方格來創作一幅藝術作品，該網格有
+$10^9$ 行和 $N$ 列。目前的計劃如下：對於從左邊起的第 $i$ 列，
+我們將塗黑最下面的 $H_i$ 個方格，而其他方格則不會被塗黑。
+在開始工作之前，你最多可以選擇 $K$ 列(也可以不選)，並且可以對這些列的 $H_i$ 值進行任意整數的修改，範圍介於 $0$ 到 $10^9$ 之間(包含 $0$ 和 $10^9$)。
+不同的列可以選擇不同的 $H_i$ 值。
+然後，你將重複執行以下操作來創建修改後的藝術作品：
 
-Choose one or more consecutive cells in a row and paint them black. (Already-black cells may be painted again, but according to the modified plan, you should not paint cells that do not need to be black.)
-Find the minimum number of operations required.
+選擇一行中的一個或多個連續方格並將其塗黑。(已經塗黑的方格可以再次塗黑，但根據修改後的計劃，不應塗黑那些不需要被塗黑的方格。)
+找出執行此操作所需的最少次數。
 
 *Input Description*
 
-Input is given from standard input in the following format:
+從標準輸入以以下格式給出：
 
 $N$
 
@@ -398,7 +398,7 @@ $K$
 
 $H_1 quad H_2 quad dots.h.c quad H_N$
 
-All input values are integers.
+所有輸入值均為整數。
 
 $1 lt.eq N lt.eq 300$
 
@@ -408,414 +408,385 @@ $0 lt.eq H_i lt.eq 10^9$
 
 *Output Description*
 
-Output the minimum number of operations required.
+輸出所需的最小操作次數。
 
 *Sample Test*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`4 1`#linebreak()`2 3 4 1`], [`3`],
 )
-
 ==== Problem: CF 1840D Wooden Toy Festival
-*Problem Statement*
+*題目敘述*
 
-In a small town, there is a workshop specializing in woodworking. Since the town is small, only three woodcarvers work there.
+在一個小鎮上，有一家專門從事木工的工作室。由於鎮子很小，只有三位木雕師在那裡工作。
 
-Soon the town plans to hold a wooden toy festival. The workshop staff hope to prepare for it.
+不久後，鎮上計劃舉辦一個木製玩具節。工作室的員工希望為此做好準備。
 
-They know that $n$
-people will come to the workshop with requests to make wooden toys. Each person is different and may want a different toy. For simplicity, we represent the toy style that the $i$-th person wants as $a_i$ ($1 lt.eq i lt.eq 10^9$).
+他們知道會有 $n$ 個人來到工作室，帶著製作木製玩具的請求。每個人都不同，可能希望不同的玩具。為了簡單起見，我們將第 $i$ 個人想要的玩具樣式表示為 $a_i$ ($1 lt.eq i lt.eq 10^9$)。
 
-Each woodcarver can choose in advance an integer style $x$
-($1 lt.eq x lt.eq 10^9$); different woodcarvers may choose different styles. $x$
-is an integer. In preparing for the festival, the woodcarver will perfectly practice making the chosen style of toy, allowing him to carve it from wood immediately. For a woodcarver who has chosen style
-$x$, making a toy of style $y$ will take $\| x - y \|$
-time, since the more similar a toy is to the one he can make immediately, the faster the woodcarver finishes.
+每位木雕師可以事先選擇一個整數樣式 $x$ ($1 lt.eq x lt.eq 10^9$)；不同的木雕師可以選擇不同的樣式。$x$ 是一個整數。在為節日做準備時，木雕師將完美地練習製作所選樣式的玩具，這將使他們能夠立即從木材中裁剪出來。對於已經選擇樣式 $x$ 的木雕師來說，為了製作樣式 $y$ 的玩具，將需要 $\| x - y \|$ 的時間，因為玩具與他可以立即製作的那個越相似，木雕師完成工作的速度就越快。
 
-On the day of the festival, when the next person comes to the workshop with a request to make a wooden toy, the woodcarvers can choose who takes the job. The woodcarvers are all highly skilled and can work for different people simultaneously.
+在節日當天，當下一個人帶著製作木製玩具的請求來到工作室時，木雕師可以選擇誰來接這個工作。同時，木雕師都是非常熟練的人，可以同時為不同的人工作。
 
-Since people dislike waiting, the woodcarvers want to choose their prepared styles to minimize the maximum waiting time among all people.
+由於人們不喜歡等待，木雕師希望選擇預備的樣式，使得所有人中的最大等待時間最小。
 
-Output the optimal maximum waiting time the woodcarvers can achieve.
+輸出木雕師可以實現的最佳最大等待時間。
 
-*Input Description*
+*輸入說明*
 
-The first line of input contains an integer $t$ ($1 lt.eq t lt.eq 10^4$) ---
-the number of test cases.
+輸入的第一行包含一個整數 $t$ ($1 lt.eq t lt.eq 10^4$) --- 測試用例的數量。
 
-Then come the descriptions of the test cases.
+然後是測試用例的描述。
 
-The first line of each test case contains an integer $n$ ($1 lt.eq n lt.eq 2 times 10^5$)
---- the number of people coming to the workshop.
+每個測試用例的第一行包含一個整數 $n$ ($1 lt.eq n lt.eq 2 times 10^5$) --- 來到工作室的人數。
 
-The second line of each test case contains $n$ integers $a_1 \, a_2 \, a_3 \, dots.h \, a_n$
-($1 lt.eq a_i lt.eq 10^9$) --- the toy styles.
+每個測試用例的第二行包含 $n$ 個整數 $a_1 \, a_2 \, a_3 \, dots.h \, a_n$ ($1 lt.eq a_i lt.eq 10^9$) --- 玩具的樣式。
 
-The sum of all $n$ values across all test cases does not exceed $2 times 10^5$.
+所有測試用例中所有 $n$ 個值的總和不超過 $2 times 10^5$。
 
-*Output Description*
+*輸出說明*
 
-Output $t$ numbers, each being the answer to the corresponding test case ---
-the optimal maximum waiting time the woodcarvers can achieve.
+輸出 $t$ 個數字，每個數字都是相應測試用例的答案 --- 木雕師可以實現的最佳最大等待時間。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [], [],
 )
 
 ==== Problem: CF 1830A Copil Copac Draws Trees
-*Problem Statement*
+*題目敘述*
 
-Copil
-Copac is given a tree of $n$ vertices described by $n - 1$ edges. He decides to draw the tree using the following algorithm:
+Copil Copac被給予一個由 $n-1$ 個邊描述的 $n$ 個頂點構成的樹。他決定使用以下算法來繪製這棵樹：
 
-Step 0: Draw the first vertex (vertex 1). Go to Step 1.
+步驟0：繪製第一個頂點(頂點1)。進入步驟1。
 
-Step 1: For each edge in the input, in order, perform the following: if the edge connects an already-drawn vertex $u$ and an undrawn vertex $v$, draw vertex $v$ and that edge. After checking all edges, go to Step 2.
+步驟1：對於輸入中的每個邊，按順序執行以下操作：如果該邊連接一個已經繪製的頂點 $u$ 和一個未繪製的頂點 $v$，則他會繪製頂點 $v$ 和該邊。在檢查完所有邊之後，進入步驟2。
 
-Step 2: If all vertices have been drawn, end the algorithm. Otherwise, return to Step 1.
+步驟2：如果所有頂點都已經繪製，則結束算法。否則，返回步驟1。
 
-The number of reads is defined as the number of times Copil Copac executes Step 1.
+讀取次數定義為Copil Copac執行步驟1的次數。
 
-Find the number of reads required for Copil Copac to draw the tree.
+請找出Copil Copac繪製這棵樹所需的讀取次數。
 
-*Input Description*
+*輸入說明*
 
-Each test contains multiple test cases. The first line contains an integer $t$
-$\( 1 lt.eq t lt.eq 10^4 \)$, the number of test cases. Then come the descriptions of each test case.
+每個測試案例包含多個測試用例。輸入的第一行包含一個整數 $t$ $\( 1 lt.eq t lt.eq 10^4 \)$，表示測試案例的數量。之後是每個測試案例的描述。
 
-The first line of each test case contains an integer $n$
-$\( 2 lt.eq n lt.eq 2 times 10^5 \)$, the number of vertices in the tree.
+每個測試案例的第一行包含一個整數 $n$ $\( 2 lt.eq n lt.eq 2 times 10^5 \)$，表示樹的頂點數。
 
-The following $n - 1$ lines each contain two integers $u_i$ and $v_i$
-$\( 1 lt.eq u_i \, v_i lt.eq n \, u_i eq.not v_i \)$, denoting the endpoints of the $i$-th edge $\( u_i \, v_i \)$. The given edges are guaranteed to form a tree.
+接下來的 $n-1$ 行中，每行包含兩個整數 $u_i$ 和 $v_i$ $\( 1 lt.eq u_i \, v_i lt.eq n \, u_i eq.not v_i \)$，表示第 $i$ 個邊的連接頂點 $\( u_i \, v_i \)$。保證給定的邊構成一棵樹。
 
-The sum of $n$ across all test cases is guaranteed not to exceed $2 times 10^5$.
+保證所有測試案例中 $n$ 的總和不超過 $2 times 10^5$。
 
-*Output Description*
+*輸出說明*
 
-For each test case, output the number of reads required for Copil Copac to draw the tree.
+對於每個測試案例，輸出Copil Copac繪製這棵樹所需的讀取次數。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [], [],
 )
 
 ==== Problem: CF 1824A LuoTianyi and the Show
-*Problem Statement*
+*題目敘述*
 
-There are $n$ people attending a VOCALOID concert. They will sit in seats numbered $1$ to $m$ from left to right, one by one in order.
+有 $n$ 個人參加一個有關VOCALOID的表演。他們將按順序坐在從左到右編號為1到 $m$ 的座位上。
 
-Each person can occupy a seat in one of three ways:
+每個人可以按照以下三種方式佔據座位：
 
-Sit to the left of the leftmost occupied seat; if seat 1 is already occupied, leave the concert. If no one is seated yet, sit in seat $m$.
+坐在已經有人坐的最左邊的座位的左邊；如果座位1已經被佔據，則離開表演。如果目前沒有人坐，則坐在座位 $m$ 上。
 
-Sit to the right of the rightmost occupied seat; if seat $m$ is already occupied, leave the concert. If no one is seated yet, sit in seat 1.
+坐在已經有人坐的最右邊的座位的右邊；如果座位 $m$ 已經被佔據，則離開表演。如果目前沒有人坐，則坐在座位1上。
 
-Sit in seat number $x_i$. If that seat is already occupied, leave the concert.
+坐在編號為 $x_i$ 的座位上。如果該座位已被佔據，則離開表演。
 
-Now you want to know: if you can arrange the order in which people enter the concert, what is the maximum number of people who can occupy seats?
+現在你想知道：如果你可以任意安排人們的順序進入表演，最多有多少人可以佔據座位。
 
-*Input Description*
+*輸入說明*
 
-Each test contains multiple test cases. The first line contains an integer $t$
-$\( 1 lt.eq t lt.eq 10^4 \)$, the number of test cases. Then come the descriptions of each test case.
+每個測試包含多個測試用例。第一行包含一個整數 $t$ $\( 1 lt.eq t lt.eq 10^4 \)$，表示測試用例的數量。之後是每個測試用例的描述。
 
-The first line of each test case contains two integers $n$ and $m$
-$\( 1 lt.eq n \, m lt.eq 10^5 \)$, the number of people and the number of seats.
+每個測試用例的第一行包含兩個整數 $n$ 和 $m$ $\( 1 lt.eq n \, m lt.eq 10^5 \)$，表示人數和座位數。
 
-The second line of each test case contains $n$ integers $x_1 \, x_2 \, dots.h \, x_n$
-$\( - 2 lt.eq x_i lt.eq m \, x_i eq.not 0 \)$, where the $i$-th integer describes how the $i$-th person occupies a seat:
+每個測試用例的第二行包含 $n$ 個整數 $x_1 \, x_2 \, dots.h \, x_n$ $\( - 2 lt.eq x_i lt.eq m \, x_i eq.not 0 \)$，其中第 $i$ 個整數描述第 $i$ 個人佔據座位的方式：
 
-If $x_i = - 1$, the $i$-th person occupies a seat using the first method.
+如果 $x_i = - 1$，則第 $i$ 個人按照第一種方式佔據座位。
 
-If $x_i = - 2$, the $i$-th person occupies a seat using the second method.
+如果 $x_i = - 2$，則第 $i$ 個人按照第二種方式佔據座位。
 
-If $x_i > 0$, the $i$-th person occupies a seat using the third method: they want to sit in seat $x_i$, and leave the concert if that seat is already taken.
+如果 $x_i > 0$，則第 $i$ 個人按照第三種方式佔據座位：他想坐在編號為 $x_i$ 的座位上，如果該座位已被佔據，則離開表演。
 
-The sum of $n$ and the sum of $m$ across all test cases are each guaranteed not to exceed $10^5$.
+保證所有測試用例中 $n$ 的總和和 $m$ 的總和不超過 $10^5$。
 
-*Output Description*
+*輸出說明*
 
-For each test case, output one integer representing the maximum number of people who can occupy seats.
+對於每個測試用例，輸出一個整數，表示可以佔據座位的最大人數。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [], [],
 )
 
 ==== Problem: CF 1826D Running Miles
-*Problem Statement*
+*題目敘述*
 
-There are $n$ attractions on a street, where the $i$-th attraction is $i$ miles from the start of the street. The beauty of the $i$-th attraction is $b_i$. You want to start jogging from $l$ miles from the start and end at $r$ miles from the start. During your jog, you pass all attractions in your route (including those at exactly $l$ and $r$ miles). You are interested in the three most beautiful attractions along your route, but as the miles you run increase, you get more and more tired.
+有一條街上有 $n$ 個景點，第 $i$ 個景點距離街道起點 $i$ 英里。第 $i$ 個景點的美麗度為 $b_i$。你想開始慢跑，從街道起點開始跑 $l$ 英里，並在距離街道起點 $r$ 英里處結束。在你慢跑的過程中，你會經過你所跑過的景點(包括距離起點 $l$ 英里和 $r$ 英里處的景點)。你對沿途慢跑時的三個最美麗的景點感興趣，但是隨著你跑步的里程增加，你會越來越疲倦。
 
-Therefore, choose $l$ and $r$ such that you pass at least three attractions, and the sum of the beauties of the three most beautiful attractions minus the number of miles you need to run is maximized. More formally, choose $l$ and $r$ to maximize $b_(i 1) + b_(i 2) + b_(i 3) - \( r - l \)$, where $i_1$, $i_2$, $i_3$ are the indices of the three largest elements in the interval $\[ l \, r \]$.
+因此，選擇 $l$ 和 $r$ 使得你經過至少三個景點，並且三個最美麗的景點的美麗度之和減去你需要跑步的里程數最大化。更正式地說，選擇 $l$ 和 $r$ 以最大化 $b_(i 1) + b_(i 2) + b_(i 3) - \( r - l \)$ 的值，其中 $i_1$、$i_2$、$i_3$ 是在區間 $\[ l \, r \]$ 內的三個最大元素的索引。
 
-*Input Description*
+*輸入說明*
 
-The first line contains an integer $t$ $\( 1 lt.eq t lt.eq 10^5 \)$, the number of test cases.
+第一行包含一個整數 $t$ $\( 1 lt.eq t lt.eq 10^5 \)$，表示測試用例的數量。
 
-The first line of each test case contains an integer $n$
-$\( 3 lt.eq n lt.eq 10^5 \)$, the number of attractions on the street.
+每個測試用例的第一行包含一個整數 $n$ $\( 3 lt.eq n lt.eq 10^5 \)$，表示街道上的景點數量。
 
-The second line of each test case contains $n$ integers $b_i$
-$\( 1 lt.eq b_i lt.eq 10^8 \)$, the beauty of the attraction $i$ miles from the start.
+每個測試用例的第二行包含 $n$ 個整數 $b_i$ $\( 1 lt.eq b_i lt.eq 10^8 \)$，表示街道起點 $i$ 英里處的景點美麗度。
 
-The sum of all $n$ values is guaranteed not to exceed $10^5$.
+所有 $n$ 的總和保證不超過 $10^5$。
 
-*Output Description*
+*輸出說明*
 
-For each test case, output one integer representing the maximum value of $b_(i 1) + b_(i 2) + b_(i 3) - \( r - l \)$ over some jogging interval $\[ l \, r \]$.
+對於每個測試用例，輸出一個整數，表示在某個慢跑區間 $\[ l \, r \]$ 內的最大值 $b_(i 1) + b_(i 2) + b_(i 3) - \( r - l \)$。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [], [],
 )
 
 ==== Problem: CF 1779D Boris and His Amazing Haircut
-*Problem Statement*
+*題目敘述*
 
-Boris thinks chess is a boring game, so he left the match early and went to a barbershop because his hair was a bit messy.
+Boris認為下棋是一個乏味的遊戲，所以他提前離開了比賽並去了一家理髮店，因為他的頭髮有點亂。
 
-His current hair can be described by an array $a_1 \, a_2 \, dots.h \, a_n$, where $a_i$ represents the hair height at position $i$. His desired hairstyle is similarly described by an array $b_1 \, b_2 \, dots.h \, b_n$.
+他目前的頭髮可以用數組 $a_1 \, a_2 \, dots.h \, a_n$ 來描述，其中 $a_i$ 表示位置 $i$ 處的頭髮高度。他想要的理髮風格可以用類似的方式用數組 $b_1 \, b_2 \, dots.h \, b_n$ 來描述。
 
-The barber has $m$ clippers, each with its own size, and each can be used at most once. In one operation, the barber chooses an unused clipper of size $x$, then chooses an interval $\[ l \, r \]$ ($1 lt.eq l lt.eq r lt.eq n$) and cuts the hair in that interval. More formally, one operation consists of the following:
+理髮師有 $m$ 把剃刀，每把剃刀都有自己的大小，最多只能使用一次。在一次操作中，他會選擇一把尚未使用過的剃刀，其大小為 $x$，然後選擇一個區間 $\[ l \, r \]$ ($1 lt.eq l lt.eq r lt.eq n$)，將區間內的頭髮剪短。更正式地說，一次操作包括以下步驟：
 
-Choose any unused clipper of size $x$;
+選擇任意一把尚未使用過的剃刀，其大小為 $x$；
 
-Choose an interval $\[ l \, r \]$;
+選擇一個區間 $\[ l \, r \]$；
 
-For each $i$ satisfying $l lt.eq i lt.eq r$, set $a_i = min \( a_i \, x \)$;
+對於每個滿足 $l lt.eq i lt.eq r$ 的 $i$，令 $a_i = min \( a_i \, x \)$；
 
-Note that some clippers may have the same size, and the barber can use a clipper of a particular size at most as many times as there are clippers of that size.
+需要注意的是，有些剃刀的大小可能相等，理髮師只能使用某個大小 $x$ 的剃刀的次數不得超過該大小的剃刀的數量。
 
-The barber may perform as many operations as needed, as long as each clipper is used at most once and the final result satisfies $a_i = b_i$ for every $1 lt.eq i lt.eq n$. It is not necessary to use all clippers.
+理髮師可以根據需要進行多次操作，只要每把剃刀最多使用一次，並且最終對於每個 $1 lt.eq i lt.eq n$ 都滿足 $a_i = b_i$ 即可。不一定需要使用所有的剃刀。
 
-Can you determine whether the barber can give Boris his desired hairstyle?
+你能判斷理髮師是否能給Boris做出他想要的理髮風格嗎？
 
-*Input Description*
+*輸入說明*
 
-Each test contains multiple test cases. The first line contains an integer $t$
-$\( 1 lt.eq t lt.eq 20000 \)$, the number of test cases. Then come the descriptions of each test case.
+每個測試包含多個測試用例。第一行包含一個整數 $t$ $\( 1 lt.eq t lt.eq 20000 \)$，表示測試用例的數量。以下是每個測試用例的描述。
 
-The first line of each test case contains a positive integer $n$
-$\( 3 lt.eq n lt.eq 2 times 10^5 \)$, the length of arrays $a$ and $b$.
+每個測試用例的第一行包含一個正整數 $n$ $\( 3 lt.eq n lt.eq 2 times 10^5 \)$，表示數組 $a$ 和 $b$ 的長度。
 
-The second line of each test case contains $n$ positive integers $a_1 \, a_2 \, dots.h \, a_n$
-$\( 1 lt.eq a_i lt.eq 10^9 \)$, representing Boris's current hair.
+每個測試用例的第二行包含 $n$ 個正整數 $a_1 \, a_2 \, dots.h \, a_n$ $\( 1 lt.eq a_i lt.eq 10^9 \)$，表示Boris目前的頭髮。
 
-The third line of each test case contains $n$ positive integers $b_1 \, b_2 \, dots.h \, b_n$
-$\( 1 lt.eq b_i lt.eq 10^9 \)$, representing Boris's desired hairstyle.
+每個測試用例的第三行包含 $n$ 個正整數 $b_1 \, b_2 \, dots.h \, b_n$ $\( 1 lt.eq b_i lt.eq 10^9 \)$，表示Boris想要的頭髮風格。
 
-The fourth line of each test case contains a positive integer $m$
-$\( 1 lt.eq m lt.eq 2 times 10^5 \)$, the number of clippers.
+每個測試用例的第四行包含一個正整數 $m$ $\( 1 lt.eq m lt.eq 2 times 10^5 \)$，表示剃刀的數量。
 
-The fifth line of each test case contains $m$ positive integers $x_1 \, x_2 \, dots.h \, x_m$
-$\( 1 lt.eq x_i lt.eq 10^9 \)$, the sizes of the clippers.
+每個測試用例的第五行包含 $m$ 個正整數 $x_1 \, x_2 \, dots.h \, x_m$ $\( 1 lt.eq x_i lt.eq 10^9 \)$，表示剃刀的大小。
 
-The sum of $n$ and $m$ across all test cases is guaranteed not to exceed $2 times 10^5$.
+保證所有測試用例中 $n$ 和 $m$ 的總和不超過 $2 times 10^5$。
 
-*Output Description*
+*輸出說明*
 
-For each test case, output "YES" if the barber can give Boris his desired hairstyle; otherwise output "NO".
+對於每個測試用例，如果理髮師能夠根據Boris的要求剪髮，輸出"YES"；否則，輸出"NO"。
 
-You may use any capitalization (upper or lower case). For example, "yEs", "yes", "Yes", and "YES" will all be accepted as a positive answer.
+你可以使用任何大小寫(大寫或小寫)來輸出答案。例如，"yEs"、"yes"、"Yes"和"YES"都將被認為是正面回答。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [], [],
 )
-
 ==== Problem: CF 1731D Valiant's New Map
-*Problem Statement*
+*題目敘述*
 
-The game company "DbZ Games" wants to add a new map to their popular game "Valiant".
-This time, the map named "Panvel" will be based on the city of Mumbai.
+遊戲公司 "DbZ Games" 想要在他們受歡迎的遊戲 "Valiant" 中添加一張新地圖。
+這次，名為 "Panvel" 的地圖將以孟買市為基礎。
 
-Mumbai can be represented as an $n times m$ grid of cells. Each cell $\( i \, j \)$
-($1 lt.eq i lt.eq n$; $1 lt.eq j lt.eq m$) is occupied by a rectangular building of height $a_(i \, j)$.
+孟買可以表示為一個 $n times m$ 的網格單元。每個單元格 $\( i \, j \)$
+($1 lt.eq i lt.eq n$; $1 lt.eq j lt.eq m$) 都被一個高度為 $a_(i \, j)$ 的矩形建築物佔據。
 
-This time, DbZ Games
-wants to create a map with perfect vertical gameplay. Therefore, they want to choose an
-$l times l$ square such that every building inside the square has height at least $l$.
+這次，DbZ Games
+希望創建一個具有完美垂直遊戲體驗的地圖。因此，他們想要選擇一個
+$l times l$ 的正方形，使得該正方形內的所有建築物的高度至少為 $l$。
 
-Can you help DbZ Games find the maximum possible side length $l$ of such a square?
+你能幫助 DbZ Games 找到這樣一個正方形的最大可能邊長 $l$ 嗎？
 
-*Input Description*
+*輸入說明*
 
-Each test contains multiple test cases. The first line contains an integer $t$
-($1 lt.eq t lt.eq 1000$), the number of test cases. Then come the descriptions of each test case.
+每個測試包含多個測試用例。第一行包含一個整數 $t$
+($1 lt.eq t lt.eq 1000$)，表示測試用例的數量。接下來是每個測試用例的描述。
 
-The first line of each test case contains two positive integers $n$ and $m$
-($1 lt.eq n lt.eq m$; $1 lt.eq n times m lt.eq 10^6$).
+每個測試用例的第一行包含兩個正整數 $n$ 和 $m$
+($1 lt.eq n lt.eq m$; $1 lt.eq n times m lt.eq 10^6$)。
 
-The $i$-th of the following $n$ lines contains $m$ integers
+接下來的 $n$ 行中的第 $i$ 行包含 $m$ 個整數
 $a_(i \, 1) \, a_(i \, 2) \, dots.h \, a_(i \, m)$
-($1 lt.eq a_(i \, j) lt.eq 10^6$), representing the building heights in row $i$.
+($1 lt.eq a_(i \, j) lt.eq 10^6$)，表示第 $i$ 行的建築物高度。
 
-The sum of $n times m$ across all test cases is guaranteed not to exceed $10^6$.
+保證所有測試用例中 $n times m$ 的總和不超過 $10^6$。
 
-*Output Description*
+*輸出說明*
 
-For each test case, output the maximum side length $l$ of the square that DbZ Games can choose.
+對於每個測試用例，輸出 DbZ Games 可以選擇的正方形的最大邊長 $l$。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [], [],
 )
 
 ==== Problem: CF 1841D Pairs of Segments
-*Problem Statement*
+*題目敘述*
 
-Two intervals $\[ l_1 \, r_1 \]$ and $\[ l_2 \, r_2 \]$ intersect if there exists at least one
-$x$ satisfying $l_1 lt.eq x lt.eq r_1$ and $l_2 lt.eq x lt.eq r_2$.
+兩個區間 $\[ l_1 \, r_1 \]$ 和 $\[ l_2 \, r_2 \]$ 相交，如果存在至少一個
+$x$ 滿足 $l_1 lt.eq x lt.eq r_1$ 且 $l_2 lt.eq x lt.eq r_2$。
 
-An array of intervals
+一個區間數組
 $\[ \[ l_1 \, r_1 \] \, \[ l_2 \, r_2 \] \, dots.h \, \[ l_k \, r_k \] \]$
-is called beautiful if $k$ is even and the elements of the array can be partitioned into $k / 2$
-pairs satisfying the following conditions:
+被稱為美麗的，如果 $k$ 是偶數，且可以將該數組的元素分成 $k / 2$ 對，滿足以下條件：
 
-Each element belongs to exactly one pair.
+每個元素只屬於一對。
 
-The intervals in each pair intersect each other.
+每對中的區間相互相交。
 
-Intervals from different pairs do not intersect.
+不同對之間的區間不相交。
 
-For example, the array
+例如，數組
 $\[ \[ 2 \, 4 \] \, \[ 9 \, 12 \] \, \[ 2 \, 4 \] \, \[ 7 \, 7 \] \, \[ 10 \, 13 \] \, \[ 6 \, 8 \] \]$
-is beautiful because it can be partitioned into 3 pairs as follows:
+是美麗的，因為可以按照以下方式組成 3 對：
 
-The first element (interval $\[ 2 \, 4 \]$) and the third element (interval $\[ 2 \, 4 \]$).
+數組的第一個元素(區間 $\[ 2 \, 4 \]$)和第三個元素(區間 $\[ 2 \, 4 \]$)。
 
-The second element (interval $\[ 9 \, 12 \]$) and the fifth element (interval
-$\[ 10 \, 13 \]$).
+數組的第二個元素(區間 $\[ 9 \, 12 \]$)和第五個元素(區間
+$\[ 10 \, 13 \]$)。
 
-The fourth element (interval $\[ 7 \, 7 \]$) and the sixth element (interval $\[ 6 \, 8 \]$).
+數組的第四個元素(區間 $\[ 7 \, 7 \]$)和第六個元素(區間 $\[ 6 \, 8 \]$)。
 
-As you can see, the intervals in each pair intersect, and intervals from different pairs do not intersect.
+如您所見，每對區間相互相交，不同對之間的區間不相交。
 
-Given an array of $n$ intervals
-$\[ \[ l_1 \, r_1 \] \, \[ l_2 \, r_2 \] \, dots.h \, \[ l_n \, r_n \] \]$,
-find the minimum number of elements to remove so that the resulting array is beautiful.
+給定一個由 $n$ 個區間
+$\[ \[ l_1 \, r_1 \] \, \[ l_2 \, r_2 \] \, dots.h \, \[ l_n \, r_n \] \]$ 組成的數組，您需要刪除最少數量的元素，使得結果數組是美麗的。
 
-*Input Description*
+*輸入說明*
 
-The first line contains an integer $t$($1 lt.eq t lt.eq 1000$), the number of test cases.
+第一行包含一個整數 $t$($1 lt.eq t lt.eq 1000$)，表示測試用例的數量。
 
-The first line of each test case contains an integer
-$n$($2 lt.eq n lt.eq 2000$), the number of intervals in the array.
+每個測試用例的第一行包含一個整數
+$n$($2 lt.eq n lt.eq 2000$)，表示數組中的區間數。
 
-The following $n$ lines each contain two integers $l_i$ and
-$r_i$($0 lt.eq l_i lt.eq r_i lt.eq 10^9$), representing the $i$-th interval.
+接下來的 $n$ 行，每行包含兩個整數 $l_i$ 和
+$r_i$($0 lt.eq l_i lt.eq r_i lt.eq 10^9$)，表示第 $i$ 個區間。
 
-Additional constraint: the sum of $n$ across all test cases does not exceed $2000$.
+額外的輸入限制：所有測試用例中 $n$ 的總和不超過 $2000$。
 
-*Output Description*
+*輸出說明*
 
-For each test case, output one integer representing the minimum number of elements you need to remove so that the resulting array is beautiful.
+對於每個測試用例，輸出一個整數，表示您需要刪除的最小元素數量，使得結果數組是美麗的。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [], [],
 )
 
 ==== Problem: CF 1582E Pchelyonok and Segments
-*Problem Statement*
+*題目敘述*
 
-Pchelyonok has decided to give Mila a gift. He has already bought an array $a$ of length
-$n$, but giving an array as a gift is too ordinary. Instead, he decided to give Mila segments of the array!
+Pchelyonok決定送Mila一份禮物。Pchelyonok已經買了一個數組 $a$ 的長度
+$n$，但是送一個數組作為禮物太普通了。相反，他決定送Mila這個數組的段落！
 
-Pchelyonok wants his gift to be special, so he plans to choose $k$
-non-overlapping intervals
-$\[ l_1 \, r_1 \] \, \[ l_2 \, r_2 \] \, dots.h \, \[ l_k \, r_k \]$ from the array satisfying the following conditions:
+Pchelyonok希望他的禮物很特別，因此他打算從數組的段落中選擇 $k$
+個不重疊的區間
+$\[ l_1 \, r_1 \] \, \[ l_2 \, r_2 \] \, dots.h \, \[ l_k \, r_k \]$，滿足以下條件：
 
-The first interval $\[ l_1 \, r_1 \]$ has length $k$, the second interval
-$\[ l_2 \, r_2 \]$ has length $k - 1$, and so on, with the last interval
-$\[ l_k \, r_k \]$ having length $1$.
+第一個區間 $\[ l_1 \, r_1 \]$ 的長度為 $k$，第二個區間
+$\[ l_2 \, r_2 \]$ 的長度為 $k - 1$，依此類推，最後一個區間
+$\[ l_k \, r_k \]$ 的長度為 $1$。
 
-For all $i < j$, the $i$-th interval comes before the $j$-th interval (i.e., $r_i < l_j$).
+對於所有 $i < j$，第 $i$ 個區間出現在第 $j$ 個區間之前(即 $r_i < l_j$)。
 
-The sums of the intervals must be strictly increasing (i.e., for each interval $\[ l \, r \]$, let
-$sum_(i = l)^r a_i$ denote the sum of all elements in that interval; then
-$sum_(i = l_1)^(r_1) a_i < sum_(i = l_2)^(r_2) a_i < dots.h < sum_(i = l_k)^(r_k) a_i$).
+這些區間的數字和必須是嚴格遞增的(即對於每個區間 $\[ l \, r \]$，令
+$sum_(i = l)^r a_i$ 表示該區間中所有數字的總和，則
+$sum_(i = l_1)^(r_1) a_i < sum_(i = l_2)^(r_2) a_i < dots.h < sum_(i = l_k)^(r_k) a_i$)。
 
-Pchelyonok wants his gift to be as special as possible, so he asks you to find the maximum value of $k$
-so that he can give Mila a special gift!
+Pchelyonok希望他的禮物盡可能特別，所以他請你找出最大的 $k$ 值，以便他可以給Mila一份特別的禮物！
 
-*Input Description*
+*輸入說明*
 
-The first line contains an integer $t$($1 lt.eq t lt.eq 100$), the number of test cases.
+第一行包含一個整數 $t$($1 lt.eq t lt.eq 100$)，表示測試用例的數量。
 
-The following $2 t$ lines contain the descriptions of the test cases. Each test case description consists of two lines.
+接下來的 $2 t$ 行包含測試用例的描述。每個測試用例的描述由兩行組成。
 
-The first line of each test case contains an integer
-$n$($1 lt.eq n lt.eq 10^5$), the length of the array.
+每個測試用例的第一行包含一個整數
+$n$($1 lt.eq n lt.eq 10^5$)，表示數組的長度。
 
-The second line contains $n$ integers
-$a_1 \, a_2 \, dots.h \, a_n$($1 lt.eq a_i lt.eq 10^9$), the elements of array $a$.
+第二行包含 $n$ 個整數
+$a_1 \, a_2 \, dots.h \, a_n$($1 lt.eq a_i lt.eq 10^9$)，表示數組 $a$ 的元素。
 
-The sum of $n$ across all test cases is guaranteed not to exceed $10^5$.
+保證所有測試用例中 $n$ 的總和不超過 $10^5$。
 
-*Output Description*
+*輸出說明*
 
-For each test case, output the maximum possible value of $k$.
+對於每個測試用例，輸出最大可能的 $k$ 值。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [], [],
 )
 
 ==== Problem: CF 1613E Crazy Robot
-*Problem Statement*
+*題目敘述*
 
-There is a grid with $n$ rows and $m$ columns. Each cell of the grid is either empty or blocked. There is a laboratory in one of the empty cells. All cells outside the grid boundary are blocked.
+有一個網格，由$n$行和$m$列組成。網格的每個單元格要麼是空的，要麼是封鎖的。網格中有一個實驗室，其中一個空單元格內。網格邊界以外的所有單元格都是封鎖的。
 
-A crazy robot has escaped from the laboratory. It is currently in some empty cell of the grid. You can send the robot one of the following commands: "move right", "move down", "move left", or "move up". Each command means moving to the adjacent cell in the corresponding direction.
+一個瘋狂的機器人逃出了這個實驗室。它目前在網格的某個空單元格中。你可以向機器人發送以下命令之一："向右移動"、"向下移動"、"向左移動"或"向上移動"。每個命令表示向相應方向移動到相鄰的單元格。
 
-However, since the robot is crazy, it will do anything except follow commands. Upon receiving a command, it will choose a direction different from the commanded direction such that the cell in that direction is not blocked. If such a direction exists, it moves to the adjacent cell in that direction. Otherwise, it does nothing.
+然而，由於機器人是瘋狂的，它會做任何事情，除了遵從命令。在收到命令後，它會選擇一個方向，該方向不同於命令中的方向，且該方向上的單元格沒有被封鎖。如果存在這樣的方向，則它會朝著該方向的相鄰單元格移動。否則，它將不採取任何行動。
 
-We want to send the robot to the laboratory for repair. For each empty cell, determine whether it is possible to force the robot to reach the laboratory starting from that cell. That is, after each move the robot makes, you can send it a command such that no matter which different direction the robot chooses, it will eventually reach the laboratory.
+我們希望將機器人送到實驗室以進行修理。對於每個空單元格，判定是否可以迫使機器人從該單元格開始到達實驗室。也就是說，在機器人每一步之後，可以向機器人發送一個命令，無論機器人選擇了什麼不同的方向，它最終都會到達實驗室。
 
-*Input Description*
+*輸入說明*
 
-The first line contains an integer $t$($1 lt.eq t lt.eq 1000$), the number of test cases.
+第一行包含一個整數$t$($1 lt.eq t lt.eq 1000$)，表示測試用例的數量。
 
-The first line of each test case contains two integers $n$ and $m$($1 lt.eq n \, m lt.eq 10^6$; $n times m lt.eq 10^6$), the number of rows and columns in the grid.
+每個測試用例的第一行包含兩個整數$n$和$m$($1 lt.eq n \, m lt.eq 10^6$; $n times m lt.eq 10^6$)，表示網格的行數和列數。
 
-The following $n$ lines each describe one row of the grid. Each row consists of $m$ elements, which can be one of three types:
+接下來的$n$行中，第$i$行提供了網格第$i$行的描述。它由$m$個元素組成，可以是以下三種類型之一：
 
-'.' --- the cell is empty;
+'.' — 單元格是空的；
 
-`#` --- the cell is blocked;
+`#` — 單元格被封鎖了；
 
-'L' --- the cell contains the laboratory.
+'L' — 單元格包含一個實驗室。
 
-The sum of $n times m$ across all test cases does not exceed $10^6$.
+所有測試用例中$n times m$的總和不超過$10^6$。
 
-*Output Description*
+*輸出說明*
 
-For each test case, find all empty cells from which the robot can be forced to reach the laboratory. In the given grid, replace each empty cell (represented by a dot) with a plus sign ('+') if the robot can be forced to reach the laboratory from that cell. Output the modified grid.
+對於每個測試用例，找出機器人可以從中強制到達實驗室的空單元格。在給定的網格中，將空單元格(用點表示)替換為加號('+')，表示機器人可以從這些單元格中強制到達實驗室。輸出結果為修改後的網格。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [], [],
 )

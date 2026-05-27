@@ -1,7 +1,7 @@
 #import "../../template.typ": *
 
-== Examples and Practice
-==== Example: Fast exponentiation.
+== 範例與練習
+==== 範例：快速冪。
 
 #code(title: [Formatting example])[
 ```cpp
@@ -20,7 +20,7 @@ ll POW(ll a,ll x){
 ```
 ]
 
-==== Problem: Format the following code.
+==== 問題：請對以下程式碼排版。
 #code(title: [Code])[
 ```cpp
 #include<bits/stdc++.h>

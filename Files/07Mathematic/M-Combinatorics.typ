@@ -1,15 +1,15 @@
 #import "../../template.typ": *
 
-== Combinatorics
-=== Concepts
-This is the combinatorics part of permutations and combinations, so we already know these formulas. Let's first introduce the notation, even though it may not come up right away.
+== 組合
+=== 概念
+就是排列組合的組合，所以我們有學過這些公式。不過我們先介紹符號，雖然說現在應該是用不到。
 
 $ binom(n, k) = C_k^n = frac(n !, k ! \( n - k \) !)\
 binom(n, k) = binom(n - 1, k) + binom(n - 1, k - 1) $
 
-Because of these two formulas, we have two ways to compute $binom(n, k)$.
+因為這兩條公式，所以我們有兩種方式可以計算$binom(n, k)$。
 
-#code(title: [Compute C(n, k)])[
+#code(title: [計算 $binom(n, k)$])[
   ```cpp
 using ll=long long;
 const ll MOD=1e9+7;

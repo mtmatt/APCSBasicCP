@@ -1,19 +1,19 @@
 #import "../../template.typ": *
 
-== Prefix Sum
-I thought about making a pun but it wasn't funny so never mind.
+== 前綴和
+原本想說不是錢墜河，但是不好笑就算了。
 
-=== Introduction
-Have you ever encountered a problem where you need to find the sum of a range $[a,b]$ in an array, and not just once, but many many times? In that case, adding them up one by one would be too slow to finish within the time limit. So what do we do?
+=== 前言
+不知道你有沒有遇過這樣的問題，問題希望你告訴他陣列中某個區間$[a,b]$的和，而且不是只講一個，是好多好多個。這時候，一個一個加會來不及在時間內做完。那怎麼辦呢？
 
-Consider having an array $p$ where the $i$-th entry stores $sum_(k=1)^(i)a_k$, where $a_k$ denotes the $k$-th element of the array. Therefore, we can compute the sum of $[a,b]$ by calculating $p_b-p_(a-1)$.
+考慮我們如果有一個陣列$p$，第 $i$ 項存放 $sum_(k=1)^(i)a_k$，其中$a_k$表示陣列的第$k$項。因此，我們可以藉由計算$p_b-p_(a-1)$得到$[a,b]$的和。
 
-As for the complexity: since $p_i=p_(i-1)+a_i$, we can compute everything with a single for loop, so the preprocessing complexity is $O(n)$. Querying also requires only a single subtraction, so the query complexity is $O(1)$.
+計算複雜度，因為$p_i=p_(i-1)+a_i$，所以用一個for迴圈就可以算完，所以預處理的複雜度是$O(n)$。求值的時候也只需要一個加法，所以是複雜度是$O(1)$。
 
-=== Implementation
-In practice, we often start the array index from $1$ because it is more convenient.
+=== 實作
+實作上我們常常將陣列的起始位置設為$1$，因為這樣比較方便。
 
-#code(title: [Prefix Sum Implementation])[
+#code(title: [前綴和實作])[
 ```cpp
 int a[N],p[N];
 
@@ -29,11 +29,11 @@ int query(int a,int b){
 ```
 ]
 
-=== Extending to Higher Dimensions
+=== 拓展到高維
 
-Extending prefix sums to higher dimensions is straightforward; we just need to apply the inclusion-exclusion principle. The following uses two dimensions as an example; three or more dimensions follow the same pattern.
+想要將前綴和拓展到高維非常容易，我們需要掌握排容原理。接下來將以二維為例，三維以上雷同。
 
-#code(title: [2D Prefix Sum])[
+#code(title: [二維前綴和])[
 ```cpp
 const int N=1005,M=1005;
 int a[N][M],psum[N][M];
@@ -62,60 +62,60 @@ void query(int l,int r,int u,int b){
 ```
 ]
 
-=== Examples and Practice
+=== 範例與練習
 
-==== Example: Leetcode 724 Find Pivot Index
+==== Leetcode 724 找出關鍵位置
 
-*Problem Statement*
+*題目敘述*
 
-Given an array, find the pivot index.
+給你一個陣列，請找出關鍵位置。
 
-Definition of pivot index: the sum of all numbers to the *left* of the pivot index *equals* the sum of all numbers to its right.
+關鍵位置的定義：在關鍵位置的左邊的所有數字和*等於*在他右邊的數字和。
 
-Output the leftmost pivot index.
+請輸出最左邊的關鍵位置。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`1 7 3 6 5 6`], [`3`],
-  [Sample Input 2], [Sample Output 2],
+  [範例輸入 2], [範例輸出 2],
   [`1 2 3`], [`-1`],
-  [Sample Input 3], [Sample Output 3],
+  [範例輸入 3], [範例輸出 3],
   [`2 1 -1`], [`0`],
 )
 
-==== Problem: APCS 3. Roundabout Exit
+==== APCS 3. 圓環出口
 
-*Problem Statement*
+*題目敘述*
 
-There are $n$ rooms arranged in a circle, numbered $0$ to $n-1$.
+有 $n$ 個房間排成一個環，編號分別是 $0$ 到 $n-1$。
 
-There is a one-way path between rooms; from room $i$ you can move to room $(i+1)   "mod"   n$.
+房間之間有單向的路徑，編號 $i$ 的房間可以走到編號 $(i+1)   "mod"   n$ 的房間。
 
-Each time you enter room $i$ you gain $p_i$ points (the starting room also gives points).
+每次進入編號 $i$ 的房間可以獲得 $p_i$ 個點數(最一開始待的房間也可以獲得點數)。
 
-There are $m$ tasks in sequence. For the $i$-th task you need to collect $q_i$ points. For each task, if you start at room $s$ and collect enough points when you arrive at room $t$, then after completing the task you stop at room $(t+1)   "mod"   n$.
+現在依序有 $m$ 個任務，第 $i$ 個任務需要蒐集到 $q_i$ 個點數。對於每次的任務，若一開始在編號 $s$ 的房間，且走到編號 $t$ 的房間時候可以蒐集到需要的點數，則完成這次任務後會停在編號 $(t+1)   "mod"   n$ 的房間。
 
-Starting from room $0$, given $m$ tasks, find the room number where you stop after completing the $m$-th task.
+一開始在編號 $0$ 的房間，依據接收到 $m$ 個任務，請求出完成第 $m$ 個任務後會停在哪個編號的房間？
 
-*Input Format*
+*輸入說明*
 
-The first line contains two positive integers $n,m$.
+第一行包含兩個正整數 $n,m$。
 
-The second line contains $n$ positive integers $p_0,p_1,dots.c,p_(n-1)$; the total sum of $p$ does not exceed $10^9$.
+第二行包含 $n$ 個正整數 $p_0,p_1,dots.c,p_(n-1)$；$p$ 的總和不超過 $10^9$。
 
-The third line contains $m$ positive integers $q_0,q_1,dots.c,q_(n-1)$.
+第三行包含 $m$ 個正整數 $q_0,q_1,dots.c,q_(n-1)$。
 
-*Output Format*
+*輸出說明*
 
-Output a non-negative integer representing the room number where you stop at the end.
+輸出一個非負整數表示最後停在哪個編號的房間。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`7 3`#linebreak()`2 1 5 4 3 5 3`#linebreak()`8 9 12`], [`4`],
-  [Sample Input 2], [Sample Output 2],
+  [範例輸入 2], [範例輸出 2],
   [`4 3`#linebreak()`1 3 5 7`#linebreak()`4 2 2`], [`3`],
 )

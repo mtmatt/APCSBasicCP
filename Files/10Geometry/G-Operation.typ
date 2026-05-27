@@ -1,12 +1,14 @@
-== Operations
-=== Area Calculation
-We can use the determinant to compute the area of the parallelogram spanned by $v$ and $u$. Note that
-the area has a sign: if $v$ rotated clockwise is closer to $u$, the result is positive; otherwise it is negative.
+#import "../../template.typ": *
+
+== 操作
+=== 面積計算
+我們可以使用行列式計算$v$與$u$所張成的平行四邊形面積，不過值得注意的是，
+面積有方向。如果$v$順時針轉比較靠近$u$，那就是正的，否則就是負的。
 
 $ a r e a \( v \, u \) = \( v_1 u_2 - v_2 u_1 \) $
 
 #block[
-#emph[Proof.]
+#emph[證明。]
 $ cos theta & = frac(sum_(i = 1)^n \( 2 times v_i times u_i \), 2 times \| v \| times \| u \|)\
  & = frac(v_1 u_1 + v_2 u_2, \| v \| times \| u \|)\
 sin theta & = sqrt(1 - cos^2 theta)\
@@ -17,9 +19,9 @@ a r e a \( v \, u \) & = \| v \| \| u \| sin theta\
  & = v_1 u_2 - v_2 u_1 $~◻
 
 ]
-This property lets us determine the relative orientation of two vectors.
+這樣的特性可以讓我們稍稍判斷兩個向量的相對方位。
 
-In practice, we call this the cross product (with $z$ set to 0).
+實作上，我們會用外積(把$z$設為0)稱呼他。
 
 ==== Code: Area Calculation
 
@@ -33,44 +35,45 @@ int ori(const Pt a,const Pt b) {// positive negative zero
 }
 ```
 
-=== Determining Whether a Point Lies on a Line
-We can determine this using vector arithmetic. Point $C$ lies on line $accent(A B, ⃡)$
-$arrow.l.r.double accent(A C, ⃗) = k accent(A B, ⃗) \, #h(0em) k in bb(R)$.
+=== 判斷點是否在直線上
+我們可以藉由向量的運算得知。點$C$在直線$accent(A B, ⃡)$上
+$arrow.l.r.double accent(A C, ⃗) = k accent(A B, ⃗) \, #h(0em) k in bb(R)$。
 
-Checking whether $accent(A C, ⃗) = k accent(A B, ⃗)$ holds is straightforward: since the two
-vectors are parallel, the area they span is $0$. Therefore,
-we can check using $c r o s s \( C - A \, B - A \) = 0$.
+判斷$accent(A C, ⃗) = k accent(A B, ⃗)$是否成立的方法很簡單，因為兩個
+向量平行，所以所圍出的面積為$0$。如此以來，
+我們就可以用$c r o s s \( C - A \, B - A \) = 0$與否判斷。
 
-=== Determining Whether a Point Lies on a Segment
-We can determine this using vector arithmetic. For point $C$ to lie on segment $overline(A B)$,
-it must first lie on line $accent(A B, ⃡)$. Then,
-the angle between $accent(C A, ⃗)$ and $accent(C B, ⃗)$ must be $180^compose$.
+=== 判斷點是否在線段上
+我們可以藉由向量的運算得知。點$C$在線段$overline(A B)$上，
+首先他必須在直線$accent(A B, ⃡)$上。接著，
+$accent(C A, ⃗)$與$accent(C B, ⃗)$的夾角要是$180^compose$。
 
 $ arrow.r.double.long accent(C A, ⃗) dot.op accent(C B, ⃗) < 0 $
 
-=== Determining Whether Two Segments Intersect
-First, consider the case where an endpoint of one segment lies on the other segment — that counts as an intersection.
+=== 判斷線段是否相交
+首先考慮這個情況，線段的端點在對方的線段中，那就算是相交了。
 
-Beyond that, the situation is a bit more complex.
-You can solve a system of equations and check whether the intersection point lies within both segments.
-Here we introduce another approach: let the two segments be AB and CD.
+除此之外，那就有點困難了。
+你可以解方程式之後判斷交點是否在兩個線段的範圍中。
+不過這裡我們介紹另一個方法，假設兩線段分別是AB,CD。
 
 $ upright("cross") \( accent(A B, ⃗) \, accent(A C, ⃗) \) times upright("cross") \( accent(A B, ⃗) \, accent(A D, ⃗) \) < 0\
 upright("cross") \( accent(C D, ⃗) \, accent(C A, ⃗) \) times upright("cross") \( accent(C D, ⃗) \, accent(C B, ⃗) \) < 0 $
 
-Thinking about when the cross product is positive or negative confirms the correctness of this approach.
+考慮cross正負發生的時機就可以知道其正確性。
 
-=== Polygon Area
-Consider using the shoelace formula. Let the vertices of the polygon be $P_1 \, P_2 \, dots.h.c \, P_n$:
+=== 多邊形面積
+考慮使用測量師公式。設多邊形頂點為$P_1 \, P_2 \, dots.h.c \, P_n$：
 
 $ a r e a \( P \) = sum_(i = 1)^n accent(O P_i, ⃗) times accent(O P_(i + 1), ⃗) \, #h(0em) "define" #h(0em) n + 1 = 1 $
 
-A single loop handles this. Note that the vertices must be sorted either clockwise or counterclockwise; the following sections explain how to do that.
+一個迴圈就搞定了。但是需要注意頂點必須要順時針或逆時針排序，所以以下來介紹怎麼做。
 
-=== Polar Angle Sort
-This is the process of sorting vertices in clockwise or counterclockwise order.
+=== 極角排序
+就是讓頂點順時針或逆時針排序，所以以下來介紹怎麼做。
 
-First, trigonometric functions have large constant factors because they are implemented using Taylor series and similar methods, so the following approach works but is slow.
+首先，三角函數的
+常數極大，因為用泰勒展開式等實作，所以以下方式雖然可以使用，但是很慢。
 
 ==== Code: Polar Angle Sort with Inverse Trig
 
@@ -80,8 +83,8 @@ bool cmp(Pt a,Pt b){
 }
 ```
 
-Another approach uses the cross product and properties of the coordinate plane. Since the cross product only covers $180^compose$,
-we must split the upper and lower (or left and right) half-planes.
+另一個方式是可以使用外積與座標平面特性，因為外積的適用範圍只有$180^compose$，
+所以我們必須拆開上下(或左右)半平面。
 
 ==== Code: Polar Angle Sort with Cross Product
 
@@ -94,18 +97,19 @@ bool cmp(Pt a,Pt b){
 }
 ```
 
-=== Convex Hull
-Given a set of points, find the smallest convex polygon that contains all of them.
+=== 凸包
+給你一堆點，問你可以包住這些所有點的最小凸多邊形。
 
-Such a polygon can always be found by sorting lexicographically by $x$ then $y$, and trying to add points one by one.
+這樣的多邊形一定可以藉由對x,y做字典順序，並嘗試
+一個一個加入點。
 
-If the angle exceeds $180^compose$, remove the interior point.
+如果角度超過$180^compose$，就把裡面的點拿出來。
 
-Perform this operation twice: once from $1 arrow.r n$, and once from $n arrow.r 1$.
+這樣的操作做兩次，一次從$1 arrow.r n$，另一次從$n arrow.r 1$。
 
-To check whether an angle exceeds $180^compose$: if
-$upright("cross") \( accent(A B, ⃗) \, accent(B C, ⃗) \) lt.eq 0$, then $B$
-is not on the convex hull.
+判斷角度超過$180^compose$，若
+$upright("cross") \( accent(A B, ⃗) \, accent(B C, ⃗) \) lt.eq 0$
+則 $B$ 不在凸包上。
 
 ==== Code: Convex Hull
 
@@ -145,12 +149,14 @@ vector<Pt> ConvexHull(vector<Pt> ds){
 }
 ```
 
-The convex hull can be applied to finding the farthest pair of points, because if the coordinate range is $C$,
-the convex hull has at most $sqrt(C)$ points. Enumerating all pairs has complexity $O \( C \)$.
+凸包可以應用在求最遠點對，因為如果值域的範圍是$C$，
+那凸包上最多會有$sqrt(C)$個點。枚舉所有點對的複雜度為
+$O \( C \)$。
 
-It may also be useful for DP optimizations.
+另外DP優化也有可能會用到。
 
-=== Additional Resources
+=== 其他資源
+
 #link("https://hackmd.io/@Ccucumber12/BJeOhtzbF#/")
 
 #box(image("../Images/Vector1.png", width: 20.0%))

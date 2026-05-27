@@ -1,13 +1,13 @@
 #import "../../template.typ": *
 
-== Spacing
-=== Disclaimer
-The following suggestions are for reference only. Spacing conventions have always been a topic of endless debate. I will explain the reasoning behind my choices. Please choose the spacing style that suits your personal needs. (Just keep readability in mind.)
+== 空格
+=== 聲明
+以下的建議僅供參考，空格的方式一直以來都是吵不完的議題，我將說明為何要這樣做。請依照你的個人需求選擇你的空格方式。(注意可讀性即可)
 
-=== General Case
-Because I shrink my code font to fit more lines on screen at once, I add spaces around operators so the code is easier to read.
+=== 一般情況
+因為會把程式碼的字體縮小，方便我閱讀更多行的程式碼，所以我會在運算符號間加上空格，這樣可以更容易懂。
 
-#code(title: [My spacing habits (general case)])[
+#code(title: [我的空格習慣(一般情況)])[
 ```cpp
 void solve() {
     int a = 0, sum = 0;
@@ -16,7 +16,7 @@ void solve() {
 ```
 ]
 
-#code(title: [Version without spaces])[
+#code(title: [不加上空格的版本])[
 ```cpp
 void solve(){
     int a=0,sum=0;
@@ -25,20 +25,20 @@ void solve(){
 ```
 ]
 
-You can probably tell that my code is more compact. If you do not like this style, you can use the second version. Both are widely accepted.
+應該可以看出來我的程式碼比較壓縮，如果不喜歡這一種可以用第二種。基本上都可以被廣泛接受。
 
-=== Special Cases
-Thinking about the general case will naturally lead you to wonder about special situations. For readability, I add spaces in the following cases.
+=== 特殊情況
+看到一般情況應該就會想到有特殊的情形。而為了可讀性，我在下列情形會加上空格。
 
-+ When using an `if` statement without wanting a line break.
-+ When cramming two statements onto the same line.
-+ When working with pointers.
-+ When an expression is too complex.
++ 使用`if`而不想要換行時。
++ 把兩個指令塞在同一行時。
++ 運用指標時。
++ 運算式太複雜時。
 
 
-Here are some examples.
+以下程式是範例。
 
-#code(title: [Special cases])[
+#code(title: [特殊情況們])[
 ```cpp
 void solve(){
     if(a<0) a=0;
@@ -49,8 +49,8 @@ void solve(){
 ```
 ]
 
-That said, try to avoid these special cases as much as possible, since they can still make code harder to read.
+不過盡可能避免這樣的特殊情況，因為這樣仍會讓程式碼變得難以閱讀。
 
 #tip[
-Use spacing in a way that is consistent and readable according to your own habits. You will notice that this chapter emphasizes readability, because I have seen so much code that was completely unreadable — code I had to manually reformat, wasting everyone's time.
+請依照你習慣的方式，有一致性與可讀性的加上空格。你會發現本章節強調可讀性，因為我實在是看過好多沒有辦法閱讀的程式，我還必須手動排版，造成每個人時間的浪費。
 ]

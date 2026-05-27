@@ -1,16 +1,19 @@
-== DP Optimization
-=== Introduction
-In this section I will mention some optimization techniques. However, since there are many optimizations I am not familiar with, what I can offer is limited.
+#import "../../template.typ": *
 
-=== Rolling Array
-In the previous section we discussed the knapsack problem, where the space complexity was
-$O \( n W \)$. In some contests, this much memory may not be allowed.
-In that case, we can examine the recurrence and notice that in the knapsack problem
-we only ever use the current row $i$, so we only need two rows of the array.
+== DP優化
+=== 前言
+這個單元我會提及一些優化技巧，但是因為有許多優化我是不清楚的，所以我可以提供的也很有限。
 
-In practice, we can achieve this with bitwise operations. Of course, `%` also works, but bitwise operations look cooler and have a slightly smaller constant.
+=== 滾動陣列
+在上一個單元我們有提到背包問題，其中，我們的空間複雜度為
+$O \( n W \)$，在一些競賽上，我們可能不允許有那麼多的記憶體空間，
+這時候我們可以觀察遞迴式，並發現在背包問題當中，
+我們每一次都只會用到第$i$項，所以我們會需要的只有兩行陣列。
 
-==== Solution Code: 0/1 Knapsack
+實作上，我們可以藉由位元運算來達成。當然也可以用\%，不過位元運算
+看起來帥，而且還有比較小的常數。
+
+==== Solution Code: 01背包
 
 ```
 ll dp[2][100010],v[105],w[105];
@@ -30,68 +33,71 @@ int main(){
 }
 ```
 
-=== Bitmask DP
-Let's look at the following problem.
+=== 狀態壓縮
+讓我們看看以下問題。
 
-==== Example: TIOJ 1014 Whack-a-Mole
-*Problem Statement*
+==== Example: TIOJ 1014 打地鼠
+*題目敘述*
 
-As time marches on, the whack-a-mole game keeps evolving. The latest generation not only tests your reaction speed but also your stamina and intelligence. The mole base is a long platform with mole holes every meter, numbered $1$ to
-$n$ from left to right. The player stands at the far left of the base, $1$ meter away from the first mole hole,
-holding a hammer, ready to start the game. The mole in hole $i$ appears every $T_i$
-seconds. A mole that has been hit will not appear again; the game ends when all moles have been hit,
-and the time from start to end is recorded — the faster the better. The game manufacturer
-wants to know the minimum number of seconds needed to end the game, and asks you to write a program to find it.
+隨著時間的腳步前進，打地鼠遊戲也不斷的翻新，最新一代的打地鼠遊戲不只測試你的反應能力，
+同時也考驗著你的體力和智力。地鼠基地是一個長型的基座，基座上每隔一公尺就會有一個地鼠洞，
+由左至右編號為 $1$ 到 $n$。玩家站在這個基地的最左邊，與第一個地鼠洞相距1公尺；
+拿著一根鎚子，準備開始這個遊戲。編號為 $i$ 的地鼠洞每 $T_i$
+秒地鼠會出現一次。被打的地鼠不再出現，只要將所有地鼠打完，就結束遊戲，
+並且紀錄從開始到結束遊戲的秒數，越快越好。現在問題來了，
+負責製造這個地鼠基地的遊戲廠商想要知道結束遊戲所需的最少秒數，於是拜託你幫忙寫個程式來解決它。
 
-Assume players have unlimited stamina, always move at 1 meter per second, are unaffected by direction changes, and the time to hit a mole is negligible.
+假定玩家們的體力很好，隨時以每秒1公尺的速度移動，並且不受移動方向改變的影響，打地鼠所花的時間也可以忽略不計。
 
-*Input Format*
+*輸入說明*
 
-The first line contains a number $n \, n lt.eq 16$, representing the number of mole holes. The second line contains
-$n$ numbers. All numbers are no greater than $10^8$.
+第一行有一個數字$n, n lt.eq 16$，代表地鼠洞的數量。第二行有
+$n$個數字。所有數字皆不大於$10^8$。
 
-*Output Format*
+*輸出說明*
 
-Output the minimum number of seconds $S$ to end the game.
+請輸出結束遊戲所需的最少秒數$S$。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3`#linebreak()`3 2 5`], [`5`],
 )
 
-==== Idea
+==== 想法
 
-This is actually a different type of DP, so I will explain it starting from the state definition.
-You should have noticed that $n$ is very small, and TIOJ generally does not have weak test data ranges. So
-from experience, we know this is a problem with complexity between $O \( 2^n \)$ and $O \( n ! \)$.
+其實這算是另外一種DP的類型，因此，我會從狀態的定義開始講起。
+你應該有發現這題的n超小，而TIOJ基本上沒有很水的測資範圍。所以
+根據經驗，我們需要能夠判斷這是一個$O \( 2^n \)$以上，$O \( n ! \)$以下的
+題目。
 
-First, consider when $n$ is small, e.g. $n = 3$; we would need to define the state as follows:
+首先，請考慮n很小的情況，例如$n=3$，我們將會需要這樣定義狀態。
 
-$ d p \[ m \] \[ i_1 \] \[ i_2 \] \[ i_3 \] \, i_1 \, i_2 \, i_3 in { 0 \, 1 } := "minimum time to finish and stop at position" m $
+$ "dp" \[ m \] \[ i_1 \] \[ i_2 \] \[ i_3 \] \, i_1 \, i_2 \, i_3 in { 0 \, 1 } := "打完地鼠停在位置m所需要的最短時間" $
 
-where $i_1 \, i_2 \, i_3$ indicate whether moles 1, 2, 3 have been hit ($0$ = not hit, $1$ = hit).
+其中，$i_1 \, i_2 \, i_3$表示第1,2,3之地鼠有沒有被打過，0表示沒有，1表示有。
 
-However, the problem we ultimately need to solve has up to 16 moles, and we would not want to use a 17-dimensional array.
-So we can compress the array indices into a single variable. This technique is not only used in DP, though we are covering it a bit late (it might be moved to Chapter 3 in the future).
+然而，我們最終要解決的問題對多是16之地鼠，但是我們不會想要開17維陣列。
+所以我們可以將陣列的位址壓縮在一個變數裡面，這樣的技巧不只會在DP用到，
+不過我們有點晚才講(將來也有可能會編到第三章)。
 
-How does this actually work? We know that $i_1 \, i_2 \, dots.h.c \, i_n$ each take values of only 0 or 1.
-So why not use an `int` to store them? An `int` has 32 bits, and each bit can store a 0 or 1.
+實際上要怎麼做呢？我們知道，$i_1 \, i_2 \, dots.h.c \, i_n$都只有0或1。
+那我們何不使用int來存。因為int有32個bit，每一個bit都可以存0或1。
 
-$ d p \[ m \] \[ a \] := "compress all" i_k "into state" a $
-Besides this, we also need to implement a function GetWaitTime,
-which tells us how long it takes to transition from state $a$ to state $b$.
+$ "dp" \[ m \] \[ a \] := "將所有" i_k "壓所成狀態" a $
+除此之外，我們還需要實作一個函式GetWaitTime，
+這個函式將會告訴從狀態a轉移到狀態b需要花多久。
 
-What about the transition? We can come from any point other than $m$.
+那轉移式呢？我們可以從m以外的所有點走過來。
 
-$ {d p \[ 0 \] \[ 0 \] = 1\
-d p \[ m \] \[ a \] = min \( d p \[ k \] \[ a - 2^m \] + G e t W a i t T i m e \( a \, a - 2^m \, d p \[ k \] \[ a - 2^m \] \) \)\
-1 lt.eq k lt.eq n \, #h(0em) "transitioning from" k "to" m $
+$ { "dp" \[ 0 \] \[ 0 \] = 1\
+"dp" \[ m \] \[ a \] = min \( "dp" \[ k \] \[ a - 2^m \] + "GetWaitTime" \( a \, a - 2^m \, "dp" \[ k \] \[ a - 2^m \] \) \)\
+1 lt.eq k lt.eq n \, #h(0em) "如果你從k轉移到m" } $
 
-==== Implementation
+==== 實作
 
-==== Solution Code: TIOJ 1014
+==== Solution Code: TIOJ 1014題解
 
 ```
 #define int ll
@@ -151,51 +157,56 @@ int32_t main(){
 }
 ```
 
-=== Data Structure Optimization
-As the name suggests, this uses data structures to speed up the transition.
-It is typically used when the transition complexity is $O \( n \)$ or higher, employing structures such as BIT or segment trees.
+=== 資料結構優化
+顧名思義，就是利用資料結構，幫助加速轉移式。
+通常用於轉移複雜度$O \( n \)$或更高的問題。使用BIT，線段樹 (Segment Tree)等資料結構。
 
-==== Example: 2022 YiZhong Intra-School Contest F — Fluctuating Wheat Ears
-*Problem Statement*
+==== Example: 111宜中校內賽 F 波動的麥穗
+*題目敘述*
 
-Legend has it that Socrates once led several disciples to the edge of a wheat field and asked them to pick the tallest and best wheat ear. However, they had to walk in a straight line without looking back, and each had only one chance to pick. This story gradually evolved into the optimal stopping problem in mathematics, and the best solution was found — the $37\%$ rule. That is, remember the best wheat ear among the first $37\%$, then pick the first ear encountered in the remaining $63\%$ that is better.
+傳說蘇格拉底曾經帶領幾個弟子來到一個麥穗田邊，請他們去摘下一個最高最好的麥穗。
+不過他們必須頭也不回地沿著直線前進，且只有一次的摘取機會。
+這個故事逐漸演變成數學裡的最優停止問題 (Optimal Stopping Problem)，並且找到了最佳解 —— $37\%$ 法則。
+也就是記住前 $37\%$ 中最高最好的麥穗，接著在後 $63\%$ 裡頭遇到的第一個更好的麥穗即是最佳選擇。
 
-One night, Xiao Chen dreamed of Socrates. Having been emotionally distressed by the ups and downs of the stock market lately, Xiao Chen could not help but complain to Socrates. To encourage Xiao Chen to keep moving forward, Socrates told another wheat ear story. Unlike the previous version, this time Socrates wanted Xiao Chen to look for some wheat ears with fluctuating heights, just like the highs and lows of stock prices. Socrates said:
+某晚小晨在睡夢中偶遇了蘇格拉底，最近因為股市起起落落而心情大受影響的小晨，忍不住跟蘇格拉底抱怨一番。
+為了鼓勵小晨繼續努力前進，蘇格拉底又講述了一個麥穗的故事。
+不同於先前的版本，這次蘇格拉底希望小晨去尋找一些高度波動的麥穗，就好像那高高低低的股價一般。
+蘇格拉底說到
 
-"Xiao Chen, look at these $N$ wheat ears in front of you; each has a different height $h_i$ and value
-$v_i$.
-Why not find some wheat ears such that their heights in order are fluctuating and the total value is maximized?
-I believe this will surely benefit your life!"
+「小晨啊，你看看眼前的 $N$ 個麥穗，每個都有不同的高度 $h_i$ 跟價值 $v_i$。
+不如你就去尋找一些麥穗，使得你依序選定的這些麥穗高度是波動的，且價值總和最高。
+相信這一定會對你的人生有所幫助吶！」
 
-More precisely, if $h_1 \, h_2 \, dots.h.c \, h_k$
-are the heights of the chosen wheat ears in order, they must satisfy the fluctuation condition:
+更確切地說，若 $h_1 \, h_2 \, dots.h.c \, h_k$
+依序是小晨選定的麥穗高度，則這些高度必須滿足波動形式：
 $ (h_(j - 1) < h_j > h_(j + 1)) or (h_(j - 1) > h_j < h_(j + 1)) \, quad forall j in \[ 2 \, k - 1 \] $
-That is, when the chosen wheat ears are laid out in a row, their heights form a zigzag pattern alternating high and low.
+也就是這些選定的麥穗一字排開的話，高度會呈現一高一低的鋸齒狀。
 
-After waking up, Xiao Chen urgently examined the data for these $N$ wheat ears, trying to find the optimal choice.
-However, there were too many wheat ears, and Xiao Chen could not properly verify all possibilities.
-Please help Xiao Chen find the maximum total value under the optimal choice, to make their life a little less miserable.
+小晨醒來後，急忙拿著這 $N$ 筆麥穗的資料翻來覆去，嘗試尋找最佳的選擇。
+然而由於麥穗實在是太多了，小晨怎麼樣也無法好好確認所有的可能性。
+請你幫助小晨，找到最佳選擇下，他能夠拿到多少價值總和的麥穗，讓他的人生可以稍微減少一點悲慘。
 
-*Input Format*
+*輸入說明*
 
-The first line contains a positive integer $N$, representing the number of wheat ears.
+第一行包含一個正整數 $N$，代表麥穗的數量。
 
-The following $N$ lines each contain two integers $h_i \, v_i$, representing the height and value of the $i$-th wheat ear.
+接下來 $N$ 行，每行有二個整數 $h_i \, v_i$，分別代表第 $i$ 個麥穗的高度與價值。
 
-Variable constraints:
+各變數範圍限制如下：
 
 - $1 lt.eq N lt.eq 2 times 10^5$
 
 - $- 10^9 lt.eq h_i \, v_i lt.eq 10^9$
 
-*Output Format*
+*輸出說明*
 
-Output a single integer representing the maximum possible total value.
+請輸出一個整數，代表最高可能的價值總和。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [], [],
 )
 
@@ -203,33 +214,33 @@ Output a single integer representing the maximum possible total value.
   caption: none
 )
 
-==== Idea
+==== 想法
 
-If you have learned DP well, we can easily define the following states:
+如果你DP有學好的話，我們可以很輕易的定義出這樣的狀態。
 
-$ {d p \[ 0 \] \[ n \] := "maximum value ending at the" n "-th wheat ear where the previous chosen ear is taller"\
-d p \[ 1 \] \[ n \] := "maximum value ending at the" n "-th wheat ear where the previous chosen ear is shorter" $
+$ { "dp" \[ 0 \] \[ n \] := "以第n個麥穗為結尾時，且前一個選的麥穗比他高的最大價值" \
+"dp" \[ 1 \] \[ n \] := "以第n個麥穗為結尾時，且前一個選的麥穗比他低的最大價值" } $
 
-And write the following transition:
+並列出這樣的轉移式。
 
 $ {d p \[ 0 \] \[ n \] := max \( d p \[ 1 \] \[ i \] \) + v \[ n \] \, #h(0em) f o r #h(0em) h \[ i \] > h \[ n \]\
 d p \[ 1 \] \[ n \] := max \( d p \[ 0 \] \[ i \] \) + v \[ n \] \, #h(0em) f o r #h(0em) h \[ i \] < h \[ n \]\
-1 lt.eq i < n $
+1 lt.eq i < n } $
 
-We can see that this transition requires $O \( n \)$ time, so the total time complexity is $O \( n^2 \)$.
-This is not enough to get full marks, so we need to optimize the time for finding the conditional maximum.
+我們可以發現，這樣會需要$O \( n \)$的複雜度進行轉移，所以總時間複雜度會是$O \( n^2 \)$。
+這樣沒有辦法拿到全部的分數。所以，我們需要優化找有條件的最大值的時間。
 
-We can use a value-indexed segment tree or a Treap. At the time, I used a Treap with $O \( log n \)$ time complexity;
-within the problem's constraints this is $log \( 10^5 \)$. A value-indexed segment tree also passes, though with higher complexity
-of $O \( log C \)$, i.e., $log \( 2 times 10^9 \)$. Note that Treap has a larger constant (and longer code).
+我們可以使用值域線段樹 (Segment Tree)或Treap。當時我使用的是Treap，其時間複雜度為$O \( log n \)$，
+以題目測資範圍而言是$log \( 10^5 \)$，但是其實這一題用值域線段樹 (Segment Tree)也會過，雖然複雜度比較高，
+為$O \( log C \)$，是$log \( 2 times 10^9 \)$。不過要注意Treap的常數比較大
+(而且code比較長)。
 
-Our Treap uses $h\[i\]$ as the key and stores and maintains the maximum
-$d p$ value. To query, cut at $k e y < h \[ i \]$
-and $k e y > h \[ i \]$.
+我們的Treap以h[i]為key，裡面存放與維護max dp值，查詢時就切$k e y < h \[ i \]$
+以及$k e y > h \[ i \]$下來就可以了。
 
-The answer is the maximum value across the entire DP table.
+答案會是整個dp表格中的最大值。
 
-=== Other Resources
+=== 其他資源
 #link("https://hackmd.io/@Ccucumber12/Bk6lLyuxF#/")
 
 #figure(image("../Images/DP5.png", width: 20.0%),
@@ -242,323 +253,321 @@ The answer is the maximum value across the entire DP table.
   caption: none
 )
 
-=== Examples and Practice
-#quote(block: true)[
-*Hint:* The following problems do not necessarily require DP optimization.
+=== 範例與練習
+#tip[
+接下來的問題不一定需要DP優化。
 ]
 
-==== Problem: 2021 LinDeng APCS Training Class Summer Contest E — Rush for Masks
-*Problem Statement*
+==== Problem: 110 年林燈 APCS 選手班 暑期賽 E 瘋搶口罩
+*題目敘述*
 
-The pandemic is raging and the world is under lockdown. With COVID-19 spreading rapidly, masks have become a daily necessity. The timid YL wants to buy box after box of masks to fill his home, so that he can feel safer and worry less about going out. In YL's town there are $N$ pharmacies selling masks; the $i$-th pharmacy sells one box of masks for $p_i$ yuan and provides $s_i$ units of peace of mind. To prevent hoarding, DCD rules that only one box of masks may be purchased per pharmacy. However, the socially adept YL can use certain techniques to get around this restriction: at pharmacy $i$, by giving the pharmacist a red envelope of $r_i$ yuan, he can buy any number of boxes of masks there. However, he cannot do this without limit — he risks getting investigated and imprisoned if he is too conspicuous. To avoid attracting too much attention, YL can give out at most $K$ red envelopes. Today, YL went to the bank and withdrew $M$ yuan, intending to spend it all on masks. Under effective use of funds, what is the maximum total peace-of-mind YL can obtain?
+疫情肆虐，全球封城。COVID-19迅速傳播，口罩成了民眾日常的必需品。
+膽小的YL 想買一盒又一盒的口罩塞滿家裡，好讓日子更安心，
+出門不擔心。在 YL 的居住城鎮裡共有$N$間販賣口罩的藥局，
+其中第 $i$ 間藥局一盒口罩要價 $p_i$ 元，
+能提供 $s_i$ 單位的安心度。為了避免民眾囤積口罩，
+造成物資短缺，DCD 規定在同一間藥局只能購買一盒口罩。
+但是擁有高超交際手腕的 YL，能夠透過一些技術性的操作打破此限制。
+在第 $i$ 間藥局，他只要包 $r_i$ 元的紅包給藥師，
+就能在該藥局購買任意數量的口罩。然而他也不能無限制得亂來，
+否則很有可能會被查水表，鋃鐺入獄。為了避免過於招搖，
+YL 最多只能偷塞 $K$ 個紅包。今日一早，YL 去銀行提領了 $M$ 元，
+打算全部拿來購買口罩。請問在有效運用經費的情況下，
+YL 最多能夠獲得多少安心度總和？
 
-*Input Format*
+*輸入說明*
 
-The first line contains three integers $N$, $M$, and $K$.
+第一行包含三個整數 $N$、$M$ 和 $K$。
 
-The following $N$ lines each contain three integers $p_i$, $s_i$, and $r_i$.
+接下來的 $N$ 行，每行包含三個整數 $p_i$、$s_i$ 和 $r_i$。
 
 $1 lt.eq N lt.eq 100$, $0 lt.eq K lt.eq N$, $1 lt.eq M lt.eq 5000$
 
 $1 lt.eq p_i lt.eq 5000$, $0 lt.eq r_i lt.eq 5000$, $1 lt.eq s_i lt.eq 10^6$
 
-All input numbers are integers.
+所有輸入數字皆為整數。
 
-*Output Format*
+*輸出說明*
 
-Output the maximum total peace-of-mind YL can obtain.
+輸出 YL 最多能夠獲得多少安心度總和。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`4 20 1`#linebreak()`3 4 2`#linebreak()`2 5 10`#linebreak()`7 9 3`#linebreak()`4 2 1`], [`26`],
 )
 
-==== Problem: TIOJ 1019 E. Jumping Up
-*Problem Statement*
+==== Problem: TIOJ 1019 E.Jumping Up
+*題目敘述*
 
-That's right, this problem is about a rabbit jumping on bells.
 
-There is a very large tomato (nicknamed "Big Head" because of its big head) who loves this game,
-but the mouse always has to move left and right, and one wrong move sends it falling down to start over — quite tiring. In the game, a rabbit starting from the first bell can jump at most to the next bell or the one after at each step, and once a bell is stepped on it disappears (sending the rabbit into the air).
-Given the horizontal positions of $n$ bells, tell Big Head the minimum total horizontal distance traveled to get from the first bell all the way to the $n$-th bell.
-(In this problem, we assume no flying birds will appear, and not every bell needs to be stepped on.)
+沒錯，這個問題就跟兔子跳鈴鐺有關。
 
-p.s. The above story is purely fictional, but the test data is not (not funny...).
+有一顆超級大番茄(因為頭很大，所以簡稱大頭蕃)非常喜歡玩這個遊戲，
+可是每次滑鼠都要左移、右移，一不小心就會掉下去，又得從頭開始了，
+挺累人的說。遊戲中的兔子從跳上第一個鈴鐺開始，每次跳起來的最大高度只夠這隻兔子跳到下一個、
+或是第兩個鈴鐺上，而且鈴鐺一旦被踩過就會消失(然後兔子跳了起來)。
+現在給你n個鈴鐺的水平位置，請你告訴大頭蕃從第一個鈴鐺開始一路跳到第 n個鈴鐺所需的最小移動水平距離總和為何？
+(我們在這個題目中假設可以踩的飛鳥不曾出現，而且不必每個鈴鐺都踩過。)
 
-*Input Format*
+p.s.以上故事純屬虛構，但是測資並非虛構(不好笑…)
 
-The first line of the input contains a positive integer $T \( T lt.eq 1000 \)$, the total number of test cases.
+*輸入說明*
 
-Each of the following lines is one test case: first a positive integer $n$,
-then $n$ horizontal offsets relative to the center of the screen, $d_1 \, d_2 \, dots.h.c \, d_n$ (from the first bell to the $n$-th bell).
-Any $d_i \, 1 lt.eq i lt.eq n$ can be stored as a signed 32-bit integer.
+輸入檔的第一列有一個正整數$T(T lt.eq 1000)$，代表接下來的測試資料總數。
 
-*Output Format*
+接下來的每一列都是一組測試資料，首先會有一個正整數n，
+接下來依序會有第一個鈴鐺到第n個鈴鐺相對於螢幕正中央的水平位移$d_1 \, d_2 \, dots.h.c \, d_n$。
+其中任意的$d_i \, 1 lt.eq i lt.eq n$都可以用有號的32-bit integer儲存。
 
-For each test case, output a positive integer representing the minimum total horizontal distance to jump from the first bell to the $n$-th bell.
+*輸出說明*
 
-*Sample Tests*
+對於每一筆測試資料，請輸出一個正整數代表從第一個鈴鐺跳上第N個鈴鐺所需要的最小水平距離總長。
+
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`1`#linebreak()`9 1 2 3 4 5 6 7 8 9`], [`8`],
 )
 
-#quote(block: true)[
-*Hint:* AtCoder DPC A Frog1
+#tip[
+AtCoder DPC A Frog1
 ]
 
-==== Problem: TIOJ 1288 D. \[IOI 1994\] Triangle Trip
-*Problem Statement*
+==== Problem: TIOJ 1288 D. \[IOI 1994\] 三角旅行
+*題目敘述*
 
-A triangle made of numbers. Find the maximum sum of a path from the top to the bottom.
+一個有數字構成的正三角形。現在請求出從最頂端走到最底端 最大的和是多少。
 
-Each step can only go to the lower-left or lower-right. The bottom row has no further moves.
+每個點只能往左下或右下走，底層的點不能再往下走。
 
-The height of the triangle is between 1 and 100. All numbers in the triangle are between 0 and 99.
+三角形的高度介於 1 到 100 之間。
+三角形上的數字都介於 0 到 99 之間。
 
-*Input Format*
+*輸入說明*
 
-The first number is $n$, the height of the triangle. You are smart enough to know what format follows.
+第一個是數字 n 代表三角形高度。聰明的你知道接下來是怎樣的格式。
 
-*Output Format*
+*輸出說明*
 
-Output a number that looks like the answer.
+輸出一個貌似解答的數字。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5`#linebreak()`7`#linebreak()`3 8`#linebreak()`8 1 0`#linebreak()`2 7 4 4`#linebreak()`4 5 2 6 5`], [`30`],
 )
 
-==== Problem: TIOJ 1291 N Boxes M Balls
-*Problem Statement*
+==== Problem: TIOJ 1291 N 箱 M 球
+*題目敘述*
 
-Put $m$ distinct balls into $n$ identical boxes. How many ways are there? (Modulo $10^6$)
+n個相同的箱子要放入m個不同的球，問有幾種放法。(對$10^6$取餘)
 
-$n=m=0$ means end of test data.
+n=m=0 代表測試資料結束。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`26 11`#linebreak()`21 45`#linebreak()`0 0`], [`678570`#linebreak()`517677`],
 )
 
-#quote(block: true)[
-*Hint:* Can modular inverse be used?
+#tip[
+模逆元可以用嗎？
 ]
 
 ==== Problem: CF 698A Vacations
-*Problem Statement*
+*題目敘述*
 
-$V a s y a$ has $n$
-days of vacation! So he decides to improve his $I T$ skills and do sports. $V a s y a$
-knows the following information about each vacation day: whether the gym is open and whether an online contest is held that day. For the $i$-th day, there are four possible situations:
+Vasya 有 $n$ 天的假期！所以他決定提升自己的IT技能並進行運動。Vasya
+對於每一天的假期都知道以下信息：健身房是否開放以及當天是否在網路上舉辦比賽。對於第 $i$ 天，有四種情況：
 
-That day, the gym is closed and no contest is held; that day, the gym is closed and a contest is held;
-that day, the gym is open and no contest is held; that day, the gym is open and a contest is held.
+在這一天，健身房關閉且沒有舉辦比賽；
+在這一天，健身房關閉且舉辦了比賽；
+在這一天，健身房開放且沒有舉辦比賽；
+在這一天，健身房開放且舉辦了比賽。
 
-Each day, $V a s y a$
-can choose to rest, participate in a contest (if there is one that day), or do sports (if the gym is open that day).
+在每一天，Vasya
+可以選擇休息，參加比賽(如果當天有比賽)，或進行運動(如果健身房當天開放)。
 
-Find the minimum number of days $V a s y a$
-must rest (meaning he cannot do sports and participate in a contest at the same time). $V a s y a$'s
-only constraint is: he does not want to do the same activity on two consecutive days — that is, he will not do sports on two consecutive days, nor participate in a contest on two consecutive days.
+找出 Vasya
+至少需要休息的天數(意味著他不能同時進行運動和參加比賽)。Vasya
+唯一的限制是：他不想在連續兩天做相同的活動，也就是說他不會在連續兩天進行運動，或連續兩天參加比賽。
 
-*Input Format*
+*輸入說明*
 
-The first line contains a positive integer $n$ $\( 1 lt.eq n lt.eq 100 \)$ --- the number of vacation days for $V a s y a$.
+第一行包含一個正整數 $n$ $(1 lt.eq n lt.eq 100)$ — Vasya 的假期天數。
 
-The second line contains a space-separated sequence of integers $a_1 \, a_2 \, . . . \, a_n$
-$\( 0 lt.eq a_i lt.eq 3 \)$, where:
+第二行包含由空格分隔的整數序列 $a_1 \, a_2 \, . . . \, a_n$
+$(0 lt.eq a_i lt.eq 3)$，其中：
 
-$a_i = 0$: the gym is closed and no contest is held on day $i$;
+$a_i = 0$，表示在第 $i$ 天的假期中，健身房關閉且沒有舉辦比賽；
 
-$a_i = 1$: the gym is closed and a contest is held on day $i$;
+$a_i = 1$，表示在第 $i$ 天的假期中，健身房關閉且舉辦了比賽；
 
-$a_i = 2$: the gym is open and no contest is held on day $i$;
+$a_i = 2$，表示在第 $i$ 天的假期中，健身房開放且沒有舉辦比賽；
 
-$a_i = 3$: the gym is open and a contest is held on day $i$.
+$a_i = 3$，表示在第 $i$ 天的假期中，健身房開放且舉辦了比賽。
 
-*Output Format*
+*輸出說明*
 
-Output the minimum number of days $V a s y a$ must rest. Remember that $V a s y a$
-refuses to do sports on two consecutive days or to participate in a contest on two consecutive days.
+輸出 Vasya 至少需要休息的天數。請記住 Vasya
+拒絕在連續兩天進行運動，在連續兩天參加比賽。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`4`#linebreak()`1 3 2 0`], [`2`],
 )
 
 ==== Problem: CF 1195 C Basketball
-*Problem Statement*
+*題目敘述*
 
-Finally, a basketball court opened at SIS, and so Demid decided to hold a basketball training session. There are 2n students participating in Demid's training session, and he divided them into two rows, each with n students (exactly n students per row). Students are numbered 1 to n from left to right within each row.
+終於，一個籃球場在SIS開幕了，因此Demid決定舉行籃球訓練課程。有2n名學生參加了Demid的訓練課程，他將他們分成兩排，每排都有n個學生(每排有恰好n個學生)。學生在每排中從左到右按順序編號從1到n。
 
-Now Demid wants to select a basketball team. He will select players from left to right, and the index of each selected player (except the first) must be strictly greater than the index of the previously selected player. To avoid favoring one row, Demid cannot select two consecutive players from the same row. The first player can be selected from any of the 2n students (no additional restrictions), and a team can contain any number of players.
+現在Demid想要選擇一支籃球隊。他會按照從左到右的順序選擇球員，並且每個被選擇的球員的索引(不包括第一個選擇的球員)必須嚴格大於先前選擇的球員的索引。為了避免偏袒某一排，Demid選擇學生的方式是不允許連續選擇同一排的學生。第一個球員可以從所有2n名學生中選擇(沒有額外的限制)，並且一支隊伍可以包含任意數量的球員。
 
 #figure(image("../Images/CF1195.png", width: 40.0%),
   caption: none
 )
 
-Demid believes that to form a perfect team, he should select players to maximize the total height of selected players. Help Demid find the maximum possible total height of a team he can select.
+Demid認為為了組成一支完美的隊伍，他應該以使得所選球員的總身高盡可能最大的方式進行選擇。幫助Demid找到他可以選擇的隊伍的最大可能總身高。
 
-*Input Format*
+*輸入說明*
 
-The first line of input contains a positive integer $n \( 1 lt.eq n lt.eq 10^5 \)$ — the number of students per row.
+輸入的第一行包含一個正整數$n(1 lt.eq n lt.eq 10^5)$——每排的學生數量。
 
-The second line contains $n$ integers $h_(1 \, 1) \, h_(1 \, 2) \, dots.h.c \, h_(1 \, n) \( 1 lt.eq h_(1 \, i) lt.eq 10^9 \)$, where $h_(1 \, i)$ is the height of the $i$-th student in the first row.
+輸入的第二行包含n個整數$h_(1 \, 1) \, h_(1 \, 2) \, dots.h.c \, h_(1 \, n)(1 lt.eq h_(1 \, i) lt.eq 10^9)$，其中$h_(1 \, i)$表示第一排第i個學生的身高。
 
-The third line contains $n$ integers $h_(2 \, 1) \, h_(2 \, 2) \, dots.h.c \, h_(2 \, n) \( 1 lt.eq h_(2 \, i) lt.eq 10^9 \)$, where $h_(2 \, i)$ is the height of the $i$-th student in the second row.
+輸入的第三行包含n個整數$h_(2 \, 1) \, h_(2 \, 2) \, dots.h.c \, h_(2 \, n)(1 lt.eq h_(2 \, i) lt.eq 10^9)$，其中$h_(2 \, i)$表示第二排第i個學生的身高。
 
-*Output Format*
+*輸出說明*
 
-Output a single integer — the maximum possible total height of the team Demid can select.
+輸出一個整數——Demid可以選擇的隊伍的最大可能總身高。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5`#linebreak()`9 3 5 7 3`#linebreak()`5 8 1 4 5`], [`29`],
 )
 
 ==== Problem: CF 474 D Flowers
-*Problem Statement*
+*題目敘述*
 
-We see the groundhog preparing a small game for the mole's lunch. Now it is time for the groundhog's dinner; as everyone knows, groundhogs eat flowers. At each dinner, it eats some red and white flowers. Therefore, a dinner can be represented as a sequence of flowers, some white and some red.
+我們看到土撥鼠為鼴鼠的午餐準備的小遊戲。現在輪到土撥鼠晚餐時間了，眾所周知，土撥鼠吃花朵。在每頓晚餐中，他會吃一些紅色和白色的花朵。因此，一頓晚餐可以表示為一系列的花朵，其中有些是白色的，有些是紅色的。
 
-However, to make the dinner tasty, there is a rule: the groundhog only wants to eat white flowers in groups of exactly $k$.
+但是，為了讓晚餐美味，有一個規則：土撥鼠只想以大小為k的組合吃白色花朵。
 
-Now the groundhog wants to know how many ways it can eat $a$ to $b$ flowers. Since the number of ways can be very large, output it modulo $1000000007$ ($10^9 + 7$).
+現在土撥鼠想知道他可以以多少種方式吃掉a到b朵花。由於方式的數量可能非常大，請將其按照$1000000007$($10^9+7$)取模後輸出。
 
-*Input Format*
+*輸入說明*
 
-The input contains multiple test cases.
+輸入包含多個測試案例。
 
-The first line contains two integers $t$ and $k$
-($1 lt.eq t \, k lt.eq 105$), where $t$ is the number of test cases.
+第一行包含兩個整數$t$和$k$ ($1 lt.eq t \, k lt.eq 105$)，其中$t$表示測試案例的數量。
 
-The following $t$ lines each contain two integers $a i$ and $b i$
-($1 lt.eq a i lt.eq b i lt.eq 105$), describing the $i$-th test case.
+接下來的$t$行包含兩個整數$a i$和$b i$ ($1 lt.eq a i lt.eq b i lt.eq 105$)，描述第$i$個測試案例。
 
-*Output Format*
+*輸出說明*
 
-Output to standard output, $t$ lines in total. The $i$-th line should contain the number of ways the groundhog can eat $a i$ to $b i$ flowers at dinner, modulo $1000000007$
-($10^9 + 7$).
+將結果輸出到標準輸出，共$t$行。第$i$行應該包含土撥鼠在晚餐時可以吃掉$a i$到$b i$朵花的方式數，取模於$1000000007$ ($10^9+7$)。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5`#linebreak()`9 3 5 7 3`#linebreak()`5 8 1 4 5`], [`29`],
 )
 
 ==== Problem: CF 4D Mysterious Present
-*Problem Statement*
+*題目敘述*
 
-Peter decided to send birthday greetings to his friend in Australia and mail a card. To make the gift more mysterious, he decided to make a chain. A chain is a sequence of envelopes
-$A = a_1 \, a_2 \, dots.h \, a_n$, where the width and height of the $i$-th
-envelope are both strictly greater than those of the previous envelope. The size of the chain is the number of envelopes in the chain.
+Peter決定向他在澳大利亞的朋友送上生日快樂的祝福，並寄去一張賀卡。為了讓他的禮物更加神秘，他決定做一條鏈子。鏈子是由信封組成的序列 $A = a_1 \, a_2 \, dots.h \, a_n$，其中第 $i$ 個信封的寬度和高度都嚴格大於前一個信封的寬度和高度。鏈子的大小是鏈子中信封的數量。
 
-Peter wants to make the largest possible chain from the envelopes he has, and the chain must be able to contain a card. A card can be placed in the chain if the card's width and height are both less than the width and height of the smallest envelope in the chain. Rotating the card or envelopes is not allowed.
+Peter希望從他擁有的信封中製作出最大尺寸的鏈子，該鏈子應該能夠容納一張卡片。如果卡片的寬度和高度都小於鏈子中最小信封的寬度和高度，則卡片可以放入鏈子中。禁止旋轉卡片和信封。
 
-Peter has a large number of envelopes, but limited time, so this challenging task falls to you.
+Peter擁有非常多的信封，但時間非常有限，這個艱鉅的任務交給了你。
 
-*Input Format*
+*輸入說明*
 
-The first line contains two integers $n$ and $w$, $h$
-$\( 1 lt.eq n lt.eq 5000 \, 1 lt.eq w \, h lt.eq 10^6 \)$ —
-the number of envelopes Peter has, and the width and height of the card. The following $n$
-lines each contain two integers $w_i$ and $h_i$
-$\( 1 lt.eq w_i \, h_i lt.eq 10^6 \)$ — the width and height of the $i$-th envelope.
+第一行包含兩個整數 $n$ 和 $w$、$h$ $(1 lt.eq n lt.eq 5000 \, 1 lt.eq w \, h lt.eq 10^6)$ —— Peter擁有的信封數量，以及卡片的寬度和高度。接下來的 $n$ 行中，每行包含兩個整數 $w_i$ 和 $h_i$ $(1 lt.eq w_i \, h_i lt.eq 10^6)$ —— 第 $i$ 個信封的寬度和高度。
 
-*Output Format*
+*輸出說明*
 
-On the first line, output the maximum size of the chain. On the second line, output the envelope numbers forming the desired chain (space-separated), starting from the smallest envelope. Note that the card should fit in the smallest envelope. If there are multiple chains of maximum size, any one is acceptable.
+在第一行輸出最大鏈子的大小。在第二行輸出形成所需鏈子的信封編號（以空格分隔），從最小信封的編號開始。請注意，卡片應該放入最小的信封中。如果最大尺寸的鏈子不唯一，則可以輸出其中任意一個答案。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`2 1 1`#linebreak()`2 2`#linebreak()`2 2`], [`1`#linebreak()`1`],
 )
 
-==== Problem: Luogu P3959 \[NOIP2017 Advanced Group\] Treasure
-*Problem Statement*
+==== Problem: 洛谷 P3959 \[NOIP2017 提高組\] 寶藏
+*題目敘述*
 
-Xiao Ming, participating in an archaeological excavation, received a treasure map marking $n$
-treasure chambers buried underground, along with $m$
-excavatable roads between these $n$ chambers and their lengths.
+參與考古挖掘的小明得到了一份藏寶圖，藏寶圖上標出了 $n$ 個深埋在地下的寶藏屋， 也給出了這 $n$ 個寶藏屋之間可供開發的 $m$ 條道路和它們的長度。
 
-Xiao Ming is determined to personally excavate all the treasures. However, each treasure chamber is very far underground, meaning digging a tunnel from the surface to any given chamber is very difficult, while developing roads between chambers is comparatively easy.
+小明決心親自前往挖掘所有寶藏屋中的寶藏。但是，每個寶藏屋距離地面都很遠，也就是說，從地面打通一條到某個寶藏屋的道路是很困難的，而開發寶藏屋之間的道路則相對容易很多。
 
-Xiao Ming's determination moved the excavation sponsor, who agreed to sponsor the excavation of one free tunnel from the surface to a chamber of Xiao Ming's choosing.
+小明的決心感動了考古挖掘的贊助商，贊助商決定免費贊助他打通一條從地面到某個寶藏屋的通道，通往哪個寶藏屋則由小明來決定。
 
-On this basis, Xiao Ming also needs to consider how to excavate the roads between chambers. Roads already excavated can be traversed freely at no cost. Each time a new road is excavated, Xiao Ming and the archaeological team excavate the treasure in the chamber reachable by that road. Additionally, Xiao Ming does not want to develop useless roads — roads between two already-excavated chambers need not be developed.
+在此基礎上，小明還需要考慮如何開鑿寶藏屋之間的道路。已經開鑿出的道路可以任意通行不消耗代價。每開鑿出一條新道路，小明就會與考古隊一起挖掘出由該條道路所能到達的寶藏屋的寶藏。另外，小明不想開發無用道路，即兩個已經被挖掘過的寶藏屋之間的道路無需再開發。
 
-The cost to excavate a new road is $upright(L) times upright(K)$, where $L$
-is the length of the road, and $K$
-is the number of chambers passed through from the sponsor-funded chamber to the starting chamber of this road (including both the sponsor-funded chamber and the starting chamber of this road).
+新開發一條道路的代價是 $upright(L) times upright(K)$。其中 $L$ 代表這條道路的長度，$K$ 代表從贊助商幫你打通的寶藏屋到這條道路起點的寶藏屋所經過的寶藏屋的數量（包括贊助商幫你打通的寶藏屋和這條道路起點的寶藏屋）。
 
-Please write a program to help Xiao Ming choose the sponsor-funded chamber and the subsequent roads to excavate, minimizing the total construction cost, and output this minimum value.
+請你編寫程式為小明選定由贊助商打通的寶藏屋和之後開鑿的道路，使得工程總代價最小，並輸出這個最小值。
 
-*Input Format*
+*輸入說明*
 
-The first line contains two space-separated positive integers $n \, m$, representing the number of chambers and roads.
+第一行兩個用空格分離的正整數 $n \, m$，代表寶藏屋的個數和道路數。
 
-The following $m$
-lines each contain three space-separated positive integers: the numbers of the two chambers connected by a road (numbered
-$1$ to $n$), and the length $v$ of the road.
+接下來 $m$ 行，每行三個用空格分離的正整數，分別是由一條道路連接的兩個寶藏屋的編號（編號為 $1-n$），和這條道路的長度 $v$。
 
 $1 lt.eq n lt.eq 12$, $0 lt.eq m lt.eq 10^3$, $v lt.eq 5 times 10^5$
 
-*Output Format*
+*輸出說明*
 
-A single positive integer representing the minimum total cost.
+一個正整數，表示最小的總代價。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`4 5`#linebreak()`1 2 1`#linebreak()`1 3 3`#linebreak()`1 4 1`#linebreak()`2 3 4`#linebreak()`3 4 1`], [`4`],
 )
 
-==== Problem: Luogu P5785 \[SDOI2012\] Task Scheduling
-*Problem Statement*
+==== Problem: 洛谷 P5785 \[SDOI2012\]任務安排
+*題目敘述*
 
-There are $n$ tasks to be processed on a machine, forming a sequence. The tasks are numbered $1$
-to $n$, so the sequence is $1 \, 2 \, 3 dots.h.c n$. These $n$
-tasks are divided into several batches, each containing consecutive tasks. Starting from time $0$,
-the tasks are processed in batches. The time required to complete task $i$ alone is
-$T_i$. Before each batch of tasks begins, the machine requires a startup time
-$s$, and the time to complete that batch is the sum of the individual task times.
+機器上有 $n$ 個需要處理的任務，它們構成了一個序列。這些任務被標號為 $1$ 到 $n$，因此序列的排列為 $1 \, 2 \, 3 dots.h.c n$。這 $n$
+個任務被分成若干批，每批包含相鄰的若干任務。從時刻 $0$ 開始，這些任務被分批加工，第 $i$ 個任務單獨完成所需的時間是 $T_i$。在每批任務開始前，機器需要啟動時間 $s$，而完成這批任務所需的時間是各個任務需要時間的總和。
 
-Note that all tasks in the same batch are completed at the same moment. The cost of each task is its completion time multiplied by a cost coefficient
-$C_i$.
+注意，同一批任務將在同一時刻完成。每個任務的費用是它的完成時刻乘以一個費用係數 $C_i$。
 
-Find a grouping scheme that minimizes the total cost.
+請確定一個分組方案，使得總費用最小。
 
-*Input Format*
+*輸入說明*
 
-The first line contains an integer $n$. The second line contains an integer $s$.
+第一行一個整數 $n$。
+第二行一個整數 $s$。
 
-The following $n$ lines each contain a pair of integers $T_i$ and $C_i$, representing the individual completion time and cost coefficient of task $i$.
+接下來 $n$ 行，每行有一對整數，分別為 $T_i$ 和 $C_i$，表示第 $i$ 個任務單獨完成所需的時間是 $T_i$ 及其費用係數 $C_i$。
 
 $1 lt.eq n lt.eq 3 times 10^5$, $1 lt.eq s lt.eq 2^8$, $lr(|T_i|) lt.eq 2^8$, $0 lt.eq C_i lt.eq 2^8$
 
-*Output Format*
+*輸出說明*
 
-A single integer on one line, representing the minimum total cost.
+一行一個整數，表示最小的總費用。
 
-*Sample Tests*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5`#linebreak()`1`#linebreak()`1 3`#linebreak()`3 2`#linebreak()`4 3`#linebreak()`2 3`#linebreak()`1 4`], [`4`],
 )

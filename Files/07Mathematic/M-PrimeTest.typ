@@ -1,18 +1,18 @@
 #import "../../template.typ": *
 
-== Primality Testing
-=== Naive Algorithm
-Simply iterate from 1 to n-1 and check whether any number divides n evenly.
+== 質數判斷
+=== 簡單算法
+就是從1跑到n-1，看看有沒有可以整除n的數。
 
-=== A Small Improvement
+=== 小進步
 #block[
 $N = a b$ and $a \, b in bb(N)$
 $arrow.r.double m i n \( a \, b \) lt.eq sqrt(N)$
 
 ]
-Therefore, we only need to iterate over $\[ 1 \, sqrt(N) \]$.
+因此，我們可以跑$\[ 1 \, sqrt(N) \]$就好。
 
-#code(title: [sqrt(N) Primality Test])[
+#code(title: [$sqrt(N)$ 質數判斷])[
   ```cpp
 using ll=long long;
 bool IsPrime(ll n){
@@ -26,16 +26,16 @@ bool IsPrime(ll n){
   ```
 ]
 
-=== Sieve of Eratosthenes
-You probably learned this in elementary school. In short: 2 is prime, so remove all multiples of 2. Then move forward — the first number not yet removed is 3, so remove all multiples of 3. Repeat.
+=== 埃氏篩法
+國小應該就有教過？簡單說就是2是質數，所以把2的所有倍數刪掉，接著往後找，第一個沒被刪的數為3，所以一樣把所有3的倍數刪除，依此類推。
 
-In practice, we use a bitset if we want to save memory, or a bool array if we want speed. (That sounds contradictory, but it isn't — bitset is only faster for bitwise operations.)
+實作上我們會使用bitset，如果要省記憶體。使用bool陣列，如果要快。(聽起來矛盾是吧，其實沒有，bitset快的只有位元運算)。
 
-The complexity is $N / 2 + N / 3 + N / 5 + N / 7 + dots.h.c$, where N is the sieve range. Through some mathematical magic (which I won't prove) we know the complexity is $O \( n log log n \)$.
+複雜度為$N / 2 + N / 3 + N / 5 + N / 7 + dots.h.c$，其中N是篩的範圍。經過通靈(我不會證明的簡稱)我們得知其複雜度為$O \( n log log n \)$。
 
-Keyword: Sum of reciprocals of primes.
+關鍵字 Sum of reciprocals(倒數) of primes。
 
-#code(title: [Sieve of Eratosthenes])[
+#code(title: [埃氏篩法])[
   ```cpp
 using ll=long long;
 const int N=1e7+10
@@ -56,10 +56,10 @@ void eratosthenes(){
   ```
 ]
 
-=== Miller-Rabin
-A magical algorithm — just paste the code and use it; I don't know how it works either. But the complexity is $O \( log^3 \( n \) \)$.
+=== Millar-Rabin
+神奇的東東，貼個程式碼就好，我也不知道原理。但複雜度為$O \( log^3 \( n \) \)$。
 
-#code(title: [Miller-Rabin Primality Test])[
+#code(title: [Millar-Rabin 質數判斷])[
   ```cpp
 // n < 4,759,123,142        {3 : 2, 7, 61}
 // n < 1,122,004,669,633    {4 : 2, 13, 23, 1662803}
@@ -82,10 +82,10 @@ bool millerRabin(ll n, ll a) {
   ```
 ]
 
-=== Applications
-We can use the prime sieve above to perform prime factorization. Taking the Sieve of Eratosthenes as an example: if we change the array to store one divisor of each number, we can complete prime factorization in $O \( log n \)$ time.
+=== 應用
+我們可以利用以上的質數篩選法進行質因數分解，以埃氏篩法為例，如果我們的陣列改存其中一個可以整除他的數，那我們就可以在$O \( log n \)$的時間內完成質因數分解。
 
-#code(title: [Sieve of Eratosthenes])[
+#code(title: [埃氏篩法])[
   ```cpp
 const int N=1e6+10;
 using ll=long long;

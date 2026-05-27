@@ -1,29 +1,25 @@
 #import "../../template.typ": *
 
-== Tree Diameter
-=== Concept
-The tree diameter is the longest distance in the tree. For example, in the
-tree diagram shown earlier, the diameter is 5, going from node 0 all the way
-to node 8.
+== 樹直徑
+=== 概念
+樹直徑就是樹上的最長距離，例如前面的樹的示意圖，
+他的直徑就是5，從節點0一路走到節點8。
 
-To find the tree diameter, there are two methods: two DFS passes and dynamic
-programming. If you do not yet know what dynamic programming is, it is enough
-to know that by storing extra information in arrays, you can find the tree
-diameter.
+如果要求樹直徑，我們有兩種方法，分別是兩次DFS以及動態規劃。
+若你還不知道動態規劃是什麼，你只要先知道可以透過把額外的資料
+存在陣列中，就可以得到樹直徑，這樣就可以了。
 
-=== Two DFS Passes
-The two-DFS approach works when edge weights are non-negative. We start by
-picking any node $n$.
+=== 兩次DFS
+兩次DFS可以用在邊權重不為負的情形。我們首先要隨便找一個點$n$。
 
-+ Find the node u farthest from n.
++ 找到離n最遠的點u。
 
-+ Then find the node v farthest from u.
++ 接著找到離u最遠的點v。
 
-After this, $u arrow.r v$ is one of the diameters of the tree. During the DFS
-we maintain distances along the way, so the calculation is complete after the
-second DFS.
+找完以後$u arrow.r v$就是這棵樹的其中一個直徑。我們可以在DFS的過程中，
+同時維護距離，如此就會在第二次DFS後直接完成計算。
 
-#code(title: [Two DFS Passes])[
+#code(title: [兩次DFS])[
   ```cpp
 struct pii{
     int mx,node;
@@ -50,17 +46,17 @@ int main(){
   ```
 ]
 
-=== Tree DP
-We maintain two arrays, mx and smx, storing the longest and the
-(non-strictly) second longest values respectively. Using the tree diagram as
-an example, set node 2 as the root and recurse downward with DFS. Looking at
-node 1, its children are nodes 5, 6, and 7, where node 6 also has node 8 as a
-child. So the maximum depths below nodes 5, 6, and 7 are 0, 1, and 0 respectively.
+=== 樹上DP
+我們將會維護兩個陣列，分別是mx以及smx，
+裡面存放的是最長以及非嚴格次長，同樣以樹示意圖為例。
+將2設為根節點，同樣用DFS向下遞迴，我們看到節點1。
+他往下分別有節點5, 6, 7，其中節點6底下還有節點8。
+所以5, 6, 7底下的最長長度分別為0, 1, 0。
 
-We can then connect the longest and second-longest edges through node 1 as a
-bridge. Doing this for all nodes gives us the diameter.
+於是我們可以將最長與次長的邊，透過節點1做為橋樑連接在一起，
+對所有節點都做過一次就可以找到直徑了。
 
-#code(title: [Tree Diameter DP Algorithm])[
+#code(title: [樹直徑DP算法])[
   ```cpp
 #define pii pair<int,int>
 #define to first
@@ -93,97 +89,79 @@ int main(){
   ```
 ]
 
-=== Examples and Exercises
-Luogu P3304 \[SDOI2013\] Diameter
+=== 範例與練習
+洛谷P3304 \[SDOI2013\]直徑
 
-*Problem Statement*
+*題目敘述*
 
-Xiao Q recently learned some graph theory. According to the textbook, the
-following definitions apply. Tree: an acyclic connected undirected graph where
-every edge has a positive integer weight representing its length. A tree with
-$N$ nodes has exactly $N - 1$ edges.
+小Q最近學習了一些圖論知識。根據課本，有如下定義。樹：無迴路且連通的無向圖，
+每條邊都有正整數的權值來表示其長度。如果一棵樹有$N$個節點，可以證明其有且僅有$N-1$條邊。
 
-Path: in a tree, there is at most one simple path between any two nodes. We
-use $d i s \( a \, b \)$ to denote the sum of edge lengths on the path between
-nodes $a$ and $b$. We call $d i s \( a \, b \)$ the distance between nodes
-$a \, b$.
+路徑：一棵樹上，任意兩個節點之間最多有一條簡單路徑。
+我們用 $"dis"(a,b)$表示點$a$和點$b$的路徑上各邊長度之和。
+稱$"dis"(a,b)$為$a,b$兩個節點間的距離。
 
-Diameter: the longest path in a tree is called its diameter. A tree may have
-more than one diameter.
+直徑：一棵樹上，最長的路徑為樹的直徑。樹的直徑可能不是唯一的。
 
-Xiao Q wants to know, for a given tree, what is the length of the diameter,
-and how many edges are shared by all diameters.
+現在小Q想知道，對於給定的一棵樹，其直徑的長度是多少，
+以及有多少條邊滿足所有的直徑都經過該邊。
 
-*Input Format*
+*輸入說明*
 
-The first line contains an integer $N$ representing the number of nodes. The
-next $N - 1$ lines each contain three integers $a \, b \, c$ indicating an
-undirected edge of length $c$ between nodes $a$ and $b$.
+第一行包含一個整數$N$，表示節點數。 接下來$N-1$行，
+每行三個整數$a, b, c$ ，表示點$a$和點$b$之間有一條長度為$c$的無向邊。
 
-$2 lt.eq N lt.eq 200000$, all node numbers are in the range $1 dots.h.c N$, and edge weights are $lt.eq 10^9$.
+$2 lt.eq N lt.eq 200000$，所有點的編號都在$1 dots.h.c N$的範圍內，邊的權值$lt.eq 10^9$。
 
-*Output Format*
+*輸出說明*
 
-Two lines. The first line contains an integer representing the diameter length.
-The second line contains an integer representing the number of edges shared by
-all diameters.
+共兩行。第一行一個整數，表示直徑的長度。第二行一個整數，表示被所有直徑經過的邊的數量。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`6`#linebreak()`3 1 1000`#linebreak()`1 4 10`#linebreak()`4 2 100`#linebreak()`4 5 50`#linebreak()`4 6 100`], [`1110`#linebreak()`2`],
 )
-==== Problem: Luogu P6722 "MCOI-01" Village
-*Problem Statement*
+==== 洛谷P6722 「MCOI-01」村莊
+*題目敘述*
 
-Today, the adorable and kind 0x3 Nyan-chan rode a pony to a village.
+今天，珂愛善良的0x3喵醬騎著一匹小馬來到了一個村莊。
 
-"Hey, the layout of this village..." "Looks like the place I used to play Ciste qwq"
+「嘿，這個村莊的佈局......」
+「好像之前我玩Ciste的地方啊qwq」
 
-0x3 Nyan-chan has a map with information about the village. She needs to
-determine whether Ciste has a solution based on the map.
+0x3喵醬有一張地圖，地圖上有關於這個村莊的資訊。然後0x3喵醬要根據這張地圖來判斷Ciste是否有解。
 
-Note: Ciste is a treasure map game from the anime *Is the Order a Rabbit?*.
+注：Ciste是《請問您今天要來點兔子嗎》中的一種藏寶圖遊戲。
 
-The village is simplified as an undirected connected graph with $n$ nodes
-(numbered $1$ to $n$) and $n - 1$ edges.
+村莊被簡化為一個$n$個節點（編號為$1$到$n$）和$n-1$條邊構成的無向連通圖。
 
-0x3 Nyan-chan believes the information of this undirected graph is related to
-a new graph satisfying the following conditions:
+0x3喵醬認為這個無向圖的資訊與滿足以下條件的新圖有關：
 
-The new graph has the same node set as the original graph. In the new graph,
-there is an undirected edge between node $u$ and node $v$ if and only if
-$d i s \( u \, v \) gt.eq k$ in the original graph ($k$ is a given constant,
-$d i s \( u \, v \)$ denotes the shortest path length from node $u$ to node $v$).
-0x3 Nyan-chan also believes that if this "new graph" is a bipartite graph,
-then Ciste has a solution; otherwise it does not. (If you do not know what a
-bipartite graph is, please refer to the hint.)
+新圖的節點集合與原圖相同
+在新圖中，節點$u$和節點$v$之間存在無向邊當且僅當在原圖中$"dis"(u,v) gt.eq k$（$k$是給定的常數，$"dis"(u,v)$表示節點編號為$u$的節點到節點編號為$v$的節點的最短路徑長度）
+0x3喵醬還認為，如果這個"新圖"是二分圖，則Ciste有解；如果"新圖"不是二分圖，則Ciste無解。（如果您不知道二分圖，請參考提示）
 
-Please determine whether Ciste has a solution.
+現在0x3喵醬想請您判斷一下這個Ciste是否有解。
 
-*Input Format*
+*輸入說明*
 
-The first line contains a positive integer $T$ representing $T$ test cases.
-For each test case, the first line contains two positive integers $n$ and $k$.
-The next $n - 1$ lines each contain three positive integers $x$, $y$, and $v$,
-indicating an undirected edge of weight $v$ between nodes $x$ and $y$.
-The input is guaranteed to be valid.
+第一行包含一個正整數$T$，表示有$T$組測試數據。
+對於每組測試數據，第一行包含兩個正整數$n$和$k$。接下來$n-1$行，每行包含三個正整數$x$、$y$和$v$，表示節點編號為$x$的節點到節點編號為$y$的節點有一條權重為$v$的無向邊。
+輸入數據保證合法。
 
-$n lt.eq 10^5$, $T lt.eq 10$, $v lt.eq 1000$, $k lt.eq 1000000$
+$n lt.eq 10^5$，$T lt.eq 10$，$v lt.eq 1000$，$k lt.eq 1000000$
 
-*Output Format*
+*輸出說明*
 
-For each test case, output one line: "Yes" if Ciste has a solution, otherwise
-output "Baka Chino".
+對於每一組測試數據，輸出一行，如果Ciste有解則輸出"Yes"，否則輸出"Baka Chino"。
 
 #block[
-A bipartite graph (also called a two-partite graph) is a special model in
-graph theory. Let $G = \( V \, E \)$ be an undirected graph. If the vertex
-set $V$ can be partitioned into two disjoint subsets $\( A \, B \)$, and
-every edge $\( i \, j \)$ in the graph has its two endpoints $i$ and $j$
-belonging to these two different subsets $\( i in A \, j in B \)$, then $G$
-is called a bipartite graph.
+二分圖又稱作二部圖，是圖論中的一種特殊模型。設$G=(V,E)$是一個無向圖，
+如果頂點$V$可分割為兩個互不相交的子集$(A,B)$，並且圖中的每條邊$(i,j)$所關聯的
+兩個頂點$i$和$j$分別屬於這兩個不同的頂點集$(i in A, j in B)$，
+則稱圖$G$為一個二分圖。
 
 ]
-==== Problem: Implement an algorithm to find the second longest tree diameter.
+==== 實作一個演算法可以計算出次長樹直徑。

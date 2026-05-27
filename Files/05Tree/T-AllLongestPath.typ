@@ -1,25 +1,19 @@
 #import "../../template.typ": *
 
-== All Longest Paths
-The following content is excerpted from Antti Laaksonen's Competitive Programmer's Handbook.
+== 所有最長路徑
+以下內容節錄自Antti Laaksonen 的 Competitive Programmer’s Handbook。
 
-=== Concept
-The next problem we consider is computing, for each node in the tree, the
-length of the longest path starting from that node. This can be seen as a
-generalization of the tree diameter problem, since the largest such path
-length equals the diameter. Similarly, this problem can be solved in
-$O \( n \)$ time.
+=== 概念
+我們接下來的問題是計算樹中每個節點開始的最長路徑長度。這可以看作是樹直徑問題的一般化，因為其中最大的路徑長度等於樹的直徑。同樣，這個問題可以在$O \( n \)$的時間內解決。
 
-As an example, consider the following tree:
+以一個例子來說明，考慮以下樹：
 
 #figure(image("../Images/Tree2.png", width: 50.0%),
   caption: [
   ]
 )
 
-Let maxLength(x) denote the length of the longest path starting from node x.
-For example, in the tree above, maxLength(4) = 3 because there is a path
-4 → 1 → 2 → 6. The complete table of values is:
+設 maxLength(x) 表示以節點 x 為起點的最長路徑長度。例如，在上面的樹中，maxLength(4) = 3，因為存在一條路徑 4 → 1 → 2 → 6。以下是完整的數值表：
 
 #block[
 #table(columns: 2, stroke: .5pt, inset: 5pt,
@@ -33,73 +27,54 @@ For example, in the tree above, maxLength(4) = 3 because there is a path
 )
 
 ]
-A good starting point for solving this problem is to root the tree at an
-arbitrary node:
+在解決這個問題時，一個好的起點是將樹任意地選擇一個節點作為根節點：
 
 #figure(image("../Images/Tree3.png", width: 50.0%),
   caption: [
   ]
 )
 
-The first part of the problem is to compute, for each node x, the maximum
-path length going through its children. For example, the longest path from
-node 1 goes through its child node 2.
+問題的第一部分是計算每個節點 x 通過其子節點的最大路徑長度。例如，從節點 1 出發的最長路徑通過其子節點 2。
 
-This part can be solved easily in $O \( n \)$ time using dynamic programming,
-just as before. Then the second part of the problem is to compute, for each
-node x, the maximum path length going through its parent p. For example, the
-longest path from node 3 goes through its parent node 1.
+這部分可以在 $O \( n \)$ 的時間內輕鬆解決，因為我們可以使用動態規劃，就像之前所做的一樣。然後，問題的第二部分是計算每個節點 x 通過其父節點 p 的最大路徑長度。例如，從節點 3 出發的最長路徑通過其父節點 1。
 
-At first glance it seems we should choose the longest path starting from p.
-However, this does not always work, because the longest path from p may pass
-through x itself. Here is an example: $2 arrow.r 1 arrow.r 4$.
+乍一看，似乎我們應該選擇從 p 開始的最長路徑。然而，這並不總是有效的，因為從 p 開始的最長路徑可能會經過 x。是一個範例：$2 arrow.r 1 arrow.r 4$。
 
-Nevertheless, we can still solve the second part in $O \( n \)$ time by
-storing two maximum lengths for each node x:
+然而，我們仍然可以在 $O \( n \)$ 的時間內解決第二部分問題，方法是為每個節點 x 存儲兩個最大長度：
 
-- $m a x L e n g t h_1 \( x \)$: the length of the longest path starting from node x.
+- $m a x L e n g t h_1 \( x \)$: 從節點 x 出發的最長路徑的長度。
 
-- $m a x L e n g t h_2 \( x \)$: the length of the longest path starting from node x
-  in a different direction.
+- $m a x L e n g t h_2 \( x \)$: 從節點 x 出發的另一條方向的最長路徑的長度。
 
-For example, in the figure above, $m a x L e n g t h_1 \( x \) = 2$,
-using the path 1 → 2 → 5, while $m a x L e n g t h_2 \( x \) = 1$, using
-the path 1 → 3.
+例如，在上面的圖中，$m a x L e n g t h_1 \( x \) = 2$，使用路徑 1 → 2 → 5，而 $m a x L e n g t h_2 \( x \) = 1$，使用路徑 1 → 3。
 
-Finally, if the path corresponding to $m a x L e n g t h_1 \( p \)$ passes
-through x, we conclude the maximum length is
-$m a x L e n g t h_2 \( p \) + 1$; otherwise, the maximum length is
-$m a x L e n g t h_1 \( p \) + 1$.
+最後，如果對應於 $m a x L e n g t h_1 \( p \)$ 的路徑經過 x，我們可以得出最大長度為 $m a x L e n g t h_2 \( p \) + 1$；否則，最大長度為 $m a x L e n g t h_1 \( p \) + 1$。
 
-=== Summary
-Honestly, I have never seen a problem like this in a competition, but there
-are many problems I have not encountered in recent years, so I think it may
-come in handy and have translated this section for you to read.
+=== 小結
+老實說我沒有在競賽中看過這樣的題目，不過這幾年我沒有看過的題目非常多，我認為也許會用到所以就翻譯這篇文章給你們閱讀。
 
-=== Examples and Exercises
-==== Problem: CSES task 1132 Tree Distances I
-*Problem Statement*
+=== 範例與練習
+==== 問題：CSES task 1132 Tree Distances I
+*題目敘述*
 
-You are given a tree consisting of n nodes.
+給定一個由 n 個節點組成的樹。
 
-Your task is to find, for each node, the maximum distance to any other node.
+你的任務是找出每個節點到另一個節點的最大距離。
 
-*Input Format*
+*輸入說明*
 
-The first line contains an integer $n$: the number of nodes. The nodes are
-numbered $1 \, 2 \, dots.h.c \, n$.
+第一行輸入一個整數 $n$：節點的數量。這些節點被編號為 $1 \, 2 \, dots.h.c \, n$。
 
-The next $n - 1$ lines describe the edges. Each line contains two integers
-$a$ and $b$: there is an edge between nodes $a$ and $b$.
+接下來有 $n - 1$ 行描述邊。每行包含兩個整數 $a$ 和 $b$：表示節點 $a$ 和節點 $b$ 之間有一條邊。
 
-*Output Format*
+*輸出說明*
 
-Output $n$ integers: for each node
-$1 \, 2 \, dots.h.c \, n$, print the maximum distance to any other node.
+輸出 $n$ 個整數：對於每個節點
+$1 \, 2 \, dots.h.c \, n$，輸出其到其他節點的最大距離。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5`#linebreak()`1 2`#linebreak()`1 3`#linebreak()`3 4`#linebreak()`3 5`], [`2 3 2 3 3`],
 )

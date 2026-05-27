@@ -1,7 +1,7 @@
 #import "../../template.typ": *
 
 
-= How to Write Code That Others Can Understand
+= 如何寫出可以被看懂的程式
 
 #include "C-Indentation.typ"
 #include "C-Spacing.typ"

@@ -1,22 +1,22 @@
 #import "../../template.typ": *
 
-== Variable Naming
-In this section we will explore the meaning behind variable names. In industry, variable names should contain as much information as possible so that teammates can understand the code just by reading the names. However, some people believe that in competitive programming, variable names should be as concise as possible.
+== 變數命名
+這個章節我們要來探討變數名稱的意義。在業界，變數名稱要盡可能包含所有資訊，讓共事的夥伴可以藉由變數名稱讀懂程式碼。然而，有些人認為競賽只要用盡可能簡潔的變數名稱就好。
 
-=== Choosing Between Brevity and Clarity
-I admit that in competitive programming it is unlikely you will use variable names as long as those in professional settings, since competitions are a race against time. But overly short or even meaningless names can make debugging difficult, so there are some compromise approaches that try to address both sides of the problem.
+=== 在簡短與明確中抉擇
+我承認競賽上不太可能用向實務一樣長的變數名稱，因為競賽必須與時間賽跑。但太過簡短，甚至沒有意義的名稱可能導致除錯困難，因此會有一些折衷的方案，希望盡可能同時解決兩邊的問題。
 
-=== Abbreviations
-Using English abbreviations when naming variables is a common way to keep code concise. The following is a simple table listing abbreviations I might use and their meanings.
+=== 縮寫
+在命名變數時，使用英文縮寫讓程式碼變的簡短，是一個常見的方式。以下是一個簡單的表格，列舉出我可能會用到的縮寫代表的意義。
 #table(columns: 7, stroke: .5pt, inset: 5pt,
-  [*Abbreviation*],
+  [*縮寫*],
   [ct],
   [isv],
   [mx],
   [mn],
   [idx],
   [num],
-  [*Meaning*],
+  [*意義*],
   [count],
   [is valid],
   [max],
@@ -26,12 +26,12 @@ Using English abbreviations when naming variables is a common way to keep code c
 )
 
 
-=== Compound Words
-For compound words, we can use two naming conventions.
+=== 組合型單字
+對於組合型單字，我們可以使用兩種方式命名。
 
-+ Add an underscore, e.g.: `item_number`.
-+ Capitalize the first letter of each word after the first, e.g.: `itemNumber`
++ 加上底線，Ex: `item_number`。
++ 除了第一個單詞，後面的單詞第一個字母大寫，Ex: `itemNumber`
 
 
-=== Other
-For other naming conventions, refer to Chapter 11 of *Code Complete*, "The Power of Variable Names".
+=== 其他
+其他的命名方式可以參考 Code Complete 第11章「變數名稱的力量」。

@@ -1,138 +1,134 @@
-== Examples and Exercises
-==== Problem: Luogu P2181
-*Problem Statement*
+#import "../../template.typ": *
 
-For a convex polygon with $n$ vertices, no three diagonals intersect at the same point. Find the number of intersection points of the diagonals.
+== 範例與練習
+==== Problem: 洛谷 P2181
+*題目敘述*
 
-For example, a hexagon ($6$-gon):
+對於一個 $n$ 個頂點的凸多邊形，它的任何三條對角線都不會交於一點。求出圖形中對角線交點的個數。
+
+例如，$6$ 邊形：
 
 #figure(image("../Images/Vector2.png", width: 50.0%),
   caption: none
 )
 
-*Input Description*
+*輸入說明*
 
-The input consists of a single line containing one integer $n$, the number of sides. $3 lt.eq n lt.eq 10^5$.
+輸入只有一行一個整數 $n$，代表邊數。$3 lt.eq n lt.eq 10^5$。
 
-*Output Description*
+*輸出說明*
 
-Output a single line containing one integer representing the answer.
+輸出一行一個整數代表答案。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`4`], [`1`],
 )
 
-==== Problem: Luogu P1142 Bombing
-*Problem Statement*
+==== Problem: 洛谷 P1142 轟炸
+*題目敘述*
 
-"What should I do?" Pilot klux asks for your help.
+「我該怎麼辦？」飛行員 klux 向你求助。
 
-In fact, klux faces a very simple problem, but he is just too weak to solve it.
+事實上，klux 面對的是一個很簡單的問題，但他實在太菜了。
 
-klux
-wants to bomb some locations in a region — they are points on a plane — but (obviously) klux
-faces resistance, so klux
-can only fly once. And since the plane is rather broken, once it takes off it can only fly in a straight line and cannot turn. Now klux wants to bomb as many locations as possible in a single pass.
+klux 要想轟炸某個區域內的一些地方，它們是位於平面上的一些點，但是(顯然地)klux 遇到了抵抗，所以 klux 只能飛一次，而且由於飛機比較破，一點起飛就只能沿直線飛行，無法轉彎。現在他想一次轟炸最多的地方。
 
-*Input Description*
+*輸入說明*
 
-The first line contains $n$.
+第一行為 $n$
 
-The input consists of $n$ pairs of integers
-$\( 1 lt.eq n lt.eq 700 \)$, each pair representing the coordinates of a point. No point appears twice.
+輸入數據由 $n$ 對整數組成 $\( 1 lt.eq n lt.eq 700 \)$，每對整數表示一個點的坐標。沒有一個點會出現兩次。
 
-*Output Description*
+*輸出說明*
 
-A single integer representing the maximum number of points that a single straight line can cover.
+一個整數，表示一條直線能覆蓋的最多的點數。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`5`#linebreak()`1 1`#linebreak()`2 2`#linebreak()`3 3`#linebreak()`9 10`#linebreak()`10 11`], [`3`],
 )
 
-==== Problem: Luogu P2180 Placing Stones
-*Problem Statement*
+==== Problem: 洛谷 P2180 擺石子
+*題目敘述*
 
-Our great KK places $K$ stones on a grid formed by $N$ horizontal lines and $M$ vertical lines (KK's custom coordinate system). Each stone can only be placed at a grid intersection. KK wants to know, under the optimal placement, what is the maximum number of axis-aligned rectangles whose four corners each have exactly one stone placed on them.
+我們偉大的KK在N條水平線與M條垂直線構成的網格中(KK的自創座標系)，放K枚石子，每個石子都只能放在網格的交叉點上。現在KK想知道在最優的擺放方式下，最多可以找到多少個四邊平行於坐標軸的長方形，而且KK要求它的四個角上都恰好放著一枚石子。
 
-*Input Description*
+*輸入說明*
 
-One line containing three positive integers $N$, $M$, $K$.
+一行輸入三個正整數 $N$， $M$， $K$。
 
-$0 < N \, M lt.eq 30000$, $K lt.eq N times M$
+$0 < N, M lt.eq 30000$, $K lt.eq N times M$
 
-*Output Description*
+*輸出說明*
 
-One line containing one positive integer representing the maximum number of valid rectangles.
+一行輸出一個正整數，表示最多的滿足條件的長方形數量。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`3 3 8`], [`5`],
 )
 
-==== Problem: Luogu P1355 Mysterious Triangle
-*Problem Statement*
+==== Problem: 洛谷 P1355 神秘大三角
+*題目敘述*
 
-Determine the positional relationship between a given point and a known triangle.
+判斷一個點與已知三角形的位置關係。
 
-*Input Description*
+*輸入說明*
 
-The first three lines: one coordinate per line, representing the three vertices of the triangle.
+前三行：每行一個坐標，表示該三角形的三個頂點。
 
-The fourth line: the coordinates of a point; determine the relationship between this point and the triangle formed by the first three points.
+第四行：一個點的坐標，試判斷該點與前三個點圍成三角形的位置關係。
 
-(See the sample for details.)
+(詳見樣例)
 
-All coordinate values are integers.
+所有坐標值均為整數。
 
-*Output Description*
+*輸出說明*
 
-If the point is inside the triangle (not including the boundary), output 1;
+若點在三角形內(不含邊界)，輸出1；
 
-If the point is outside the triangle (not including the boundary), output 2;
+若點在三角形外(不含邊界)，輸出2；
 
-If the point is on the boundary of the triangle (not including vertices), output 3;
+若點在三角形邊界上(不含頂點)，輸出3；
 
-If the point is on a vertex of the triangle, output 4.
+若點在三角形頂點上，輸出4。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`(0,0)`#linebreak()`(3,0)`#linebreak()`(0,3)`#linebreak()`(1,1)`], [`2 5 3 4 1`],
 )
 
-==== Problem: Luogu P3829 \[SHOI2012\] Credit Card Convex Hull
-*Problem Statement*
+==== Problem: 洛谷 P3829 \[SHOI2012\]信用卡凸包
+*題目敘述*
 
-A credit card is a rectangle with its four corners rounded into quarter-circles, each tangent to two sides of the rectangle, as shown below. Given some credit cards of identical dimensions on a plane, find the perimeter of their convex hull. Note that the convex hull is not necessarily a polygon, as it may include arc segments.
+信用卡是一個矩形，唯四個角作了圓滑處理，使它們都是與矩形的兩邊相切的 1/4 圓，如下圖所示。現在平面上有一些規格相同的信用卡，試求其凸包的周長。注意凸包未必是多邊形，因為它可能包含若干段圓弧。
 
 #figure(image("../Images/Vector3.png", width: 50.0%),
   caption: none
 )
 
-*Input Description*
+*輸入說明*
 
-The first line of input contains a positive integer $n$, the number of credit cards. The second line contains three real numbers
-$a \, b \, r$, representing the vertical length, horizontal length, and the radius of the $1/4$ circle of the credit card (before rounding).
+輸入的第一行是一個正整數 $n$，表示信用卡的張數。第二行包含三個實數 $a, b, r$，分別表示信用卡（圓滑處理前）豎直方向的長度、水平方向的長度，以及 $1/4$ 圓的半徑。
 
-The following $n$ lines each contain three real numbers
-$x \, y \, theta$, representing the horizontal coordinate, vertical coordinate of the center (i.e., the intersection of the diagonals) of a credit card, and the angle in radians it is rotated counterclockwise about its center.
+之後 $n$ 行，每行包含三個實數 $x, y, theta$，分別表示一張信用卡中心（即對角線交點）的橫、縱坐標，以及繞中心逆時針旋轉的弧度。
 
-*Output Description*
+*輸出說明*
 
-Output a single line containing one real number representing the perimeter of the convex hull, rounded to 2 decimal places.
+輸出只有一行，包含一個實數，表示凸包的周長，四捨五入精確到小數點後2位。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`2`#linebreak()`6.0 2.0 0.0`#linebreak()`0.0 0.0 0.0`#linebreak()`2.0 -2.0 1.5707963268`], [`21.66`],
 )

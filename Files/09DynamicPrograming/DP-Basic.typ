@@ -1,31 +1,34 @@
 #import "../../template.typ": *
 
-== Fundamentals
-=== What Is Dynamic Programming
-Dynamic programming is actually neither "dynamic" nor "planning" in any intuitive sense—so why does it have this name?
-The answer is that the person who invented this problem-solving approach had a boss who hated mathematics, so he chose a name that had nothing to do with math.
+== 基本知識
+=== 什麼是動態規劃
+其實動態規劃並沒有動態，也不是規劃，那他會什麼會有這樣的名稱？
+答案是因為，想出這樣的解體方法的人，他的上司討厭數學，所以他就取了一個，
+與數學毫無關係的名字。
 
-In practice, dynamic programming is mainly used to solve two types of problems: optimization problems and counting problems.
-For example, in the Mathematics chapter we used it to compute combinations.
+實際上，動態規劃主要用以解決兩種問題，極值問題與計數問題。
+例如：數學那一章我們就用到他來算組合數。
 
-Before using dynamic programming, we must analyze the problem to determine whether it has *optimal substructure*.
+使用動態規劃前，我們需要先分析題目，如果題目具有*最優子結構*才能使用。
 
-=== Optimal Substructure
-You might wonder what optimal substructure actually is. Simply put, it means:
-the locally optimal solution can lead us to the globally optimal solution.
+=== 最優子結構
+你可能想說，最優子結構到底是三$dots$ ，其實就是，
+局部的最佳解可以帶領我們找到整體的最佳解，這樣的結構。
 
-For counting problems, the locally computed values can guide us in computing the global result.
+另外就是，如果是計數問題，我們的局部解可以引導我們計算
+出全域的解。
 
-=== Recurrence Relation Notation
-Going forward, we may express many recurrence relations. In mathematical notation, they are written as follows.
+=== 遞迴式表達
+以後我們可能會表達許多遞迴式，以數學來說會用這樣的方式表達。
 
 $ {d p_1 = d p_2 = 1\
 d p_n = d p_(n - 1) + d p_(n - 2) \, n > 2 $
 
-=== Memoized Recursion
-The most convenient and lazy approach is to execute directly with recursion, but record repeated computations so they are not repeated. Using the Fibonacci sequence as an example:
+=== 遞迴紀錄法
+一個最方便又偷懶的方式就是用遞迴直接執行，但重複的運算透過記錄，
+使其不再重複。如果以費氏數列為例。
 
-#code(title: [Fibonacci Sequence with Recursive DP])[
+#code(title: [費氏數列的遞迴DP])[
 ```cpp
 using ll=long long;
 ll dp[N];
@@ -43,11 +46,11 @@ int fib(int n){
 ```
 ]
 
-=== Iterative Tabulation
-If we can guarantee that all values needed to compute $d p_n$ have been computed before we compute it,
-we can use a loop to fill in the array iteratively. Using the Fibonacci sequence as an example:
+=== 迴圈推進法
+如果，我們可以保證，所有我們在計算$"dp"_n$所需要的值都在計算他
+之前被計算完畢，則我們可以使用迴圈在陣列上面推進。同樣以費氏數列為例。
 
-#code(title: [Fibonacci Sequence with Iterative DP])[
+#code(title: [費氏數列的遞迴DP])[
 ```cpp
 using ll=long long;
 ll dp[N];
@@ -64,40 +67,41 @@ int fib(int n){
 ```
 ]
 
-This approach has the benefit of saving constant factors and is generally more intuitive.
+這種方式的好處是可以節省常數，也很直觀(一般而言)。
 
-=== Standard Approach
-For those $d p$ problems that already have a given recurrence, they are the least mentally demanding type.
-But the problems we must handle are definitely not so simple. Therefore, I need to tell you
-some standard problem-solving methods.
+=== 常規方法
+對於那種已經有遞迴式的$"dp"$，其實是最不需要動腦的一種。
+而我們要處理的問題絕對不是只有這麼簡單。因此我需要告訴你們
+一些常規的解題方法。
 
-+ Define the state—that is, define what $d p_i$ represents.
++ 定義狀態，也就是定義$"dp"_i$所代表的意義。
 
-+ Write out the transition—that is, define the relationship between $d p_i$ and other states.
++ 列出轉移式，也就是定義$"dp"_i$與其他向之間的關係。
 
-+ Determine the computation order: to conveniently use "iterative tabulation". (This includes defining the initial states.)
++ 決定計算順序：方便我們使用"迴圈推進法"。(包含定義初始狀態)
 
-In principle, the standard approach can solve all problems (who said that?). However, there are many principles within the standard approach, and we need to improve our ability to apply them through practice.
+基本上只要會常規方法就可以解決所有問題(誰說的)，但是常規方法
+裡面有很多原則性的東西，我們需要藉由練習，提升我們的使用能力。
 
-=== Additional Notes
-In the standard approach we mentioned $d p_i$, but sometimes we need more than one variable.
-So if you see $d p_(i j)$ later, don't panic—it just means the state is defined by two variables.
+=== 補充
+在常規方法裡面我們提到$"dp"_i$，其實，有時候我們不只有一個變數，
+所以接下來你看到$d p_(i j)$的時候不用慌張，代表他的狀態由兩個變數。
 
-=== Examples and Practice
+=== 範例與練習
 
-==== Exercise: Implement a program that computes the following recurrence.
+==== 遞迴式實作練習，請實作出可以計算的程式。
 
 $ {d p_1 = d p_2 = 1\
 d p_3 = 10\
 d p_n = 3 d p_(n - 1) + d p_(n - 2) + d p_(n - 3) $
 
-==== Exercise: Implement a program that computes the following recurrence, where $a$ is another input.
+==== 遞迴式實作練習，請實作出可以計算的程式。其中，$a$是另一個輸入。
 
 $ {d p_1 = a_1\
 d p_2 = max \( a_1 \, a_2 \)\
 d p_n = max \( d p_(n - 1) \, d p_(n - 2) + a_n \) $
 
-==== Exercise: Implement a program that computes the following recurrence, where $a$ is another input.
+==== 遞迴式實作練習，請實作出可以計算的程式。其中，$a$是另一個輸入。
 
 $ {d p_1 = a_1\
 d p_2 = max \( a_1 \, 2 a_2 \)\

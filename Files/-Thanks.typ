@@ -1,6 +1,6 @@
 #import "../template.typ": *
 
-#heading(numbering: none)[Acknowledgements]
+#heading(numbering: none)[致謝]
 
-We thank everyone who helped compile this handbook, including students and teachers who provided feedback, proofreading, and corrections.
-We also thank the Lin Deng Foundation's Lanteng Star Program for its support, which has allowed this handbook to continue improving.
+我們感謝所有協助編纂本手冊的人員，包括提供回饋、校對和修正的學生與教師。
+我們也感謝林燈基金會藍天星計畫的支持，使本手冊得以持續改進。

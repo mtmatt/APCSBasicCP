@@ -1,49 +1,51 @@
-== Mo's Algorithm
-=== Sqrt Decomposition
-Let's start with a classic segment tree problem: range sum queries.
-Instead of splitting an interval into two halves, try splitting into roughly
-$sqrt(n)$ blocks. The construction time is still $O \( n \)$,
-and for queries, if a block is fully covered return it directly; otherwise count element by element.
-The query complexity is $O \( sqrt(n) \)$.
+#import "../../template.typ": *
 
-You might wonder: there are better solutions, so why bother with a worse one?
-Because sometimes it is not easy to figure out how to merge segments for a segment tree. In those cases,
-if offline processing is allowed, Mo's Algorithm may apply.
+== 莫隊算法
+=== 分塊
+我們先討論一個線段樹的題目，求區間總和。
+今天換一個想法，不要把區間切成兩塊，而是切成大約
+$sqrt(n)$塊。如此一來，建構的時間仍然是$O \( n \)$，
+查詢時，如果區塊完整包含直接回傳，沒有就一個一個數。
+這樣的複雜度是$O \( sqrt(n) \)$。
 
-=== Concept
-Mo's Algorithm is based on sqrt decomposition of intervals — but not in the same way as above.
-It is an offline algorithm, meaning we can reorder the queries.
+你可能想說明明有更好的解，為什麼要講一個比較差的。
+因為，有時候我們不容易想到線段樹的合併方式，如果這時候
+可以使用離線操作的話，有機會使用莫隊算法。
 
-Before applying it, we need to analyze the problem: if, given a known interval $\[ l \, r \]$,
-we can quickly derive the answers for $\[ l - 1 \, r \]$ and $\[ l \, r + 1 \]$, then this algorithm can be used.
+=== 概念
+莫隊算法的概念就是區間分塊，不過，並不是像上面那一種，
+他是一個離線算法，換句話說就是可以調動查詢的順序。
 
-First, sort all query intervals using the following rule:
+使用前，我們需要先分析題目，如果，對於已知的區間$\[ l \, r \]$，
+可以很快速的求得區間$\[ l - 1 \, r \]$以及$\[ l \, r + 1 \]$，則可以使用這個
+算法。
 
-- If the left endpoints of two intervals fall in different blocks, the one with the smaller left endpoint comes first.
+首先，對所有查詢區間排序，排序時依照以下方法。
 
-- Otherwise, the one with the smaller right endpoint comes first.
+- 如果區間左端在不同區塊，則區間左端比較小的排前面。
+- 否則區間右端較小的排前面。
 
-Swapping left and right here does not affect correctness. Then process the queries in this order, sliding the current interval
-from $\[ l - 1 \, r \]$ and $\[ l \, r + 1 \]$ to reach each query's target interval, and record the answer.
+這裡左右互換並不影響。接著，依照這樣的順序處理詢問，處理時，直接
+用$\[ l - 1 \, r \]$以及$\[ l \, r + 1 \]$推動區間到詢問的位置定紀錄答案。
 
-Finally, re-sort the results by query index and output them. The time complexity is $O \( n t sqrt(n) \)$, where $t$ is the cost of
-extending a known interval $\[ l \, r \]$ to $\[ l - 1 \, r \]$ or $\[ l \, r + 1 \]$.
+最後重新排序輸出即可。複雜度為$O \( n t sqrt(n) \)$，其中$t$是從已知的區間$\[ l \, r \]$，
+求得區間$\[ l - 1 \, r \]$以及$\[ l \, r + 1 \]$的複雜度。
 
-==== Example: ZJ b417 Range Mode
-*Problem Statement*
+==== 範例: ZJ b417 區間眾數
+*題目敘述*
 
-Given $10^5$ numbers and $10^5$ queries. For each query interval, output
-the number of occurrences of the most frequent element in that interval, and how many distinct elements achieve that maximum frequency.
+給你$10^5$個數字以及$10^5$個詢問。對於每個詢問的區間，輸出
+那一個區間出現最多次的數字出現的次數，以及有多少種數字出現最多次。
 
-==== Approach
-Since a segment tree is not easy to apply here, consider Mo's Algorithm. The first step is to determine how to extend a known interval $\[ l \, r \]$
-to $\[ l - 1 \, r \]$ or $\[ l \, r + 1 \]$. I use two std::maps: the first, $f$,
-stores the frequency of each number; the second, $f f$, stores how many distinct numbers have frequency $k$.
+==== 想法
+因為不容易使用線段樹，所以考慮使用莫隊。首先是如何使用已知的區間$\[ l \, r \]$，
+求得區間$\[ l - 1 \, r \]$以及$\[ l \, r + 1 \]$。我使用兩個std::map，第一個$f$
+存放每一個數字的出現的次數，第二個ff存放出現次數為$k$的數字有幾種。
 
-This allows each interval extension in $O \( log n \)$, giving a total time complexity of $O \( n log n sqrt(n) \)$.
-Of course, using discretization can remove the `log` factor.
+這樣可以在$O \( log n \)$內完成區間移動，所以總時間複雜度為$O \( n log n sqrt(n) \)$。
+當然如果用離散化可以把`log`去掉。
 
-==== Code: Range Mode Solution
+==== 程式碼: 區間眾數題解
 
 ```
 #define int long long
@@ -135,74 +137,59 @@ void solve(){
 }
 ```
 
-=== Examples and Practice
-==== Problem: Luogu P1494 \[National Training Team\] Xiao Z's Socks
-*Problem Statement*
+=== 範例與練習
+==== 問題: 洛谷 P1494 \[國家集訓隊\] 小 Z 的襪子
+*題目敘述*
 
-As a disorganized person, Xiao Z
-spends a lot of time every morning picking a matching pair of socks from a colorful pile. Finally, one day, Xiao Z
-can no longer endure this tedious process, so he decides to leave it to fate...
+作為一個生活散漫的人，小 Z 每天早上都要耗費很久從一堆五顏六色的襪子中找出一雙來穿。終於有一天，小 Z 再也無法忍受這惱人的找襪子過程，於是他決定聽天由命...
 
-Specifically, Xiao Z numbers the $N$ socks from $1$ to $N$, then randomly picks two socks
-from the range $L$ to $R$ ($L lt.eq R$). Even though Xiao Z
-doesn't care whether the two socks match as a pair, or even whether they're left and right foot socks, he cares a lot about color — wearing two socks of different colors would be embarrassing.
+具體來說，小 Z 把這 $N$ 只襪子從 $1$ 到 $N$ 編號，然後從編號 $L$ 到 $R$ ($L lt.eq R$) 的範圍內隨機抽取兩只襪子。儘管小 Z 並不在意兩只襪子是否能夠搭配成一雙，甚至不在意兩只襪子是否是左腳和右腳的，但他卻非常在意襪子的顏色，因為穿兩只不同顏色的襪子會很尷尬。
 
-Your task is to tell Xiao Z the probability that two socks drawn randomly from the range $\[ L \, R \]$
-have the same color. Since Xiao Z
-wants this probability to be as high as possible, he may ask about multiple ranges.
+你的任務是告訴小 Z 從範圍 $\[ L \, R \]$ 中抽取兩只襪子顏色相同的概率有多大。當然，小 Z 希望這個概率尽量高，所以他可能會提出多個範圍的詢問。
 
-However, if $L = R$, handle this case specially and output 0/1.
+然而如果 $L=R$，請特別處理這種情況，輸出 0/1。
 
-*Input Format*
+*輸入說明*
 
-The first line contains two positive integers $N$ and $M$. $N$ is the total number of socks, $M$
-is the number of queries. The next line contains $N$ positive integers $C_i$, where $C_i$
-is the color of the $i$-th sock (same color means same number). The following $M$
-lines each contain two positive integers $L$ and $R$, representing a query range.
+輸入文件的第一行包含兩個正整數 $N$ 和 $M$。$N$ 表示襪子的總數量，$M$ 表示小 Z 的詢問數量。接下來一行包含 $N$ 個正整數 $C_i$，其中 $C_i$ 表示第 $i$ 只襪子的顏色，相同的顏色用相同的數字表示。接下來 $M$ 行，每行兩個正整數 $L$ 和 $R$，表示一個詢問範圍。
 
-$N$ and $M$ do not exceed 50000, $1 lt.eq L < R lt.eq N$, $C_i lt.eq N$
+$N$ 和 $M$ 不超過 50000，$1 lt.eq L < R lt.eq N$， $C_i lt.eq N$
 
-*Output Format*
+*輸出說明*
 
-Output $M$ lines. For each query, print a fully reduced fraction
-$A \/ B$ representing the probability of drawing two socks of the same color from range $\[ L \, R \]$.
-If the probability is $0$, print
-0/1. Note that the fraction must be fully reduced. (See the sample.)
+輸出 $M$ 行。對於每個詢問，在一行中輸出一個最簡分數 $A \/ B$，表示從該詢問範圍 $\[ L \, R \]$ 中隨機抽取兩只襪子顏色相同的概率。如果該概率為 $0$，輸出 0/1。注意，輸出的分數必須是最簡分數。（請參考示例）
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
   [Sample Input 1], [Sample Output 1],
   [`6 4`#linebreak()`1 2 3 3 3 2`#linebreak()`2 6`#linebreak()`1 3`#linebreak()`3 5`#linebreak()`1 6`], [`2/5`#linebreak()`0/1`#linebreak()`1/1`#linebreak()`4/15`],
 )
 
-==== Problem: Luogu P1903 \[National Training Team\] Count Colors / Maintain Queue
-*Problem Statement*
+==== 問題: 洛谷P1903 \[國家集訓隊\] 數顏色 / 維護隊列
+*題目敘述*
 
-Momo purchased a set of $N$
-colored pens (some may share the same color), arranged in a row. You need to answer Momo's queries. Momo issues the following commands:
+墨墨購買了一套 $N$ 支彩色畫筆（其中有些顏色可能相同），擺成一排，你需要回答墨墨的提問。墨墨會向你發布如下指令：
 
-$Q med L med R$ asks how many distinct colors appear among pens $L$ through $R$.
+$Q med L med R$ 代表詢問你從第 $L$ 支畫筆到第 $R$ 支畫筆中共有幾種不同顏色的畫筆。
 
-$R med P med C o l$ replaces the $P$-th pen with color $C o l$.
+$R med P med C o l$ 把第 $P$ 畫筆替換為顏色 $C o l$。
 
-Can you figure out what you need to do?
+為了滿足墨墨的要求，你知道你需要幹什麼了嗎？
 
-*Input Format*
+*輸入說明*
 
-Line $1$ contains two integers
-$N$ and $M$, representing the initial number of pens and the number of operations.
+第 $1$ 行兩個整數 $N$，$M$，分別代表初始畫筆的數量以及墨墨會做的事情的個數。
 
-Line $2$ contains $N$ integers representing the color of the $i$-th pen in the initial arrangement.
+第 $2$ 行 $N$ 個整數，分別代表初始畫筆排中第 $i$ 支畫筆的顏色。
 
-Lines $3$ through $2 + M$
-each describe one operation in the format given above.
+第 $3$ 行到第 $2 + M$ 行，每行分別代表墨墨會做的一件事情，格式見題干部分。
 
-*Output Format*
+*輸出說明*
 
-For each Query operation, output a single number on the corresponding line representing the number of distinct colors among pens $L$ through $R$.
+對於每一個 Query 的詢問，你需要在對應的行中給出一個數字，代表第 $L$ 支畫筆到第 $R$ 支畫筆中共有幾種不同顏色的畫筆。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
   [Sample Input 1], [Sample Output 1],
@@ -210,100 +197,88 @@ For each Query operation, output a single number on the corresponding line repre
 )
 
 #quote(block: true)[
-*Hint:* Think about how to handle updates.
+*提示:* 想想看如果有修改應該要怎麼做。
 ]
 
-==== Problem: Luogu P2464 \[SDOI2008\] Gloomy Xiao J
-*Problem Statement*
+==== 問題: 洛谷 P2464 \[SDOI2008\] 郁悶的小 J
+*題目敘述*
 
-Xiao J
-is a librarian at the National Library, responsible for managing an enormous bookshelf. Despite his diligence, the shelf is so huge that his efficiency is always low, putting him at risk of being fired — a constant source of gloom.
+小 J 是國家圖書館的一位圖書管理員，他的工作是管理一個巨大的書架。儘管他很能吃苦耐勞，但是由於這個書架十分巨大，所以他的工作效率總是很低，以致他面臨著被解雇的危險，這也正是他所鬱悶的。
 
-Specifically, the shelf has $N$ slots numbered $1$ to
-$N$. Each slot holds one book, and each book has a specific code.
+具體說來，書架由 $N$ 個書位組成，編號從 $1$ 到 $N$。每個書位放著一本書，每本書有一個特定的編碼。
 
-Xiao J's work involves two types of tasks:
+小 J 的工作有兩類：
 
-The library regularly acquires new books. Since the shelf is always full, a book must be removed from some slot and replaced with the new acquisition.
+圖書館經常購置新書，而書架任意時刻都是滿的，所以只得將某位置的書拿掉並換成新購的書。
 
-Xiao J
-must answer customer queries: a customer asks how many books with a specific code appear in a consecutive range of slots.
+小 J 需要回答顧客的查詢，顧客會詢問某一段連續的書位中某一特定編碼的書有多少本。
 
-For example, with $N$ slots, the initial book codes are
-$A_1 \, A_2 \, dots.h \, A_N$.
+例如，共 $N$ 個書位，開始時書位上的書編碼為 $A_1, A_2, \ldots , A_N$。
 
-A customer queries slots $1$ to $3$
-for books with code "$K$" and receives the answer: $X$.
+一位顧客詢問書位 $1$ 到書位 $3$ 中編碼為“$K$”的書共多少本，得到的回答為：$X$。
 
-A customer queries slots $1$ to $3$
-for books with code "$K$" and receives the answer: $Y$.
+一位顧客詢問書位 $1$ 到書位 $3$ 中編碼為“$K$”的書共多少本，得到的回答為：$Y$。
 
-The library acquires a new book with code "$P$" and places it in slot $A$.
+此時，圖書館購進一本編碼為“$P$”的書，並將它放到 $A$ 號書位。
 
-A customer queries slots $1$ to $3$
-for books with code "$K$" and receives the answer: $Z$.
+一位顧客詢問書位 $1$ 到書位 $3$ 中編碼為“$K$”的書共多少本，得到的回答為：$Z$。
 
-A customer queries slots $1$ to $3$
-for books with code "$K$" and receives the answer: $W$.
+一位顧客詢問書位 $1$ 到書位 $3$ 中編碼為“$K$”的書共多少本，得到的回答為：$W$。
 
-......
+……
 
-Your task is to write a program to answer each customer's query.
+你的任務是寫一個程式來回答每個顧客的查詢。
 
-*Input Format*
+*輸入說明*
 
-The first line contains two integers $N \, M$, meaning $N$ slots and $M$ operations.
+第一行兩個整數 $N, M$，表示一共 $N$ 個書位，$M$ 個操作。
 
-The next line contains $N$ integers $A_1 \, A_2 \, dots.h \, A_N$, where $A_i$
-is the code of the book initially in slot $i$.
+接下來一行共 $N$ 個整數數 $A_1, A_2, \ldots , A_N$，$A_i$ 表示開始時位置 $i$ 上的書的編碼。
 
-The following $M$ lines each describe one operation, starting with a character.
+接下來 $M$ 行，每行表示一次操作，每行開頭一個字元。
 
-If the character is C, the library acquires a new book; it is followed by two integers
-$A \, P$ ($1 lt.eq A lt.eq N$), placing the new book with code $P$ in slot $A$.
+若字元為 C，表示圖書館購進新書，後接兩個整數 $A, P$（$1 lt.eq A lt.eq N$），表示這本書被放在位置 $A$ 上，以及這本書的編碼為 $P$。
 
-If the character is Q, a customer makes a query; it is followed by three integers
-$A \, B \, K$ ($1 lt.eq A lt.eq B lt.eq N$), asking how many books with code $K$ appear in slots $A$ through $B$ (inclusive).
+若字元為 Q，表示一位顧客的查詢，後接三個整數 $A, B, K$（$1 lt.eq A lt.eq B lt.eq N$），表示查詢從第 $A$ 書位到第 $B$ 書位（包含 $A$ 和 $B$）中編碼為 $K$ 的書共多少本。
 
-$1 lt.eq N \, M lt.eq 10^5$; all book codes are positive integers not exceeding $2^31 - 1$.
+$1 lt.eq N \, M lt.eq 10^5$；所有出現的書的編碼為不大於 $2^31 - 1$ 的正數。
 
-*Output Format*
+*輸出說明*
 
-For each customer query, output a single integer representing the answer.
+對每一位顧客的查詢，輸出一個整數，表示顧客所要查詢的結果。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
   [Sample Input 1], [Sample Output 1],
   [`5 5`#linebreak()`1 2 3 4 5`#linebreak()`Q 1 3 2`#linebreak()`Q 1 3 1`#linebreak()`C 2 1`#linebreak()`Q 1 3 2`#linebreak()`Q 1 3 1`], [`1`#linebreak()`1`#linebreak()`0`#linebreak()`2`],
 )
 
-==== Problem: Luogu P2709 Xiao B's Queries
-*Problem Statement*
+==== 問題: 洛谷 P2709 小B的詢問
+*題目敘述*
 
-Xiao B has an integer sequence $a$ of length $n$ with values in $\[ 1 \, k \]$. He has $m$
-queries. Each query gives an interval $\[ l \, r \]$ and asks for:
+小B 有一個長為 $n$ 的整數序列 $a$，值域為 $\[ 1 \, k \]$。他一共有 $m$ 個詢問，每個詢問給定一個區間 $\[ l \, r \]$，求：
 
 $ sum_(i = 1)^k c_i^2 $
 
-where $c_i$ is the number of occurrences of $i$ in $\[ l \, r \]$.
-Please help Xiao B answer the queries.
+其中 $c_i$ 表示數字 $i$ 在 $\[ l \, r \]$ 中的出現次數。
+小B請你幫助他回答詢問。
 
-*Input Format*
+*輸入說明*
 
-The first line contains three integers $n \, m \, k$.
+第一行三個整數 $n,m,k$。
 
-The second line contains $n$ integers representing Xiao B's sequence.
+第二行 $n$ 個整數，表示 小B 的序列。
 
-The following $m$ lines each contain two integers $l \, r$.
+接下來的 $m$ 行，每行兩個整數 $l,r$。
 
-For $100 %$ of the data: $1 lt.eq n \, m \, k lt.eq 5 times 10^4$
+$100 %$ 的數據，$1 lt.eq n \, m \, k lt.eq 5 times 10^4$
 
-*Output Format*
+*輸出說明*
 
-Output $m$ lines, each containing a single integer, corresponding to the answer for one query.
+輸出 $m$ 行，每行一個整數，對應一個詢問的答案。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
   [Sample Input 1], [Sample Output 1],

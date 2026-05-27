@@ -1,8 +1,8 @@
 #import "../../template.typ": *
 
-== Euclidean Algorithm
-=== Concepts
-You probably learned this in middle school. It repeatedly takes remainders and swaps positions.
+== 輾轉相除法
+=== 概念
+應該國中學過？就是反覆取餘數，然後交換位置。
 
 #code(title: [GCD])[
   ```cpp
@@ -13,16 +13,16 @@ int gcd(int a,int b){
 ]
 
 === Bézout's Theorem
-For all $a \, b in bb(Z)$, there exist $x \, y in bb(Z)$ such that $a x + b y = gcd \( a \, b \)$.
+貝祖定理。對於所有$a, b in bb(Z)$，存在$x,y in bb(Z)$滿足$a x + b y = gcd \( a \, b \)$。
 
-=== Extended Euclidean Algorithm
-Also known as the Extended Euclidean algorithm. It finds $x$ and $y$ such that $a x + b y = gcd \( a \, b \)$.
+=== 擴展輾轉相除法
+又稱為Extended Euclidean algorithm。可以找到$a x + b y = gcd \( a \, b \)$。
 
-How? Imagine $a = 0 \, med b = k$, then set $\( x \, y \) = \( 0 \, 1 \)$, which satisfies $a x + b y = gcd \( a \, b \)$.
+怎麼找呢？想像$a = 0 \, med b = k$，則可以設$\( x \, y \) = \( 0 \, 1 \)$，如此一來就會滿足$a x + b y = gcd \( a \, b \)$。
 
-For $a eq.not 0$, since $gcd \( a \, med b \) = gcd \( b \, med a % b \)$,
+對於$a eq.not 0$的情況，因為$gcd \( a \, med b \) = gcd \( b \, med a % b \)$，
 
-we have
+所以
 
 $ g c d \( a \, b \) & = b times x + \( a % b \) times y\
  & = b times x + \( a - floor.l a / b floor.r times b \) times y\
@@ -49,4 +49,4 @@ int extgcd(int a,int b,int &x,int &y){
   ```
 ]
 
-Finding one solution lets us find all solutions: if $a x + b y = gcd \( a \, med b \)$, then $a \( x + k b \) + b \( y - k a \) = gcd \( a \, med b \)$ for any $k in bb(Z)$.
+求出一組解就可以求出所有解，因為如果$a x + b y = gcd \( a \, med b \)$，則$a \( x + k b \) + b \( y - k a \) = gcd \( a \, med b \)$，其中$k in bb(Z)$。

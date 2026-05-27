@@ -1,36 +1,36 @@
 #import "../../template.typ": *
 
-== Segment Tree
-The competitive programming version.
+== 線段樹
+競賽上的版本。
 
-=== Usage and Concepts
+=== 用法與概念
 
-A segment tree can not only be used to quickly answer range sum queries, but also to perform many other range-related operations. The general structure of the intervals is illustrated below.
+線段樹除了可以用來快速解區間和問題，還可以用來執行許多與區間有關的操作。建構區間方式大致上如圖。
 
 #align(center)[#image("../Images/SEG.png", width: 100%)]
 
-Each interval stores a different value depending on the situation, such as the maximum/minimum, or the interval sum.
+每個區間視情況放不同的數值，例如：最大/小，或是區間總和等。
 
-Each interval can then be decomposed into $O(log(n))$ sub-intervals. For example, `2-7` can be split into `2, 3-4, 5-6, 7`.
+接著，每個區間就都可以分為$O(log((n)))$個區間，例如`2-7`可以分為`2, 3-4, 5-6, 7`。
 
 #align(center)[#image("../Images/SEG2.png", width: 100%)]
 
-A query always starts from the widest interval. In the diagram, if we want to query the range `2-7`, we start from the interval `1-8`. Since `1-8` does not fully contain `2-7`, we recurse downward and split into `1-4` and `5-8` to query again.
+查詢時皆以最大區間為出發點，如圖就會是從`1-8`這個區間開始，如果要查詢的區間是`2-7`。因為`1-8`這個區間並沒有完全包含`2-7`，因此需要往下遞迴，分成`1-4`和`5-8`再次查詢。
 
-Then, since `1-4` and `5-8` are still not fully contained in `2-7`, we recurse again, this time splitting into `1-2`, `3-4`, `5-6`, and `7-8`.
+接著，因為`1-4`和`5-8`仍然沒有完全被`2-7`包含，因此要再次遞迴，這次是分解成`1-2`,`3-4`,`5-6`以及`7-8`。
 
-This time, `3-4` and `5-6` are both fully contained, so we can return their values directly. However, `1-2` and `7-8` are still not fully contained, so these two intervals must recurse downward once more.
+這次`3-4`和`5-6`都有被完全包含，因此可以直接回傳這個區間的值。而`1-2`和`7-8`還是沒有。所以這兩個區間還要再次向下查詢。
 
-The most important rule during a query is: if the current interval is fully contained in the query range, return immediately; if the current interval has no overlap with the query range, do not recurse into it; otherwise, split the interval into two halves and recurse.
+查詢時最重要的是，若區間完全被包含就直接回傳，若完全沒被包含就不往那邊搜尋，否則再將區間分成兩塊向下遞迴。
 
-=== Implementation
+=== 實作
 
-We can observe that this forms a binary tree, so there are two approaches: pointer-based and array-based. The following implementations use range sum as an example.
+可以發現他是一顆二元樹，於是我們有兩種做法：指標型與陣列型。以下實作以區間總和為範例。
 
-*Array-based*
+*陣列型*
 
 #tip[
-Set the root node's index to 1. In a complete binary tree, the left child will be at `idx * 2` and the right child at `idx * 2 + 1`.
+設根節點idx為1，在完滿二元樹中，左子樹就會是 $"idx" times 2$，右子樹就是 $"idx" times 2+1$。
 ]
 
 #code(title: [Array-based Segment Tree])[
@@ -113,7 +113,7 @@ int main(){
 ```
 ]
 
-*Pointer-based*
+*指標型*
 
 #code(title: [Pointer-based Segment Tree])[
 ```cpp
@@ -187,48 +187,48 @@ node *rt=new node();//root
 ```
 ]
 
-=== Examples and Practice
+=== 範例與練習
 ==== Problem: ZJe409 Segment Tree
 
-*Problem Statement*
+*題目敘述*
 
-You need to use a segment tree to support two types of operations.
+你需要使用線段樹支援兩種操作。
 
-+ Update the value of $A[x]$ to $y$
-+ Query the difference between the maximum value `maxA` and the minimum value `minA` in the range $A[X]$-$A[Y]$
++ 將 $A[x]$ 的值更新為 $y$
++ 要查詢 $A[X]$-$A[Y]$ 之中最大值`maxA`及最小值`minA`的差
 
 
 ==== Problem: Tactical Database (110 Yizhong CS Club Internal Contest, Problem F)
 
-*Problem Statement*
+*題目敘述*
 
-You need to support the following operations on an array.
+要求能在一個陣列中做以下操作。
 
-+ Query range sum
-+ Query range maximum and minimum values
-+ Point add/subtract a value
-
-
-*Input Description*
-
-The first line of input contains two numbers $n, q$. The next line contains $n$ numbers. Then there are $q$ operations, each of which may be one of the following five types.
-
-+ Query range sum: `find sum` $(l)$ $(r)$
-+ Query range max/min: `find` $max/min (l)$ $(r)$
-+ Point add/subtract: `plus/minus` (position) $(k)$
++ 搜尋區間和
++ 搜尋區間最大和最小值
++ 單點加減值
 
 
-Adjacent numbers are separated by spaces.
+*輸入說明*
+
+輸入第一行有一個數字 $n, q$ ，下一行有 $n$ 個數字，緊接著有 $q$ 筆操作，可能為以下五種。
+
++ 搜尋區間和 `find sum` $(l)$ $(r)$
++ 搜尋區間最大和最小值 `find` $max/min (l)$ $(r)$
++ 單點加減值 `plus/minus` (position) $(k)$
+
+
+相鄰數字間以空白隔開。
 $n, q <= 100000 , a[i] <= 100000$
 
 
-*Output Description*
+*輸出說明*
 
-Answer each query operation.
+對於每個搜尋指令做出回答。
 
-*Sample Test*
+*範例測試*
 
 #table(columns: (1fr, 1fr), stroke: .5pt, inset: 5pt,
-  [Sample Input 1], [Sample Output 1],
+  [範例輸入 1], [範例輸出 1],
   [`7 10`#linebreak()`1 2 3 4 5 6 7`#linebreak()`find max 2 5`#linebreak()`find min 1 4`#linebreak()`minus 3 1`#linebreak()`plus 2 4`#linebreak()`find sum 1 7`#linebreak()`plus 7 -3`#linebreak()`find sum 1 3`#linebreak()`minus 6 0`#linebreak()`plus 1 1`#linebreak()`find max 1 7`], [`5`#linebreak()`1`#linebreak()`31`#linebreak()`9`#linebreak()`6`],
 )
