@@ -1,6 +1,6 @@
 #heading(level: 1, numbering: none)[參考資料]
 
-#table(columns: 2, stroke: .5pt, inset: 5pt,
+#table(columns: (auto, 1fr), stroke: .5pt, inset: 5pt,
   [*連結*], [*描述*],
   [#link("https://www.youtube.com/watch?v=CFRhGnuXG-4")], [程式碼美學影片],
   [#link("https://www.luogu.com.cn/")], [洛谷 — 中國競技程式設計題庫],
