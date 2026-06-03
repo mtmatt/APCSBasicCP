@@ -1,0 +1,117 @@
+\section{AC自動機（Aho-Corasick）}
+對於字串問題，我們有一個重型資料結構可以使用，這幾乎是字串問題的大招（荒野亂鬥的極限威能？），那就是 \textbf{AC自動機}（Aho-Corasick Automaton）。
+
+AC自動機不能幫你自動AC題目，但他可以幫你AC很多字串匹配的問題。
+
+由於字串的題目幾乎都可以用之前講過的演算法解決，因此這邊不詳細介紹，僅提供oi-wiki上的程式碼，如果有興趣可以去查看看
+
+\subsection{AC自動機的程式碼}
+
+\lstset{caption={AC自動機 C++ 實作}}
+\begin{lstlisting}[language=C++]
+#include <cstdio>
+#include <cstring>
+#include <queue>
+using namespace std;
+
+constexpr int N = 2e5 + 6;
+constexpr int LEN = 2e6 + 6;
+constexpr int SIZE = 2e5 + 6;
+
+int n;
+
+struct Node {
+    int son[26];
+    int ans;
+    int fail;
+    int du;
+    int idx;
+
+    void init() {
+        memset(son, 0, sizeof(son));
+        ans = fail = idx = 0;
+    }
+} tr[SIZE];
+
+int tot;
+int ans[N], pidx;
+
+void init() {
+    tot = pidx = 0;
+    tr[0].init();
+}
+
+void insert(char s[], int &idx) {
+    int u = 0;
+    for (int i = 1; s[i]; i++) {
+        int &son = tr[u].son[s[i] - 'a'];
+        if (!son) son = ++tot, tr[son].init();
+        u = son;
+    }
+    if (!tr[u].idx) tr[u].idx = ++pidx;
+    idx = tr[u].idx;
+}
+
+void build() {
+    queue<int> q;
+    for (int i = 0; i < 26; i++)
+        if (tr[0].son[i]) q.push(tr[0].son[i]);
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+        for (int i = 0; i < 26; i++) {
+            if (tr[u].son[i]) {
+                tr[tr[u].son[i]].fail = tr[tr[u].fail].son[i];
+                tr[tr[tr[u].fail].son[i]].du++;
+                q.push(tr[u].son[i]);
+            } else
+                tr[u].son[i] =
+                    tr[tr[u].fail].son[i];
+        }
+    }
+}
+
+void query(char t[]) {
+    int u = 0;
+    for (int i = 1; t[i]; i++) {
+        u = tr[u].son[t[i] - 'a'];
+        tr[u].ans++;
+    }
+}
+
+void topu() {
+    queue<int> q;
+    for (int i = 0; i <= tot; i++)
+        if (tr[i].du == 0) q.push(i);
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+        ans[tr[u].idx] = tr[u].ans;
+        int v = tr[u].fail;
+        tr[v].ans += tr[u].ans;
+        if (!--tr[v].du) q.push(v);
+    }
+}
+
+char s[LEN];
+int idx[N];
+
+int main() {
+    AC::init();
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i++) {
+        scanf("%s", s + 1);
+        AC::insert(s, idx[i]);
+        AC::ans[i] = 0;
+    }
+    AC::build();
+    scanf("%s", s + 1);
+    AC::query(s);
+    AC::topu();
+    for (int i = 1; i <= n; i++) {
+        printf("%d\n", AC::ans[idx[i]]);
+    }
+    return 0;
+}
+
+\end{lstlisting}
