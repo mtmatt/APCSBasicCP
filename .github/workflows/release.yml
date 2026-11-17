@@ -10,25 +10,62 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    defaults:
+      run:
+        # Explicit bash adds pipefail, so `typst ... | tee` still fails on errors.
+        shell: bash
 
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
 
-      - name: Compile main.tex
-        uses: xu-cheng/latex-action@e2f99d4b3685b0da93f97e1b86ad8fab81105098  # v3
+      - name: Install Typst
+        uses: typst-community/setup-typst@6a2cfaf0b28d636b00148f965e315bae81079aaa  # v5.3.1
         with:
-          root_file: main.tex
-          latexmk_use_xelatex: true
+          typst-version: 0.14.2
 
-      - name: Compile book2.tex
-        uses: xu-cheng/latex-action@e2f99d4b3685b0da93f97e1b86ad8fab81105098  # v3
-        with:
-          root_file: book2.tex
-          latexmk_use_xelatex: true
+      # Libertinus Serif and New Computer Modern Math are bundled with Typst.
+      - name: Install fonts
+        env:
+          NERD_FONTS_VERSION: v3.5.1
+          NERD_FONTS_SHA256: e0000bc77cd77279840d8613e98727548f81f291a571be0be8699c8e3be36fd3
+          FONT_AWESOME_VERSION: 7.3.1
+          FONT_AWESOME_SHA256: c61edde261707f33376a28e9a30bb8c70c1a20bf0bd975206b809f3b3b70add5
+        run: |
+          # AR PL KaitiM Big5
+          sudo apt-get update -qq
+          sudo apt-get install -y fonts-arphic-bkai00mp
+
+          fonts_dir="$HOME/.local/share/fonts"
+          mkdir -p "$fonts_dir"
+          cd "$RUNNER_TEMP"
+
+          # SauceCodePro NFM
+          curl -fsSL -o SourceCodePro.zip \
+            "https://github.com/ryanoasis/nerd-fonts/releases/download/${NERD_FONTS_VERSION}/SourceCodePro.zip"
+          echo "${NERD_FONTS_SHA256}  SourceCodePro.zip" | sha256sum -c -
+          unzip -q -j SourceCodePro.zip 'SauceCodeProNerdFontMono-*' -d "$fonts_dir"
+
+          # Font Awesome 7 Free and Brands, used by @preview/fontawesome.
+          curl -fsSL -o fontawesome.zip \
+            "https://github.com/FortAwesome/Font-Awesome/releases/download/${FONT_AWESOME_VERSION}/fontawesome-free-${FONT_AWESOME_VERSION}-desktop.zip"
+          echo "${FONT_AWESOME_SHA256}  fontawesome.zip" | sha256sum -c -
+          unzip -q -j fontawesome.zip '*/otfs/*.otf' -d "$fonts_dir"
+
+      # Fail on warnings too, so a missing font can't slip into a release.
+      - name: Compile PDFs
+        run: |
+          for book in main book2; do
+            typst compile "$book.typ" "$book.pdf" 2>&1 | tee "$RUNNER_TEMP/$book.log"
+            if grep -q '^warning' "$RUNNER_TEMP/$book.log"; then
+              echo "::error::$book.typ compiled with warnings"
+              exit 1
+            fi
+          done
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65  # v2
         with:
+          fail_on_unmatched_files: true
           files: |
             main.pdf
             book2.pdf
