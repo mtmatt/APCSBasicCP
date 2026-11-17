@@ -87,7 +87,7 @@ int main(){
 
 如圖，下一個頂點為距離D或A最近的頂點。B距D為9，距A為7，E距D為15， F距D為6。因此，F距D或A最近，因此將頂點F與相應邊DF圖上比較亮的顏色。
 
-#align(center, image("/Files/Images/Graph4.png", width: 50%))
+#align(center, image("/images/Graph4.png", width: 50%))
 
 我們同樣可以利用`priority_queue`提升效率，所以同樣是$O(m log(n))$。
 

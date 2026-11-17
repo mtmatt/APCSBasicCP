@@ -12,7 +12,7 @@
 
 以一個例子來說明，考慮以下樹：
 
-#align(center, image("/Files/Images/Tree2.png", width: 50%))
+#align(center, image("/images/Tree2.png", width: 50%))
 
 設 maxLength(x) 表示以節點 x 為起點的最長路徑長度。例如，在上面的樹中，maxLength(4) = 3，因為存在一條路徑 4 → 1 → 2 → 6。以下是完整的數值表：
 
@@ -30,7 +30,7 @@
 
 在解決這個問題時，一個好的起點是將樹任意地選擇一個節點作為根節點：
 
-#align(center, image("/Files/Images/Tree3.png", width: 50%))
+#align(center, image("/images/Tree3.png", width: 50%))
 
 問題的第一部分是計算每個節點 x 通過其子節點的最大路徑長度。例如，從節點 1 出發的最長路徑通過其子節點 2。
 

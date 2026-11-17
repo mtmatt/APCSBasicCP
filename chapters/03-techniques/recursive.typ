@@ -214,7 +214,7 @@ int main(){
 
 給你 $n$ 根火柴棍，你可以拼出多少個形如 $A + B = C$ 的等式？等式中的 $A$、$B$、$C$ 是用火柴棍拼出的整數（若該數非零，則最高位不能是 $0$）。用火柴棍拼數字 $0 tilde.op 9$ 的拼法如圖所示：
 
-#align(center, image("/Files/Images/Recursive_Torch.png", width: 100%))
+#align(center, image("/images/Recursive_Torch.png", width: 100%))
 
 + 加號和等號個用掉$2$根火柴。
 

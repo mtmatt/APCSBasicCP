@@ -23,7 +23,7 @@
 
 BIT用於在快速求取區間和的同時，又能保證快速修改。感覺像是陣列與前綴和的優點結合下的產物，不過其複雜程度也是三者之中最高的。示意圖中數字代表它儲存的區間。
 
-#figure(image("/Files/Images/BIT.png", width: 100%, alt: "BIT 示意圖"), caption: [BIT 示意圖])
+#figure(image("/images/BIT.png", width: 100%, alt: "BIT 示意圖"), caption: [BIT 示意圖])
 
 如果想要知道`1-5`的和，可以查詢`1-4+5`。以下為查詢所需區間表。
 

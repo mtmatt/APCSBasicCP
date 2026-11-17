@@ -62,7 +62,7 @@ sort(b.begin(),b.end(),cmp);
 
 我們的保險箱現在要放到一個分類器之中，此分類器有許多節點(如下圖)，放入的規則如下。
 
-#align(center, image("/Files/Images/SaveSorter.png", width: 100%))
+#align(center, image("/images/SaveSorter.png", width: 100%))
 
 - 如果該節點還沒有任何保險箱，此保險箱就會佔據該節點
 

@@ -192,7 +192,7 @@ $ (h_(j - 1) < h_j > h_(j + 1)) or (h_(j - 1) > h_j < h_(j + 1)), quad forall j 
   output-title: [範例輸出 1],
 )
 
-#align(center, image("/Files/Images/DP4.jpg", width: 80%))
+#align(center, image("/images/DP4.jpg", width: 80%))
 
 #strong[想法]
 
@@ -216,11 +216,11 @@ $ cases(d p [0] [n] := max(d p [1] [i]) + v [n] \, f o r h [i] > h [n], d p [1] 
 
 #link("https://hackmd.io/@Ccucumber12/Bk6lLyuxF#/")
 
-#align(center, image("/Files/Images/DP5.png", width: 20%))
+#align(center, image("/images/DP5.png", width: 20%))
 
 #link("https://cp-algorithms.com/dynamic_programming/divide-and-conquer-dp.html")
 
-#align(center, image("/Files/Images/DP6.png", width: 20%))
+#align(center, image("/images/DP6.png", width: 20%))
 
 === 範例與練習
 
@@ -393,7 +393,7 @@ $a_i = 3$，表示在第 $i$ 天的假期中，健身房開放且舉辦了比賽
 
 現在Demid想要選擇一支籃球隊。他會按照從左到右的順序選擇球員，並且每個被選擇的球員的索引(不包括第一個選擇的球員)必須嚴格大於先前選擇的球員的索引。為了避免偏袒某一排，Demid選擇學生的方式是不允許連續選擇同一排的學生。第一個球員可以從所有2n名學生中選擇(沒有額外的限制)，並且一支隊伍可以包含任意數量的球員。
 
-#align(center, image("/Files/Images/CF1195.png", width: 40%))
+#align(center, image("/images/CF1195.png", width: 40%))
 
 Demid認為為了組成一支完美的隊伍，他應該以使得所選球員的總身高盡可能最大的方式進行選擇。幫助Demid找到他可以選擇的隊伍的最大可能總身高。
 

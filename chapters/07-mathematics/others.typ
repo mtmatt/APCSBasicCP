@@ -6,4 +6,4 @@
 
 #link("https://hackmd.io/@Ccucumber12/Hy8nj-fxt#")
 
-#align(center, image("/Files/Images/Math.png", width: 30%))
+#align(center, image("/images/Math.png", width: 30%))

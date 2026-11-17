@@ -6,7 +6,7 @@
 
 DFS Tree 是一個用來分析圖的一種方式，我們會對一張圖做DFS，然後對所有邊分類。
 
-#align(center, image("/Files/Images/AT1.png", width: 80%))
+#align(center, image("/images/AT1.png", width: 80%))
 
 如果是無向圖，則我們可以將邊分為兩類。
 
@@ -24,7 +24,7 @@ DFS Tree 是一個用來分析圖的一種方式，我們會對一張圖做DFS�
 
 - Cross Edge ：不同家族間的邊。(共同祖先#strong[不]是其中一個點)
 
-#align(center, image("/Files/Images/AT2.png", width: 80%))
+#align(center, image("/images/AT2.png", width: 80%))
 
 有一些性質可以從DFS Tree得到。例如環，如果一個邊是Back Edge，那他一定有環經過這個邊，如果他是Cross Edge，則有可能有環在上面，且必定經過至少兩個Cross Edge或Back Edge。
 
@@ -38,7 +38,7 @@ DFS Tree 是一個用來分析圖的一種方式，我們會對一張圖做DFS�
 
 倘若我們想要找到所有的橋，我們就會需要一個新的演算法-Tarjan算法。
 
-#align(center, image("/Files/Images/AT3.png", width: 50%))
+#align(center, image("/images/AT3.png", width: 50%))
 
 小插曲：有許多他發明的演算法都以他的名字命名，所以有時候會讓人混淆。
 
@@ -80,4 +80,4 @@ void dfs(int x){
 
 油漆未乾，請轉駕至 #link("https://hackmd.io/@Ccucumber12/HylySg2xF#")
 
-#align(center, image("/Files/Images/AT4.png", width: 20%))
+#align(center, image("/images/AT4.png", width: 20%))
