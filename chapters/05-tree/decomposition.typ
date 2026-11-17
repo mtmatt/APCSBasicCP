@@ -10,7 +10,7 @@
 
 在輕重鍊剖分中，我們會優先從子樹最大的節點往下連接，又稱為重邊，而其他的邊則稱為輕邊。這樣可以保證我們的鍊的數量不會超過$O(log(n))$條。
 
-#figure(image("/Files/Images/HLD.png", width: 100%, alt: "輕重鍊剖分示意圖"), caption: [輕重鍊剖分示意圖])
+#figure(image("/images/HLD.png", width: 100%, alt: "輕重鍊剖分示意圖"), caption: [輕重鍊剖分示意圖])
 
 === 實作
 

@@ -141,11 +141,11 @@ struct node{
 
 想像有一條線從上往下(或從下往上)掃描，每個矩形的上邊表示進入，下邊表示出來，我們可以藉由維護這個區間有多少地方是有被矩形覆蓋的直到有所變化(進或出)，這所有區間長度總和，乘上上次有變化到這次有變化前高度就是這一段的面積。
 
-#figure(image("/Files/Images/LazyTag1.png", width: 80%, alt: "矩形覆蓋面積示意圖"), caption: [矩形覆蓋面積示意圖])
+#figure(image("/images/LazyTag1.png", width: 80%, alt: "矩形覆蓋面積示意圖"), caption: [矩形覆蓋面積示意圖])
 
-#figure(image("/Files/Images/LazyTag2.png", width: 80%, alt: "第一個變化"), caption: [第一個變化])
+#figure(image("/images/LazyTag2.png", width: 80%, alt: "第一個變化"), caption: [第一個變化])
 
-#figure(image("/Files/Images/LazyTag3.png", width: 80%, alt: "第二個變化"), caption: [第二個變化])
+#figure(image("/images/LazyTag3.png", width: 80%, alt: "第二個變化"), caption: [第二個變化])
 
 #strong[實作]
 

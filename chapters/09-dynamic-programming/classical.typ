@@ -96,9 +96,9 @@ $ d p_n := 3 times n "的地面，用" 1 times 2 "的地板磚鋪滿的方法數
 
 這時候我們可能會先決定初始狀態，例如，如果$n lt.eq 1$，則$d p_n = 0$。如果$n = 2, d p_n = 3$，你可以畫圖說明這點。接著，我們發現，只要$n$是奇數，就不可能有任何的方法完成鋪磁磚的工作。所以我們考慮$n$是偶數的情況就可以了。
 
-#align(center, image("/Files/Images/DP1.png", width: 50%))
+#align(center, image("/images/DP1.png", width: 50%))
 
-#align(center, image("/Files/Images/DP2.png", width: 50%))
+#align(center, image("/images/DP2.png", width: 50%))
 
 根據上圖以及下頁的第一張圖片，你以為DP式像這樣。
 
@@ -108,7 +108,7 @@ $ cases(d p_0 = 1 \, d p_2 = 3, d p_n = 3 times d p_(n - 2) + 2 times d p_(n - 4
 
 這時候我們需要重新檢視自己有沒有錯誤，例如多數或少數。以這題為例我們就少數了。 (剛剛發現的，解法也是剛剛才想，所以剛好可以成為範例)。
 
-#align(center, image("/Files/Images/DP3.png", width: 80%))
+#align(center, image("/images/DP3.png", width: 80%))
 
 依此類推，我們可得到一個新的DP式。
 

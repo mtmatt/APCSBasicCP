@@ -8,13 +8,13 @@
 
 線段樹除了可以用來快速解區間和問題，還可以用來執行許多與區間有關的操作。建構區間方式大致上如圖。
 
-#align(center, image("/Files/Images/SEG.png", width: 100%))
+#align(center, image("/images/SEG.png", width: 100%))
 
 每個區間視情況放不同的數值，例如：最大\/小，或是區間總和等。
 
 接著，每個區間就都可以分為$O(log(n))$個區間，例如`2-7`可以分為`2, 3-4, 5-6, 7`。
 
-#align(center, image("/Files/Images/SEG2.png", width: 100%))
+#align(center, image("/images/SEG2.png", width: 100%))
 
 查詢時皆以最大區間為出發點，如圖就會是從`1-8`這個區間開始，如果要查詢的區間是`2-7`。因為`1-8`這個區間並沒有完全包含`2-7`，因此需要往下遞迴，分成`1-4`和`5-8`再次查詢。
 

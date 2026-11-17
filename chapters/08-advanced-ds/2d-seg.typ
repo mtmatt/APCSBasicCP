@@ -12,7 +12,7 @@
 
 因此，兩種操作的時間複雜度都是$O(log n times log m)$，通常來說$n eq.dots m$，所以也可以記為$O(log^2 (n))$。
 
-#align(center, image("/Files/Images/2DSeg1.png", width: 100%))
+#align(center, image("/images/2DSeg1.png", width: 100%))
 
 === 實作
 

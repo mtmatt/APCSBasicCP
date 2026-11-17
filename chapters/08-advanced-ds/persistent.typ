@@ -14,7 +14,7 @@
 
 而持久化就是讓我們可以用最小的空間，備份所有版本。以線段樹而言就可以用共用節點的方式進行。
 
-#align(center, image("/Files/Images/SEG3.png", width: 80%))
+#align(center, image("/images/SEG3.png", width: 80%))
 
 === 實作
 

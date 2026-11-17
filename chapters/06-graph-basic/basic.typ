@@ -8,7 +8,7 @@
 
 其實就是像這樣的東西。
 
-#figure(image("/Files/Images/Graph1.png", width: 50%, alt: "“圖\"的示意圖"), caption: [“圖"的示意圖])
+#figure(image("/images/Graph1.png", width: 50%, alt: "“圖\"的示意圖"), caption: [“圖"的示意圖])
 
 === 線上好用工具
 
@@ -16,7 +16,7 @@
 
 他畫出來的圖長這樣。
 
-#align(center, image("/Files/Images/Graph2.png", width: 50%))
+#align(center, image("/images/Graph2.png", width: 50%))
 
 === 用途
 

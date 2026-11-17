@@ -6,7 +6,7 @@
 
 有沒有一種方式可以將圖中的點分成兩組，使組內沒有成員之間的邊。如下圖。
 
-#figure(image("/Files/Images/Graph3.jpg", width: 50%, alt: "二分圖"), caption: [二分圖])
+#figure(image("/images/Graph3.jpg", width: 50%, alt: "二分圖"), caption: [二分圖])
 
 #strong[判別方法]
 

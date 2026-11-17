@@ -10,7 +10,7 @@
 
 只有連接到一個邊的節點我們稱為葉節點。如果有根(root)，則無論根連接幾個邊我們都稱他為根結點。
 
-#figure(image("/Files/Images/Tree.png", width: 80%, alt: "樹示意圖"), caption: [樹示意圖])
+#figure(image("/images/Tree.png", width: 80%, alt: "樹示意圖"), caption: [樹示意圖])
 
 === 資料儲存
 

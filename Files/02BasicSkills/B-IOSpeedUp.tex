@@ -1,8 +1,0 @@
-\section{IO加速}
-    由於 \verb|scanf/printf| 並不是特別好用，而且經過加速後的 \verb|cin/cout| 會比較快(在輸入測資較大時)。於是附上 \verb|cin/cout| 的加速方法。
-
-    \begin{lstlisting}[caption=IO加速]
-int main() {
-    ios::sync_with_stdio(0); cin.tie(0);
-    // code here
-}\end{lstlisting}

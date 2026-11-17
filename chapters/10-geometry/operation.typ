@@ -153,4 +153,4 @@ vector<Pt> ConvexHull(vector<Pt> ds){
 
 #link("https://hackmd.io/@Ccucumber12/BJeOhtzbF#/")
 
-#align(center, image("/Files/Images/Vector1.png", width: 20%))
+#align(center, image("/images/Vector1.png", width: 20%))

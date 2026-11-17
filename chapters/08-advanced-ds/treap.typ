@@ -16,7 +16,7 @@ Treap 是一個隨機平衡的二元搜尋樹，這裡所說的 Treap 是以 mer
 
 #example[第一屆卓越盃 C.Safe Sorter]
 
-#align(center, image("/Files/Images/SaveSorter.png", width: 100%))
+#align(center, image("/images/SaveSorter.png", width: 100%))
 
 - 如果該節點還沒有任何保險箱，此保險箱就會佔據該節點
 
@@ -333,7 +333,7 @@ int kth(int v){
 
 如果我們將整棵樹的中序遍歷當成序列的順序的話(如下圖)，我們可以實現需多更強大的功能。可以說，線段樹能做到的事 Treap 都可以做到，但 Treap 甚至可以做到許多線段樹做不到的事。
 
-#figure(image("/Files/Images/Treap1.png", width: 60%, alt: "Treap 表示數列示意圖"), caption: [Treap 表示數列示意圖])
+#figure(image("/images/Treap1.png", width: 60%, alt: "Treap 表示數列示意圖"), caption: [Treap 表示數列示意圖])
 
 而且，此時我們可以把 key 拔掉。然後只使用 splitSz 和 merge 。
 

@@ -6,7 +6,7 @@
 
 向量就是有方向的量，屬於高二數學。有兩種方式可以表達一個向量，用箭頭或一串數字。
 
-#align(center, image("/Files/Images/Vector.png", width: 20%))
+#align(center, image("/images/Vector.png", width: 20%))
 
 $ arrow(v) = (x_1, x_2, dots.h.c, x_n) $
 

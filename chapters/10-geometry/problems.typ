@@ -10,7 +10,7 @@
 
 例如，$6$ 邊形：
 
-#align(center, image("/Files/Images/Vector2.png", width: 50%))
+#align(center, image("/images/Vector2.png", width: 50%))
 
 #strong[輸入說明]
 
@@ -124,7 +124,7 @@ $0 < N, M lt.eq 30000$，$K lt.eq N times M$
 
 信用卡是一個矩形，唯四個角作了圓滑處理，使它們都是與矩形的兩邊相切的 1\/4 圓，如下圖所示。現在平面上有一些規格相同的信用卡，試求其凸包的周長。注意凸包未必是多邊形，因為它可能包含若干段圓弧。
 
-#align(center, image("/Files/Images/Vector3.png", width: 50%))
+#align(center, image("/images/Vector3.png", width: 50%))
 
 #strong[輸入說明]
 

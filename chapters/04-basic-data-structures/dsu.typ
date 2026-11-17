@@ -18,7 +18,7 @@ DSU裡面的每個元素都會存放著一個訊息，就是他的上面有誰�
 
 圖中的箭頭表示該節點的上面是誰。查詢時，只要不斷的往上找就可以找到最頂部的節點，如果兩個節點的最頂部相同，則我們稱這兩個節點在同一個集合中。
 
-#figure(image("/Files/Images/DSU.png", width: 100%, alt: "並查集示意圖"), caption: [並查集示意圖])
+#figure(image("/images/DSU.png", width: 100%, alt: "並查集示意圖"), caption: [並查集示意圖])
 
 #strong[合併]
 
