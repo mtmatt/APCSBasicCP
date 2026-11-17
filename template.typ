@@ -14,16 +14,12 @@
 #let doc-name = "APCS與競賽入門"
 #let subtitle = "演算法與資料結構講義"
 
-// The footer names whoever wrote the current chapter. A chapter by someone
-// else calls `set-author` just before its heading, and later chapters keep
-// that name until the next call, as `\author` did in the LaTeX book. It starts
-// the chapter's page itself, so the previous chapter's last page keeps its
-// own author.
+// The footer names whoever wrote the text above it. A section by someone else
+// calls `set-author` where their text starts, and the name holds until the
+// next call, as `\author` did in the LaTeX book. A footer shows the name in
+// force at the end of its page, as LaTeX's did.
 #let author-state = state("author", author)
-#let set-author(name) = {
-  pagebreak(weak: true)
-  author-state.update(name)
-}
+#let set-author(name) = author-state.update(name)
 
 #let latin-font = "Libertinus Serif"
 // #let latex-font = "CMU serif"
