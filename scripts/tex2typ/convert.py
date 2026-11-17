@@ -80,31 +80,48 @@ def leaf_name(stem):
 
 
 @dataclass
+class Input:
+    stem: str
+    # False where the chapter file has the `\\input` commented out.
+    enabled: bool
+
+
+@dataclass
+class Author:
+    name: str
+
+
+@dataclass
 class Chapter:
     title: str
     label: str | None
-    author: str | None
-    # (source stem, enabled)
-    inputs: list[tuple[str, bool]] = field(default_factory=list)
+    # The files the chapter inputs, and the `\\author` calls between them, in
+    # order.
+    body: list[Input | Author] = field(default_factory=list)
+
+    @property
+    def inputs(self):
+        return [item for item in self.body if isinstance(item, Input)]
 
 
 def parse_chapter(tex):
-    """Read a chapter file: its title, label, author and the files it inputs."""
+    """Read a chapter file: its title, label and body."""
     title = re.search(r"\\begin\{chapter\}\{([^}]*)\}", tex)
     if not title:
         raise ValueError("chapter file has no \\begin{chapter}{...}")
     label = re.search(r"\\label\{([^}]*)\}", tex)
-    author = re.search(r"^\s*\\author\{([^}]*)\}", tex, re.M)
-    inputs = [
-        (m.group(2), not m.group(1))
-        for m in re.finditer(r"^\s*(%\s*)?\\input\{([^}]*)\}", tex, re.M)
-    ]
-    return Chapter(
-        title.group(1),
-        label.group(1) if label else None,
-        author.group(1) if author else None,
-        inputs,
-    )
+    body = []
+    for m in re.finditer(
+        r"^\s*(?:(?P<off>%\s*)?\\input\{(?P<stem>[^}]*)\}"
+        r"|\\author\{(?P<author>[^}]*)\})",
+        tex,
+        re.M,
+    ):
+        if m["author"] is not None:
+            body.append(Author(m["author"]))
+        else:
+            body.append(Input(m["stem"], enabled=not m["off"]))
+    return Chapter(title.group(1), label.group(1) if label else None, body)
 
 
 def marker(*words):
@@ -192,6 +209,23 @@ def prepare(tex):
         + "]",
         tex,
     )
+    tex = re.sub(
+        r"^[ \t]*\\author\{([^}]*)\}",
+        lambda m: marker("author", m.group(1)),
+        tex,
+        flags=re.M,
+    )
+    # Starred headings are unnumbered and left out of the contents.
+    tex = re.sub(
+        r"\\((?:sub)*)section\*\{([^}]*)\}",
+        # Chapters are level 1, so `\section` is 2.
+        lambda m: marker(
+            "heading", str(m.group(1).count("sub") + 2), m.group(2)
+        ),
+        tex,
+    )
+    # A paragraph heading runs into its paragraph.
+    tex = re.sub(r"\\paragraph\{([^}]*)\}", r"\\textbf{\1}", tex)
     tex = re.sub(
         r"^[ \t]*\\(problem|example)\b[ \t]*(.*)$",
         lambda m: marker(m.group(1), m.group(2)),
@@ -333,6 +367,10 @@ def accents(typ):
     return "".join(out) + typ[done:]
 
 
+# What may come right before the parenthesis of function notation, `f(x)`:
+# one letter, or an operator Typst names.
+CALLEES = r"[A-Za-z]|log|ln|exp|max|min|gcd|lcm|sin|cos|tan"
+
 # Escapes pandoc writes that are plain text in Typst math.
 NEEDLESS_ESCAPES = set("()[]|")
 
@@ -379,13 +417,6 @@ def unescape_delimiters(typ):
     return "".join(out)
 
 
-def outside_strings(typ, rewrite):
-    """Apply `rewrite` to the parts of `typ` outside string literals."""
-    parts = re.split(f"({STRING})", typ)
-    parts[::2] = [rewrite(part) for part in parts[::2]]
-    return "".join(parts)
-
-
 def tidy_spacing(typ):
     """Undo pandoc's spacing in formula text (no string literals)."""
     # The spaces inside delimiters: `( n )`, `[ i ]`, `| v |`.
@@ -396,6 +427,10 @@ def tidy_spacing(typ):
     typ = typ.replace("med (mod med ", "quad (mod ")
     # Next to CJK text pandoc puts a space of no width.
     typ = re.sub(r" ?#h\(0em\) ?", " ", typ)
+    # Function notation comes spaced: `O (n)`, `log (n)`. A letter that is
+    # itself a sub- or superscript keeps the space: `p_i(…)` would put the
+    # parentheses in the subscript.
+    typ = re.sub(rf"(?<![A-Za-z._^])({CALLEES}) \(", r"\1(", typ)
     # CJK text comes one character at a time; make it one string.
     return re.sub(
         rf"{CJK}(?: {CJK})*",
@@ -404,13 +439,32 @@ def tidy_spacing(typ):
     )
 
 
+def tidy_cases(typ):
+    """Drop what `cases_columns` added to get `cases` through pandoc.
+
+    Typst's `cases` takes `{` by default and needs no second column.
+    """
+    out, done = [], 0
+    while (start := typ.find("cases(", done)) != -1:
+        close = matching_paren(typ, start + len("cases"))
+        if close is None:
+            break
+        rows = typ[start + len("cases(") : close]
+        rows = rows.removeprefix('delim: "{", ')
+        rows = re.sub(r"\s*&\s*(?=,|$)", "", rows)
+        out += [typ[done:start], f"cases({rows})"]
+        done = close + 1
+    return "".join(out) + typ[done:]
+
+
 def tidy_math(typ):
     """Make pandoc's Typst math read as a person would write it."""
     typ = unescape_delimiters(typ)
     typ = accents(typ)
+    typ = tidy_cases(typ)
     # `\text{dp}` comes out as `upright("dp")`; quoted text is upright anyway.
     typ = re.sub(rf"upright\(({STRING})\)", r"\1", typ)
-    return outside_strings(typ, tidy_spacing)
+    return outside(re.compile(STRING), typ, tidy_spacing)
 
 
 def failing_math(formulas, typst="typst"):
@@ -523,6 +577,14 @@ def finish_markers(text):
         indent, kind, rest = m.group(1), m.group(2), (m.group(3) or "").strip()
         if kind in ("problem", "example"):
             out.append(f"{indent}#{kind}[{rest}]")
+        elif kind == "author":
+            out.append(f"{indent}#set-author({typst_string(rest)})")
+        elif kind == "heading":
+            level, title = rest.split(" ", 1)
+            out.append(
+                f"{indent}#heading(level: {level}, numbering: none, "
+                f"outlined: false)[{title}]"
+            )
         elif kind == "begin":
             out.append(f"{indent}#{rest}[")
         elif kind == "end":
@@ -625,21 +687,20 @@ class Sample:
         )
 
 
-def sample_io(m):
-    """A two-column table of samples as one `#sample-io` per sample.
+def parse_samples(body):
+    """The samples a table holds, or None if it isn't a table of samples.
 
     Tables holding several samples have a title row (`[範例輸入 2], [範例輸出
     2]`) before each sample after the first. Any other cell than a raw line
-    or an empty one leaves the table as it is.
+    or an empty one means the table is something else.
     """
-    indent, body = m.group(1), m.group(2)
     rows = [line.strip() for line in body.splitlines()]
     # swift-shifter writes `columns:` and `align:` first, then the header.
     settings, cell_rows = rows[:2], rows[2:]
     if "columns: 2," not in settings or not cell_rows:
-        return m.group(0)
+        return None
     if not TITLES.fullmatch(cell_rows[0]):
-        return m.group(0)
+        return None
     samples = []
     for row in cell_rows:
         titles = TITLES.fullmatch(row)
@@ -648,19 +709,29 @@ def sample_io(m):
             continue
         cells = [c.group(1) for c in RAW_CELL.finditer(row)]
         if len(cells) != 2 or RAW_CELL.sub("", row).replace(",", "").strip():
-            return m.group(0)
+            return None
         sample = samples[-1]
         columns = (sample.input_lines, sample.output_lines)
         for lines, cell in zip(columns, cells):
             lines.extend(typst_unescape(raw) for raw in re.findall(RAW, cell))
             if not cell:
                 lines.append("")
+    return samples
+
+
+def finish_table(m):
+    """A table of samples as `#sample-io` calls; any other table centred."""
+    indent, body = m.group(1), m.group(2)
+    samples = parse_samples(body)
+    if samples is None:
+        # The LaTeX book centred its tables.
+        return f"{indent}#align(center, table(\n{body}\n{indent}))"
     return "\n".join(sample.call(indent) for sample in samples)
 
 
 def finish_tables(text):
-    """Turn the sample I/O tables in `text` into `#sample-io` calls."""
-    return TABLE.sub(sample_io, text)
+    """Turn the tables in `text` into `#sample-io` calls or centred tables."""
+    return TABLE.sub(finish_table, text)
 
 
 def unnumbered_headings(text):
@@ -670,9 +741,89 @@ def unnumbered_headings(text):
     )
 
 
+MATH = r"(?<!\\)\$.*?(?<!\\)\$"
+# Parts of a markup line where spaces and `~` mean something else: math,
+# strings and inline raw text.
+PROTECTED = re.compile(rf"{MATH}|(?<!\\){STRING}|`[^`]*`")
+RAW_CALL = re.compile(r'#raw\("([^"\\`]+)"\)')
+
+
+def outside(pattern, text, rewrite):
+    """Apply `rewrite` to the parts of `text` that `pattern` doesn't match."""
+    parts, last = [], 0
+    for m in pattern.finditer(text):
+        parts += [rewrite(text[last : m.start()]), m.group(0)]
+        last = m.end()
+    return "".join(parts) + rewrite(text[last:])
+
+
+def finish_words(text):
+    """Settle text outside math, strings and raw text (see finish_markup)."""
+    text = re.sub(rf"(?<={CJK}) +(?={CJK})", "", text)
+    return text.replace("\u00a0", "~")
+
+
+def finish_markup(line):
+    """Settle what a line of swift-shifter's markup says differently.
+
+    - `#raw("x")` is written as inline raw text where it can be.
+    - swift-shifter joins a paragraph's source lines with a space, which
+      Typst sets between CJK characters, where xeCJK set none.
+    - A no-break space (LaTeX's `~`) is written as Typst's `~`.
+    Math, strings and raw text are left alone.
+    """
+    line = outside(
+        re.compile(MATH), line, lambda part: RAW_CALL.sub(r"`\1`", part)
+    )
+    return outside(PROTECTED, line, finish_words)
+
+
+def opens_or_closes_math(line):
+    """Whether `line` has an odd number of `$` outside strings and raw text."""
+    line = re.sub(rf"(?<!\\){STRING}|`[^`]*`", "", line)
+    return len(re.findall(r"(?<!\\)\$", line)) % 2 == 1
+
+
+def finish_text(text):
+    """`finish_markup` on each line but code and formulas spanning lines."""
+    out, fence, in_math = [], None, False
+    for line in text.splitlines():
+        if fence:
+            if re.fullmatch(rf"\s*{fence}\s*", line):
+                fence = None
+            out.append(line)
+        elif opening := re.match(r"\s*(`{3,})", line):
+            fence = opening.group(1)
+            out.append(line)
+        elif in_math or opens_or_closes_math(line):
+            # A line of a formula that spans lines stays as it is.
+            in_math ^= opens_or_closes_math(line)
+            out.append(line)
+        else:
+            out.append(finish_markup(line))
+    return "\n".join(out) + "\n"
+
+
+def center_images(text):
+    """Centre images set on their own line, as the LaTeX book did."""
+    lines = text.splitlines()
+    for i, line in enumerate(lines):
+        image = re.match(r"(\s*)#image\(", line)
+        if not image:
+            continue
+        open_paren = image.end() - 1
+        call_start = open_paren - len("image")
+        if matching_paren(line, open_paren) == len(line) - 1:
+            lines[i] = f"{image.group(1)}#align(center, {line[call_start:]})"
+    return "\n".join(lines) + ("\n" if text.endswith("\n") else "")
+
+
 def finish(text, widths):
     """Turn one file's part of the draft into its final Typst source."""
-    return finish_tables(finish_images(finish_markers(text), widths))
+    text = finish_markers(text)
+    text = center_images(finish_images(text, widths))
+    text = finish_tables(text)
+    return finish_text(text)
 
 
 # --- Driver ------------------------------------------------------------------
@@ -680,14 +831,15 @@ def finish(text, widths):
 
 def chapter_file(chapter):
     """A chapter's `ch.typ`: its heading and the files it includes."""
-    lines = ['#import "../../template.typ": *', ""]
-    if chapter.author:
-        lines += [f'#set-author("{chapter.author}")', ""]
     label = f" <{chapter.label}>" if chapter.label else ""
-    lines += [f"= {chapter.title}{label}", ""]
-    for stem, enabled in chapter.inputs:
-        include = f'#include "{leaf_name(stem)}.typ"'
-        lines.append(include if enabled else f"// {include}")
+    heading = f"= {chapter.title}{label}"
+    lines = ['#import "../../template.typ": *', "", heading, ""]
+    for item in chapter.body:
+        if isinstance(item, Author):
+            lines.append(f"#set-author({typst_string(item.name)})")
+            continue
+        include = f'#include "{leaf_name(item.stem)}.typ"'
+        lines.append(include if item.enabled else f"// {include}")
     return "\n".join(lines) + "\n"
 
 
@@ -707,7 +859,7 @@ def build_driver(work):
         source = files / src / f"{stem}.tex"
         chapter = parse_chapter(source.read_text("utf-8"))
         chapters[out] = chapter
-        for leaf, _ in chapter.inputs:
+        for leaf in (item.stem for item in chapter.inputs):
             path = files / src / f"{leaf}.tex"
             path.write_text(prepare(path.read_text("utf-8")), "utf-8")
             body += [

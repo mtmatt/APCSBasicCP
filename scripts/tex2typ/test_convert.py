@@ -31,20 +31,28 @@ class LeafNameTest(unittest.TestCase):
 
 
 class ParseChapterTest(unittest.TestCase):
-    def test_reads_title_label_author_and_inputs(self):
+    def test_reads_title_label_and_body_in_order(self):
         tex = (
             "\\begin{chapter}{樹論}\\label{chapter:Tree}\n"
-            "    \\author{Ccucumber12}\n"
             "    \\input{T-Basic}\n"
+            "    \\author{Ccucumber12}\n"
             "    % \\input{T-AllLongestPath}\n"
             "\\end{chapter}\n"
         )
         chapter = convert.parse_chapter(tex)
         self.assertEqual(chapter.title, "樹論")
         self.assertEqual(chapter.label, "chapter:Tree")
-        self.assertEqual(chapter.author, "Ccucumber12")
         self.assertEqual(
-            chapter.inputs, [("T-Basic", True), ("T-AllLongestPath", False)]
+            chapter.body,
+            [
+                convert.Input("T-Basic", enabled=True),
+                convert.Author("Ccucumber12"),
+                convert.Input("T-AllLongestPath", enabled=False),
+            ],
+        )
+        self.assertEqual(
+            [item.stem for item in chapter.inputs],
+            ["T-Basic", "T-AllLongestPath"],
         )
 
     def test_rejects_a_file_without_a_chapter(self):
@@ -53,14 +61,20 @@ class ParseChapterTest(unittest.TestCase):
 
     def test_chapter_file(self):
         chapter = convert.Chapter(
-            "樹論", "chapter:Tree", "A", [("T-Basic", True), ("T-LCA", False)]
+            "樹論",
+            "chapter:Tree",
+            [
+                convert.Input("T-Basic", enabled=True),
+                convert.Author("A"),
+                convert.Input("T-LCA", enabled=False),
+            ],
         )
         self.assertEqual(
             convert.chapter_file(chapter),
             '#import "../../template.typ": *\n\n'
-            '#set-author("A")\n\n'
             "= 樹論 <chapter:Tree>\n\n"
             '#include "basic.typ"\n'
+            '#set-author("A")\n'
             '// #include "lca.typ"\n',
         )
 
@@ -128,6 +142,19 @@ class PrepareTest(unittest.TestCase):
             "\\verb|1 3 3| & \\verb|30| \\\\\n\\verb!a|b! &  \\\\",
         )
 
+    def test_author_and_headings_become_markers(self):
+        tex = convert.prepare(
+            "  \\author{李卓岳}\n"
+            "\\subsection*{程式實作}\n"
+            "\\section*{A}\\subsubsection*{B}\n"
+            "\\paragraph{Sift Up} 上浮\n"
+        )
+        self.assertIn(f"{M} author 李卓岳\n", tex)
+        self.assertIn(f"{M} heading 3 程式實作\n", tex)
+        self.assertIn(f"{M} heading 2 A\n", tex)
+        self.assertIn(f"{M} heading 4 B\n", tex)
+        self.assertIn("\\textbf{Sift Up} 上浮", tex)
+
     def test_image_paths_and_fixups(self):
         tex = convert.prepare("{../Images/A.png} $\\mod$")
         self.assertEqual(tex, "{Files/Images/A.png} $\\operatorname{mod}$")
@@ -161,7 +188,7 @@ class MathTest(unittest.TestCase):
     def test_tidy_drops_escapes(self):
         self.assertEqual(
             convert.tidy_math("$f \\( n \\) = \\[ i \\, j \\]$"),
-            "$f (n) = [i, j]$",
+            "$f(n) = [i, j]$",
         )
         self.assertEqual(convert.tidy_math("$\\| v \\|$"), "$|v|$")
 
@@ -187,6 +214,26 @@ class MathTest(unittest.TestCase):
         )
         self.assertEqual(convert.tidy_math("$a #h(0em) b$"), "$a b$")
 
+    def test_tidy_cases(self):
+        self.assertEqual(
+            convert.tidy_math('$ cases(delim: "{", a & , b & x) $'),
+            "$ cases(a, b & x) $",
+        )
+        self.assertEqual(convert.tidy_cases("cases(a"), "cases(a")
+
+    def test_tidy_joins_calls(self):
+        self.assertEqual(
+            convert.tidy_math("$O \\( n log \\( n \\) \\) + d i s \\( a \\)$"),
+            "$O(n log(n)) + d i s(a)$",
+        )
+        self.assertEqual(convert.tidy_math("$x_1 \\( a \\)$"), "$x_1 (a)$")
+        self.assertEqual(
+            convert.tidy_math(
+                "$sum_(i = 1)^n \\( v_i \\) + p_i \\( 1 \\)$"
+            ),
+            "$sum_(i = 1)^n (v_i) + p_i (1)$",
+        )
+
     def test_tidy_joins_cjk(self):
         self.assertEqual(
             convert.tidy_math('$以 第 n 個 麥 ， "已有字"$'),
@@ -205,7 +252,7 @@ class MathTest(unittest.TestCase):
         out, failures = convert.convert_math(text)
         self.assertEqual(
             out,
-            '$f (n) = 4 n^3$ and $ cases(delim: "{", a &, b &) $ '
+            '$f(n) = 4 n^3$ and $ cases(a, b) $ '
             '#mi(/*f3*/"\\\\mod")',
         )
         self.assertEqual(failures, ["\\mod"])
@@ -336,6 +383,55 @@ class DraftTest(unittest.TestCase):
             convert.image_widths([path]), {"A.png": "70%", "B.png": "100%"}
         )
 
+    def test_finish_markers_for_author_and_heading(self):
+        self.assertEqual(
+            convert.finish_markers(
+                f"{M} author 李卓岳\n{M} heading 3 程式 實作\n"
+            ),
+            '#set-author("李卓岳")\n'
+            "#heading(level: 3, numbering: none, outlined: false)[程式 實作]\n",
+        )
+
+    def test_finish_text(self):
+        text = (
+            "不清楚的， 所以 a b 與\u00a0$n$\n"
+            '#raw("x") #raw("a`b") $"甲 乙"$ "丙 丁"\n'
+            "```cpp\n"
+            "// 甲 乙\n"
+            "```\n"
+            "甲 乙\n"
+        )
+        self.assertEqual(
+            convert.finish_text(text),
+            "不清楚的，所以 a b 與~$n$\n"
+            '`x` #raw("a`b") $"甲 乙"$ "丙 丁"\n'
+            "```cpp\n"
+            "// 甲 乙\n"
+            "```\n"
+            "甲乙\n",
+        )
+
+    def test_finish_text_leaves_math_across_lines_alone(self):
+        text = (
+            '$ a 以 第\\\n b 個 麥 $\n$#raw("q")$ #raw("q") 甲 乙\n'
+            '他說 "甲 乙\n丙 丁" 與 `$` 戊 己\n'
+        )
+        self.assertEqual(
+            convert.finish_text(text),
+            '$ a 以 第\\\n b 個 麥 $\n$#raw("q")$ `q` 甲乙\n'
+            '他說 "甲乙\n丙丁" 與 `$` 戊己\n',
+        )
+
+    def test_center_images(self):
+        self.assertEqual(
+            convert.center_images(
+                '  #image("/a.png", width: 50%)\nx #image("b")\n'
+                '#image("c") (d)'
+            ),
+            '  #align(center, image("/a.png", width: 50%))\nx #image("b")\n'
+            '#image("c") (d)',
+        )
+
     def test_unnumbered_headings(self):
         self.assertEqual(
             convert.unnumbered_headings("= 前言\n== a\n"),
@@ -379,7 +475,7 @@ class SampleIoTest(unittest.TestCase):
         self.assertIn('"1\\n2",\n  "3"', out)
         self.assertIn('"4",\n  "5",\n  input-title: [範例輸入 2]', out)
 
-    def test_other_tables_stay(self):
+    def test_other_tables_are_centred(self):
         for text in [
             self.table("table.header([a], [b]),", "[1], [2],"),
             self.table(
@@ -388,7 +484,11 @@ class SampleIoTest(unittest.TestCase):
             ),
             "#table(\n  columns: 3,\n)",
         ]:
-            self.assertEqual(convert.finish_tables(text), text)
+            body = text.removeprefix("#table(\n").removesuffix("\n)")
+            self.assertEqual(
+                convert.finish_tables(text),
+                f"#align(center, table(\n{body}\n))",
+            )
 
 
 # Stands in for swift-shifter: keeps the text of the files the document reads
@@ -489,7 +589,10 @@ class MainTest(unittest.TestCase):
         diameter = (self.out / "05-tree/diameter.typ").read_text()
         self.assertTrue(diameter.startswith('#import "../../template.typ": *'))
         self.assertIn("#problem[洛谷P3304]", diameter)
-        self.assertIn('#image("/Files/Images/Tree.png", width: 50%)', diameter)
+        self.assertIn(
+            '#align(center, image("/Files/Images/Tree.png", width: 50%))',
+            diameter,
+        )
         self.assertIn(
             "#listing([兩次DFS])[\n```cpp\nint a;\n```\n]", diameter
         )
