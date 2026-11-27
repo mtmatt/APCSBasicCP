@@ -1,15 +1,22 @@
 name: Build and Release PDFs
 
+# Pull requests and pushes to main only build the books, so a broken build
+# shows up before a release tag is pushed.
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     defaults:
       run:
         # Explicit bash adds pipefail, so `typst ... | tee` still fails on errors.
@@ -54,7 +61,7 @@ jobs:
       # Fail on warnings too, so a missing font can't slip into a release.
       - name: Compile PDFs
         run: |
-          for book in main book2; do
+          for book in main book1 book2; do
             typst compile "$book.typ" "$book.pdf" 2>&1 | tee "$RUNNER_TEMP/$book.log"
             if grep -q '^warning' "$RUNNER_TEMP/$book.log"; then
               echo "::error::$book.typ compiled with warnings"
@@ -62,10 +69,34 @@ jobs:
             fi
           done
 
+      - name: Upload PDFs
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
+        with:
+          name: books
+          if-no-files-found: error
+          path: |
+            main.pdf
+            book1.pdf
+            book2.pdf
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download PDFs
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333  # v8.0.2
+        with:
+          name: books
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65  # v2
         with:
           fail_on_unmatched_files: true
           files: |
             main.pdf
+            book1.pdf
             book2.pdf
