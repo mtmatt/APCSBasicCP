@@ -25,4 +25,5 @@
 #include "chapters/10-geometry/ch.typ"
 #include "chapters/11-advanced-techniques/ch.typ"
 #include "chapters/12-more-problems/ch.typ"
+#include "chapters/13-strings/ch.typ"
 #include "chapters/reference.typ"
